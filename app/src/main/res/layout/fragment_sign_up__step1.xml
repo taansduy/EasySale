@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context=".SignUp_Step1">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top|center_horizontal"
+            app:srcCompat="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.25"
+            android:gravity="center_vertical|center_horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Đăng ký ngay để sử dụng phần mềm bán tại cửa hàng Easy Sales"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:paddingLeft="25dp"
+        android:paddingTop="40dp"
+        android:paddingRight="25dp">
+
+        <Button
+            android:id="@+id/btn_SignUpFb"
+            style="@style/com_facebook_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="#3B5998"
+            android:drawableStart="@drawable/facebook"
+            android:drawablePadding="-70dp"
+            android:paddingLeft="70dp"
+            android:text="Đăng ký bằng Facebook"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_SignUpGG"
+            style="@style/com_facebook_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EA4335"
+            android:drawableStart="@drawable/google"
+            android:drawablePadding="-70dp"
+            android:paddingLeft="70dp"
+            android:text="Đăng ký bằng Gmail"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/SignUp_Email_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="12dp"
+            android:text="Đăng ký bằng email"
+            android:textColor="@color/colorControlNormal"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+</LinearLayout>
