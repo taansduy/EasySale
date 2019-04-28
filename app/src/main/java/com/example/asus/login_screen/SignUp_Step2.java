@@ -1,6 +1,7 @@
 package com.example.asus.login_screen;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
@@ -108,7 +109,7 @@ public class SignUp_Step2 extends android.support.v4.app.Fragment {
                 else if(shopName.getText().toString().isEmpty())
                 {
                     nameWrapper.setErrorTextAppearance(R.style.error_appearance);
-                    nameWrapper.setError("Vui lòng nhập tên chur cuarw hangf");
+                    nameWrapper.setError("Vui lòng nhập tên chur cửa hàng");
                 } else {
                     mDatabase = FirebaseDatabase.getInstance().getReference();
                     mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -135,6 +136,7 @@ public class SignUp_Step2 extends android.support.v4.app.Fragment {
 
                         }
                     });
+                    startActivity(new Intent(getActivity().getBaseContext(),Main_Screen.class));
                 }
             }
         });
