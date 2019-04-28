@@ -111,7 +111,6 @@ public class SignUp_Step1_1 extends android.support.v4.app.Fragment {
                                 if (task.isSuccessful()) {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("username",str_Email); // Put anything what you want
-
                                     SignUp_Step2 fr = new SignUp_Step2();
                                     fr.setArguments(bundle);
                                     FragmentChangeListener fc=(FragmentChangeListener)getActivity();

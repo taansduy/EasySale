@@ -42,6 +42,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -170,7 +176,7 @@ public class SignUp_Step1 extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 LoginManager.getInstance().logInWithReadPermissions(getActivity(), Arrays.asList(
-                        "public_profile", "email", "user_birthday"));
+                        "public_profile", "email"));
                 LoginManager.getInstance().registerCallback(mCallbackManager,mCallback);
             }
         });
@@ -215,107 +221,139 @@ public class SignUp_Step1 extends android.support.v4.app.Fragment {
     }
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-        synchronized (this)
-        {
+        synchronized (this) {
             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Creating account...");
+            progressDialog.setMessage("Checking account...");
             progressDialog.show();
-            mAuth.fetchSignInMethodsForEmail(acct.getEmail()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                @Override
-                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                    check=  task.getResult().getSignInMethods().isEmpty();
-                    progressDialog.dismiss();
-                }
-            });
-        }
-         if(check==true) {
-            check=false;
-            AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+            DatabaseReference mDatabase;
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+            Query ref = mDatabase.child("stores").orderByChild("ownerDetail/email").equalTo(acct.getEmail());
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        progressDialog.dismiss();
+                        if (dataSnapshot.exists()) {
+                            check = false;
+                        } else {
+                            check = true;
+                        }
+                    }
 
-            mAuth.signInWithCredential(credential)
-                    .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithCredential:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("username",acct.getEmail()); // Put anything what you want
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                                SignUp_Step2 fr = new SignUp_Step2();
-                                fr.setArguments(bundle);
-                                FragmentChangeListener fc=(FragmentChangeListener)getActivity();
-                                fc.replaceFragment(fr);
+                    }
+                });
+            }
+            if (check == true) {
+                check = false;
+                AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
 
-                            } else {
-                                String errorMsg = task.getException().toString();
-                                if (errorMsg.toLowerCase().contains("already exists")) {
-                                    new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogTheme)
-                                            .setTitle("Thông báo")
-                                            .setMessage("Email này đã được sử dụng.")
-                                            .setPositiveButton(android.R.string.ok, null)
-                                            .show();
+                mAuth.signInWithCredential(credential)
+                        .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("username", acct.getEmail()); // Put anything what you want
+
+                                    SignUp_Step2 fr = new SignUp_Step2();
+                                    fr.setArguments(bundle);
+                                    FragmentChangeListener fc = (FragmentChangeListener) getActivity();
+                                    fc.replaceFragment(fr);
+
                                 } else {
-                                    new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogTheme)
-                                            .setTitle("Thông báo")
-                                            .setMessage("Đã xảy ra lỗi trong quá trình đăng ký hãy đảm bảo tài khoản Gmail chưa được sử dụng trên hệ thống.")
-                                            .setPositiveButton(android.R.string.ok, null)
-                                            .show();
+                                    String errorMsg = task.getException().toString();
+                                    if (errorMsg.toLowerCase().contains("already exists")) {
+                                        new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogTheme)
+                                                .setTitle("Thông báo")
+                                                .setMessage("Email này đã được sử dụng.")
+                                                .setPositiveButton(android.R.string.ok, null)
+                                                .show();
+                                    } else {
+                                        new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogTheme)
+                                                .setTitle("Thông báo")
+                                                .setMessage("Đã xảy ra lỗi trong quá trình đăng ký hãy đảm bảo tài khoản Gmail chưa được sử dụng trên hệ thống.")
+                                                .setPositiveButton(android.R.string.ok, null)
+                                                .show();
+                                    }
+
                                 }
 
+                                // ...
                             }
-
-                            // ...
-                        }
-                    });
-        }
-        else
-        {
-            new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogTheme)
-                    .setTitle("Thông báo")
-                    .setMessage("Email này đã được sử dụng.")
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show();
-        }
+                        });
+            } else {
+                new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogTheme)
+                        .setTitle("Thông báo")
+                        .setMessage("Email này đã được sử dụng.")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+            }
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
-        Log.d(TAG, "handleFacebookAccessToken:" + token);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onComplete(@NonNull final Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            synchronized (this) {
+                                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                                progressDialog.setMessage("Checking account...");
+                                progressDialog.show();
+                                DatabaseReference mDatabase;
+                                mDatabase = FirebaseDatabase.getInstance().getReference();
+                                Query ref = mDatabase.child("stores").orderByChild("ownerDetail/email").equalTo(task.getResult().getUser().getEmail());
+                                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        progressDialog.dismiss();
+                                        if (dataSnapshot.exists()) {
+                                            String errorMsg=task.getException().toString();
+                                            if(errorMsg.toLowerCase().contains("already exists"))
+                                            {
+                                                new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogTheme)
+                                                        .setTitle("Thông báo")
+                                                        .setMessage("Email liên kết với tài khoản Facebook này đã được sử dụng.")
+                                                        .setPositiveButton(android.R.string.ok, null)
+                                                        .show();
+                                            }
+                                            else{
+                                                new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogTheme)
+                                                        .setTitle("Thông báo")
+                                                        .setMessage("Đã xảy ra lỗi trong quá trình đăng ký hãy đảm bảo tài khoản liên kết với Facebook chưa được sử dụng trên hệ thống.")
+                                                        .setPositiveButton(android.R.string.ok, null)
+                                                        .show();
+                                            }
+                                        } else {
+                                            SignUp_Step2 fr = new SignUp_Step2();
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("username",task.getResult().getUser().getEmail()); // Put anything what you want
+                                            fr.setArguments(bundle);
+                                            FragmentChangeListener fc=(FragmentChangeListener)getActivity();
+                                            fc.replaceFragment(fr);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
                             // Sign in success, update UI with the signed-in user's information
-                            SignUp_Step2 fr = new SignUp_Step2();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("username",task.getResult().getUser().getEmail()); // Put anything what you want
-                            fr.setArguments(bundle);
-                            FragmentChangeListener fc=(FragmentChangeListener)getActivity();
-                            fc.replaceFragment(fr);
+
                         } else {
-                            // If sign in fails, display a message to the user.
-                            String errorMsg=task.getException().toString();
-                            if(errorMsg.toLowerCase().contains("already exists"))
-                            {
-                                new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogTheme)
-                                        .setTitle("Thông báo")
-                                        .setMessage("Email liên kết với tài khoản Facebook này đã được sử dụng.")
-                                        .setPositiveButton(android.R.string.ok, null)
-                                        .show();
-                            }
-                            else{
-                                new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogTheme)
-                                        .setTitle("Thông báo")
-                                        .setMessage("Đã xảy ra lỗi trong quá trình đăng ký hãy đảm bảo tài khoản liên kết với Facebook chưa được sử dụng trên hệ thống.")
-                                        .setPositiveButton(android.R.string.ok, null)
-                                        .show();
-                            }
-                            //Toast.makeText(getActivity(), task.getException().toString(), Toast.LENGTH_SHORT).show();
+                            new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogTheme)
+                                    .setTitle("Thông báo")
+                                    .setMessage("Đã xảy ra lỗi trong quá trình liên kết với tài khoản Facebook.")
+                                    .setPositiveButton(android.R.string.ok, null)
+                                    .show();
 
                         }
 
@@ -324,12 +362,6 @@ public class SignUp_Step1 extends android.support.v4.app.Fragment {
                 });
     }
 
-    public void showOtherFragment()
-    {
-        android.support.v4.app.Fragment fr=new SignUp_Step1_1();
-        FragmentChangeListener fc=(FragmentChangeListener)getActivity();
-        fc.replaceFragment(fr);
-    }
 
     public void bindViews(){
 

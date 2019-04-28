@@ -65,14 +65,24 @@ public class SignUp_Screen extends AppCompatActivity implements FragmentChangeLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up__screen);
+        String value = getIntent().getStringExtra("Screen");
+
         FacebookSdk.sdkInitialize(this);
         setupToolBar();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-// Replace the contents of the container with the new fragment
-        ft.replace(R.id.frag_placeholder, new SignUp_Step1());
-// or ft.add(R.id.your_placeholder, new FooFragment());
-// Complete the changes added above
-        ft.commit();
+        if(value==null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.frag_placeholder, new SignUp_Step1());
+            ft.commit();
+        }else{
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Bundle bundle = new Bundle();
+            String email=getIntent().getExtras().getString("email");
+            bundle.putString("username",email); // Put anything what you want
+            SignUp_Step2 fr = new SignUp_Step2();
+            fr.setArguments(bundle);
+            ft.replace(R.id.frag_placeholder, fr);
+            ft.commit();
+        }
 
     }
     //Re-custom ToolBar

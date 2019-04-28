@@ -21,7 +21,7 @@
         </activity>
         <activity
             android:name=".SignUp_Screen"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -43,7 +43,8 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignIn_Screen"></activity>
+        <activity android:name=".SignIn_Screen" />
+        <activity android:name=".Main_Screen"></activity>
     </application>
 
 </manifest>
