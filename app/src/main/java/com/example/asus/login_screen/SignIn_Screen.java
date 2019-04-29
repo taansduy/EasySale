@@ -195,7 +195,62 @@ public class SignIn_Screen extends AppCompatActivity {
                 LoginManager.getInstance().registerCallback(mCallbackManager,mCallback);
             }
         });
-        Button SignIn_btn=(Button) findViewById(R.id.btn_SignIn);
+        final Button SignIn_btn=(Button) findViewById(R.id.btn_SignIn);
+        SignIn_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String str_Email = email.getText().toString();
+                String pass = password.getText().toString();
+                String passPattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
+                String emailPattern = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
+                if (!str_Email.matches(emailPattern)) {
+                    emailWrapper.setErrorTextAppearance(R.style.error_appearance);
+                    if(str_Email.isEmpty())
+                    {
+                        emailWrapper.setError("Vui lòng nhập Email");
+                    }
+                    else emailWrapper.setError("Email vừa nhập không hợp lệ");
+                } else {
+                    emailWrapper.setError(null);
+                }
+                if (!pass.matches(passPattern)) {
+                    passwordWrapper.setErrorTextAppearance(R.style.error_appearance);
+                    if(str_Email.isEmpty())
+                    {
+                        passwordWrapper.setError("Vui lòng nhập password");
+                    }
+                    else passwordWrapper.setError("Mật khẩu hợp lệ cần có ít nhất 8 kí tự bao gồm cả số, chữ thường, chữ hoa.");
+
+                } else {
+                    passwordWrapper.setError(null);
+                }
+                if (str_Email.matches(emailPattern)&& pass.matches(passPattern))
+                {
+                    final ProgressDialog progressDialog = new ProgressDialog(SignIn_Screen.this);
+                    progressDialog.setMessage("Waiting...");
+                    progressDialog.show();
+                    //passwordWrapper.setError(null);
+
+                    mAuth.signInWithEmailAndPassword(str_Email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressDialog.dismiss();
+                            if (task.isSuccessful()) {
+                                startActivity(new Intent(SignIn_Screen.this,Main_Screen.class));
+                            } else {
+                                new AlertDialog.Builder(SignIn_Screen.this,R.style.MyAlertDialogTheme)
+                                        .setTitle("Thông báo")
+                                        .setMessage("Tài khoản email này đã được sử dụng.")
+                                        .setPositiveButton(android.R.string.ok, null)
+                                        .show();
+                                //Toast.makeText(getActivity(), erorrMsg, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
 
     }
 
