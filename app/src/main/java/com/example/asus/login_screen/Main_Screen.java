@@ -7,14 +7,21 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toolbar;
 
 import com.example.asus.login_screen.Fragment_of_MainScreen.PagerAdapter_MainScreen;
+import com.example.asus.login_screen.Model.User;
 
 public class Main_Screen extends AppCompatActivity {
     ViewPager viewPager;
     TabLayout tabLayout;
+    Bundle bundle=new Bundle();
+    User user;
+    String shopName;
+    String address;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +30,15 @@ public class Main_Screen extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         android.support.v7.app.ActionBar actionBar=getSupportActionBar();
         actionBar.hide();
+        //***************get data from bundle**************************//
+        bundle=getIntent().getBundleExtra("bundle");
+        user= (User) bundle.getSerializable("user");
+        shopName=bundle.getString("shopName");
+        address=bundle.getString("address");
+
+
+
+        //*************************************************************//
         viewPager=(ViewPager) findViewById(R.id.vp);
         tabLayout=(TabLayout) findViewById(R.id.tb);
 

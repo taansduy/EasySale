@@ -1,8 +1,9 @@
 package com.example.asus.login_screen.Model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable {
 
     private String email;
     private String mName;
@@ -17,7 +18,7 @@ public class User {
 
     private String phoneNumber;
 
-    public User(String email, String mName, Date birthDate,String phoneNumber) {
+    public User(String email, String mName,String phoneNumber) {
         this.email = email;
         this.mName = mName;
         this.phoneNumber=phoneNumber;
