@@ -68,6 +68,7 @@ public class SignIn_Screen extends AppCompatActivity {
     TextInputLayout emailWrapper,passwordWrapper;
     TextView tv_SignUp;
     ImageView fb_login,gg_login;
+    Button SignIn_btn;
     private CallbackManager mCallbackManager;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -128,6 +129,7 @@ public class SignIn_Screen extends AppCompatActivity {
         emailWrapper=(TextInputLayout) findViewById(R.id.emailWrapper);
         password=(EditText)findViewById(R.id.password);
         passwordWrapper=(TextInputLayout) findViewById(R.id.passwordWrapper);
+        SignIn_btn=(Button) findViewById(R.id.btn_SignIn);
         email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -195,6 +197,7 @@ public class SignIn_Screen extends AppCompatActivity {
                 LoginManager.getInstance().registerCallback(mCallbackManager,mCallback);
             }
         });
+
         final Button SignIn_btn=(Button) findViewById(R.id.btn_SignIn);
         SignIn_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,11 +251,6 @@ public class SignIn_Screen extends AppCompatActivity {
                         }
                     });
                 }
-
-            }
-        });
-
-    }
 
     private void setupToolBar() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar2);
