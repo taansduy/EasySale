@@ -251,6 +251,9 @@ public class SignIn_Screen extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+    }
 
     private void setupToolBar() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar2);
