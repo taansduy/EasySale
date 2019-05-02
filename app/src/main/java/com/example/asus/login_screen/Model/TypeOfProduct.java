@@ -1,26 +1,44 @@
 package com.example.asus.login_screen.Model;
 
-import com.example.asus.login_screen.Model.Product;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class TypeOfProduct {
     private int ID;
     private String Type;
-    private List<Product> productList;
+    private HashMap<String,Product> productList;
 
 
-    public TypeOfProduct(int ID, String type, List<Product> productList) {
+    public TypeOfProduct(int ID, String type, HashMap<String, Product> productList) {
         this.ID = ID;
         Type = type;
         this.productList = productList;
     }
 
-    public TypeOfProduct(int ID, String type) {
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public String getType() {
+        return Type;
+    }
+
+    public void setType(String type) {
         Type = type;
-        productList=new ArrayList<Product>() ;
+    }
+
+    public HashMap<String, Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(HashMap<String, Product> productList) {
+        this.productList = productList;
+    }
+
+    public TypeOfProduct() {
 
     }
 }
