@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.asus.login_screen.Model.User;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -49,6 +51,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -65,6 +68,7 @@ import static com.google.android.gms.auth.api.signin.GoogleSignIn.getClient;
 
 public class SignIn_Screen extends AppCompatActivity {
     EditText email,password;
+    Bundle bundle=new Bundle();
     TextInputLayout emailWrapper,passwordWrapper;
     TextView tv_SignUp;
     ImageView fb_login,gg_login;
@@ -235,11 +239,50 @@ public class SignIn_Screen extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             progressDialog.dismiss();
                             if (task.isSuccessful()) {
-                                startActivity(new Intent(SignIn_Screen.this, Main_Screen.class));
+                                final DatabaseReference mDatabase;
+                                mDatabase = FirebaseDatabase.getInstance().getReference();
+                            Query query=mDatabase.child("stores").orderByChild("ownerDetail/email").equalTo(str_Email);
+                                query.addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                            User user=new User(dataSnapshot.child("ownerDetail").child("email").getValue().toString(),
+                                                    dataSnapshot.child("ownerDetail").child("mName").getValue().toString(),
+                                                    dataSnapshot.child("ownerDetail").child("phoneNumber").getValue().toString());
+
+                                            bundle.putSerializable("user",user);
+                                            bundle.putString("address",dataSnapshot.child("shopAdress").getValue().toString());
+                                            bundle.putString("shopName",dataSnapshot.child("shopName").getValue().toString());
+                                        Intent intent=new Intent(SignIn_Screen.this,Main_Screen.class);
+                                        intent.putExtra("bundle",bundle);
+
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
                             } else {
                                 new AlertDialog.Builder(SignIn_Screen.this, R.style.MyAlertDialogTheme)
                                         .setTitle("Thông báo")
-                                        .setMessage("Tài khoản email này đã được sử dụng.")
+                                        .setMessage("Sai thông tin tài khoản")
                                         .setPositiveButton(android.R.string.ok, null)
                                         .show();
                                 //Toast.makeText(getActivity(), erorrMsg, Toast.LENGTH_SHORT).show();
@@ -250,7 +293,6 @@ public class SignIn_Screen extends AppCompatActivity {
             }
         });
     }
-
 
     private void setupToolBar() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar2);
@@ -321,7 +363,45 @@ public class SignIn_Screen extends AppCompatActivity {
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             progressDialog.dismiss();
                                             if (dataSnapshot.exists()) {
-                                                startActivity(new Intent(SignIn_Screen.this,Main_Screen.class));
+                                                final DatabaseReference mDatabase;
+                                                mDatabase = FirebaseDatabase.getInstance().getReference();
+                                                Query query=mDatabase.child("stores").orderByChild("ownerDetail/email").equalTo(acct.getEmail());
+                                                query.addChildEventListener(new ChildEventListener() {
+                                                    @Override
+                                                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                        User user=new User(dataSnapshot.child("ownerDetail").child("email").getValue().toString(),
+                                                                dataSnapshot.child("ownerDetail").child("mName").getValue().toString(),
+                                                                dataSnapshot.child("ownerDetail").child("phoneNumber").getValue().toString());
+
+                                                        bundle.putSerializable("user",user);
+                                                        bundle.putString("address",dataSnapshot.child("shopAdress").getValue().toString());
+                                                        bundle.putString("shopName",dataSnapshot.child("shopName").getValue().toString());
+                                                        Intent intent=new Intent(SignIn_Screen.this,Main_Screen.class);
+                                                        intent.putExtra("bundle",bundle);
+
+                                                        startActivity(intent);
+                                                    }
+
+                                                    @Override
+                                                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                });
                                             }
                                             else{
                                                 Intent mIntent = new Intent(SignIn_Screen.this, SignUp_Screen.class);
@@ -378,7 +458,46 @@ public class SignIn_Screen extends AppCompatActivity {
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         progressDialog.dismiss();
                                         if (dataSnapshot.exists()) {
-                                            startActivity(new Intent(SignIn_Screen.this,Main_Screen.class));
+                                            final DatabaseReference mDatabase;
+                                            mDatabase = FirebaseDatabase.getInstance().getReference();
+                                            Query query=mDatabase.child("stores").orderByChild("ownerDetail/email").equalTo(task.getResult().getUser().getEmail());
+                                            query.addChildEventListener(new ChildEventListener() {
+                                                @Override
+                                                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                    User user=new User(dataSnapshot.child("ownerDetail").child("email").getValue().toString(),
+                                                            dataSnapshot.child("ownerDetail").child("mName").getValue().toString(),
+                                                            dataSnapshot.child("ownerDetail").child("phoneNumber").getValue().toString());
+
+                                                    bundle.putSerializable("user",user);
+                                                    bundle.putString("address",dataSnapshot.child("shopAdress").getValue().toString());
+                                                    bundle.putString("shopName",dataSnapshot.child("shopName").getValue().toString());
+                                                    Intent intent=new Intent(SignIn_Screen.this,Main_Screen.class);
+                                                    intent.putExtra("bundle",bundle);
+
+                                                    startActivity(intent);
+                                                }
+
+                                                @Override
+                                                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                                }
+
+                                                @Override
+                                                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                                }
+
+                                                @Override
+                                                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                }
+                                            });
+
                                         }
                                         else{
 
