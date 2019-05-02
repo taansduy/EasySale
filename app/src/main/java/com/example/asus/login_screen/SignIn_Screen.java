@@ -125,15 +125,15 @@ public class SignIn_Screen extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in__screen);
 
         setupToolBar();
-        email=(EditText)findViewById(R.id.email);
-        emailWrapper=(TextInputLayout) findViewById(R.id.emailWrapper);
-        password=(EditText)findViewById(R.id.password);
-        passwordWrapper=(TextInputLayout) findViewById(R.id.passwordWrapper);
-        SignIn_btn=(Button) findViewById(R.id.btn_SignIn);
+        email = (EditText) findViewById(R.id.email);
+        emailWrapper = (TextInputLayout) findViewById(R.id.emailWrapper);
+        password = (EditText) findViewById(R.id.password);
+        passwordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
+        SignIn_btn = (Button) findViewById(R.id.btn_SignIn);
         email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus && !password.hasFocus()){
+                if (!hasFocus && !password.hasFocus()) {
                     hideKeyboard(v);
                 }
             }
@@ -141,34 +141,34 @@ public class SignIn_Screen extends AppCompatActivity {
         password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus && !email.hasFocus()){
+                if (!hasFocus && !email.hasFocus()) {
                     hideKeyboard(v);
                 }
             }
         });
-        tv_SignUp= (TextView) findViewById(R.id.tv_SignUp);
+        tv_SignUp = (TextView) findViewById(R.id.tv_SignUp);
         tv_SignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.startAnimation(AnimationUtils.loadAnimation(getBaseContext(),R.anim.alpha_anim));
-                startActivity(new Intent(getBaseContext(),SignUp_Screen.class));
+                v.startAnimation(AnimationUtils.loadAnimation(getBaseContext(), R.anim.alpha_anim));
+                startActivity(new Intent(getBaseContext(), SignUp_Screen.class));
                 overridePendingTransition(R.anim.slide_up, R.anim.hold);
             }
         });
-        fb_login=(ImageView) findViewById(R.id.fb_login);
-        gg_login=(ImageView) findViewById(R.id.gg_login);
+        fb_login = (ImageView) findViewById(R.id.fb_login);
+        gg_login = (ImageView) findViewById(R.id.gg_login);
         AppEventsLogger.activateApp(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("799889260725-95bb3irdm58t2kucd6ik8qu205a8at5g.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
-        mCallbackManager=CallbackManager.Factory.create();
+        mCallbackManager = CallbackManager.Factory.create();
 
         mAuth = FirebaseAuth.getInstance();
-        mGoogleSignInClient= getClient(this,gso);
+        mGoogleSignInClient = getClient(this, gso);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                    .build();
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
 
         mGoogleApiClient.connect();
@@ -194,11 +194,11 @@ public class SignIn_Screen extends AppCompatActivity {
             public void onClick(View v) {
                 LoginManager.getInstance().logInWithReadPermissions(SignIn_Screen.this, Arrays.asList(
                         "public_profile", "email"));
-                LoginManager.getInstance().registerCallback(mCallbackManager,mCallback);
+                LoginManager.getInstance().registerCallback(mCallbackManager, mCallback);
             }
         });
 
-        final Button SignIn_btn=(Button) findViewById(R.id.btn_SignIn);
+        final Button SignIn_btn = (Button) findViewById(R.id.btn_SignIn);
         SignIn_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,27 +208,23 @@ public class SignIn_Screen extends AppCompatActivity {
                 String emailPattern = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
                 if (!str_Email.matches(emailPattern)) {
                     emailWrapper.setErrorTextAppearance(R.style.error_appearance);
-                    if(str_Email.isEmpty())
-                    {
+                    if (str_Email.isEmpty()) {
                         emailWrapper.setError("Vui lòng nhập Email");
-                    }
-                    else emailWrapper.setError("Email vừa nhập không hợp lệ");
+                    } else emailWrapper.setError("Email vừa nhập không hợp lệ");
                 } else {
                     emailWrapper.setError(null);
                 }
                 if (!pass.matches(passPattern)) {
                     passwordWrapper.setErrorTextAppearance(R.style.error_appearance);
-                    if(str_Email.isEmpty())
-                    {
+                    if (str_Email.isEmpty()) {
                         passwordWrapper.setError("Vui lòng nhập password");
-                    }
-                    else passwordWrapper.setError("Mật khẩu hợp lệ cần có ít nhất 8 kí tự bao gồm cả số, chữ thường, chữ hoa.");
+                    } else
+                        passwordWrapper.setError("Mật khẩu hợp lệ cần có ít nhất 8 kí tự bao gồm cả số, chữ thường, chữ hoa.");
 
                 } else {
                     passwordWrapper.setError(null);
                 }
-                if (str_Email.matches(emailPattern)&& pass.matches(passPattern))
-                {
+                if (str_Email.matches(emailPattern) && pass.matches(passPattern)) {
                     final ProgressDialog progressDialog = new ProgressDialog(SignIn_Screen.this);
                     progressDialog.setMessage("Waiting...");
                     progressDialog.show();
@@ -239,9 +235,9 @@ public class SignIn_Screen extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             progressDialog.dismiss();
                             if (task.isSuccessful()) {
-                                startActivity(new Intent(SignIn_Screen.this,Main_Screen.class));
+                                startActivity(new Intent(SignIn_Screen.this, Main_Screen.class));
                             } else {
-                                new AlertDialog.Builder(SignIn_Screen.this,R.style.MyAlertDialogTheme)
+                                new AlertDialog.Builder(SignIn_Screen.this, R.style.MyAlertDialogTheme)
                                         .setTitle("Thông báo")
                                         .setMessage("Tài khoản email này đã được sử dụng.")
                                         .setPositiveButton(android.R.string.ok, null)
@@ -251,6 +247,10 @@ public class SignIn_Screen extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+    }
+
 
     private void setupToolBar() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar2);
