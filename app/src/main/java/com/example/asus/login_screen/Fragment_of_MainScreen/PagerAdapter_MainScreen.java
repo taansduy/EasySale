@@ -1,5 +1,6 @@
 package com.example.asus.login_screen.Fragment_of_MainScreen;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -7,6 +8,12 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 public class PagerAdapter_MainScreen extends FragmentStatePagerAdapter {
     public PagerAdapter_MainScreen(FragmentManager fm) {
         super(fm);
+    }
+    public Context context;
+
+    public PagerAdapter_MainScreen(FragmentManager fm, Context context) {
+        super(fm);
+        this.context = context;
     }
 
     @Override
@@ -23,7 +30,7 @@ public class PagerAdapter_MainScreen extends FragmentStatePagerAdapter {
                 frag = new Order();
                 break;
             case 3:
-                frag=new More();
+                frag=new More(context);
         }
         return frag;
     }

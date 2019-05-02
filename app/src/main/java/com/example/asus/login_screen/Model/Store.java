@@ -1,9 +1,10 @@
 package com.example.asus.login_screen.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Store {
+public class Store implements Serializable {
     public String getShopName() {
         return shopName;
     }

@@ -1,7 +1,9 @@
 package com.example.asus.login_screen;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -12,15 +14,22 @@ import android.view.View;
 import android.widget.Toolbar;
 
 import com.example.asus.login_screen.Fragment_of_MainScreen.PagerAdapter_MainScreen;
+import com.example.asus.login_screen.Model.Store;
 import com.example.asus.login_screen.Model.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class Main_Screen extends AppCompatActivity {
     ViewPager viewPager;
     TabLayout tabLayout;
-    Bundle bundle=new Bundle();
-    User user;
-    String shopName;
-    String address;
+    public Bundle bundle=new Bundle();
+    public User user;
+    public String shopName;
+    public String address;
 
 
     @Override
@@ -35,15 +44,12 @@ public class Main_Screen extends AppCompatActivity {
         user= (User) bundle.getSerializable("user");
         shopName=bundle.getString("shopName");
         address=bundle.getString("address");
-
-
-
         //*************************************************************//
         viewPager=(ViewPager) findViewById(R.id.vp);
         tabLayout=(TabLayout) findViewById(R.id.tb);
 
         FragmentManager manager = getSupportFragmentManager();
-        PagerAdapter_MainScreen adapter = new PagerAdapter_MainScreen(manager);
+        PagerAdapter_MainScreen adapter = new PagerAdapter_MainScreen(manager,Main_Screen.this);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -74,4 +80,5 @@ public class Main_Screen extends AppCompatActivity {
 
 
     }
+
 }
