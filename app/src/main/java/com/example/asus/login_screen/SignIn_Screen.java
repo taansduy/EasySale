@@ -3,6 +3,9 @@ package com.example.asus.login_screen;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -62,6 +66,8 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import static com.google.android.gms.auth.api.signin.GoogleSignIn.getClient;
@@ -422,6 +428,8 @@ public class SignIn_Screen extends AppCompatActivity {
 
                                         @Override
                                         public void onCancelled(DatabaseError databaseError) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(SignIn_Screen.this, "Error", Toast.LENGTH_SHORT).show();
 
                                         }
                                     });
@@ -430,7 +438,8 @@ public class SignIn_Screen extends AppCompatActivity {
 
                             } else {
 
-
+                                progressDialog.dismiss();
+                                Toast.makeText(SignIn_Screen.this, "Error", Toast.LENGTH_SHORT).show();
                             }
 
                             // ...
@@ -518,6 +527,7 @@ public class SignIn_Screen extends AppCompatActivity {
 
                             }
                         } else {
+                            progressDialog.dismiss();
                             if(task.getException().toString().contains("already exists")) {
                                 new AlertDialog.Builder(SignIn_Screen.this, R.style.MyAlertDialogTheme)
                                         .setTitle("Thông báo")

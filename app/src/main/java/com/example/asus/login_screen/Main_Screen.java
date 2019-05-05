@@ -41,9 +41,13 @@ public class Main_Screen extends AppCompatActivity {
         actionBar.hide();
         //***************get data from bundle**************************//
         bundle=getIntent().getBundleExtra("bundle");
-        user= (User) bundle.getSerializable("user");
-        shopName=bundle.getString("shopName");
-        address=bundle.getString("address");
+
+        if(bundle!=null) {
+            user = (User) bundle.getSerializable("user");
+            shopName = bundle.getString("shopName");
+            address = bundle.getString("address");
+        }
+
         //*************************************************************//
         viewPager=(ViewPager) findViewById(R.id.vp);
         tabLayout=(TabLayout) findViewById(R.id.tb);
