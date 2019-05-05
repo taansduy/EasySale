@@ -3,7 +3,6 @@ package com.example.asus.login_screen;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -16,13 +15,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.asus.login_screen.Model.saleAnalyst;
 import com.example.asus.login_screen.Model.Store;
 import com.example.asus.login_screen.Model.User;
+import com.example.asus.login_screen.Model.daySale;
+import com.example.asus.login_screen.Model.monthSale;
+import com.example.asus.login_screen.Model.yearSale;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Calendar;
+import java.util.HashMap;
 
 
 /**
@@ -127,6 +133,18 @@ public class SignUp_Step2 extends android.support.v4.app.Fragment {
                                 newUser.setmName(name.getText().toString());
                                 newStore.setOwnerDetail(newUser);
 
+                                saleAnalyst yearSales=new saleAnalyst();
+                                yearSale n_yearSale=new yearSale();
+                                monthSale n_monthSale=new monthSale();
+                                daySale n_daySale=new daySale();
+                                HashMap<String,daySale> temp=n_monthSale.getListOfDSale();
+                                temp.put(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+"_",n_daySale);
+                                n_monthSale.setListOfDSale(temp);
+                                HashMap<String,monthSale> temp1=n_yearSale.getListOfMSale();
+                                temp1.put(Calendar.getInstance().get(Calendar.MONTH)+1+"_",n_monthSale);
+                                n_yearSale.setListOfMSale(temp1);
+                                yearSales.putYearSale(Calendar.getInstance().get(Calendar.YEAR)+"_",n_yearSale);
+                                mDatabase.child("saleAnalyst").child(newStore.getShopName()).setValue(yearSales);
                                 mDatabase.child("stores").child(newStore.getShopName()).setValue(newStore);
                             }
                         }
