@@ -66,8 +66,6 @@ public class More extends android.support.v4.app.Fragment {
         img_Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 ln_ListProduct.setVisibility(View.INVISIBLE);
                 ln_ContentMore.setVisibility(View.VISIBLE);
             }
