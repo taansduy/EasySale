@@ -1,8 +1,15 @@
 package com.example.asus.login_screen.Model;
 
-import java.util.HashMap;
 
-public class Store {
+import java.util.HashMap;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+public class Store implements Serializable {
+
+
     private String shopName;
     private String shopAdress;
     private HashMap<String,TypeOfProduct> listOfProductType;
