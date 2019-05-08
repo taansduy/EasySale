@@ -3,9 +3,7 @@ package com.example.asus.login_screen.Fragment_of_MainScreen;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +14,8 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.example.asus.login_screen.Activity_of_MoreComponent.Account;
-import com.example.asus.login_screen.Activity_of_MoreComponent.AddProduct;
-import com.example.asus.login_screen.Activity_of_MoreComponent.ListProduct;
+import com.example.asus.login_screen.Activity_of_MoreComponent.AddProduct.AddProduct;
 import com.example.asus.login_screen.Main_Screen;
-import com.example.asus.login_screen.Model.Store;
 import com.example.asus.login_screen.Model.User;
 import com.example.asus.login_screen.R;
 
@@ -66,8 +62,6 @@ public class More extends android.support.v4.app.Fragment {
         img_Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 ln_ListProduct.setVisibility(View.INVISIBLE);
                 ln_ContentMore.setVisibility(View.VISIBLE);
             }
@@ -76,6 +70,7 @@ public class More extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getContext(), AddProduct.class);
+                intent.putExtra("bundle",main_screen.bundle);
                 startActivity(intent);
             }
         });
