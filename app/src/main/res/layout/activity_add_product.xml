@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity_of_MoreComponent.AddProduct">
+    tools:context=".Activity_of_MoreComponent.AddProduct.AddProduct">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 android:text="Thêm sản phẩm"
                 android:gravity="center"/>
             <ImageView
-                android:id="@+id/Search"
+                android:id="@+id/Ok"
                 android:layout_weight="2"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -40,48 +40,72 @@
 
 
     </android.support.v7.widget.Toolbar>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ECE4E4"
+
         android:orientation="vertical">
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:background="#FFFF">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ECE4E4"
+            android:gravity="center">
             <ImageView
+                android:layout_margin="20dp"
                 android:src="@drawable/camera"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/Image"/>
+                android:id="@+id/Image1"/>
+            <ImageView
+                android:layout_margin="20dp"
+                android:src="@drawable/camera"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/Image2" />
+            <ImageView
+                android:layout_margin="20dp"
+                android:src="@drawable/camera"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/Image3" />
+            <ImageView
+                android:layout_margin="20dp"
+                android:src="@drawable/camera"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/Image4" />
+
         </LinearLayout>
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/typeWrapper"
-            android:background="#FFF"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:focusableInTouchMode="true"
-            android:hint="Loại"
-            android:textColorHint="@color/com_facebook_button_background_color_disabled"
-            android:theme="@style/TextInputLayoutAppearance"
-            app:boxStrokeColor="@color/black">
-
-            <EditText
-                android:id="@+id/type"
-                style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+            android:orientation="vertical">
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="#123"/>
+            <Spinner
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/black" />
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
 
-        </android.support.design.widget.TextInputLayout>
+                />
+        </LinearLayout>
+
+
+
+
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/productWrapper"
+            android:id="@+id/nametWrapper"
             android:background="#FFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,7 +117,7 @@
             app:boxStrokeColor="@color/black">
 
             <EditText
-                android:id="@+id/product"
+                android:id="@+id/name"
                 style="@style/Base.Widget.MaterialComponents.TextInputEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,7 +128,7 @@
 
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/amountWrapper"
+            android:id="@+id/descriptionWrapper"
             android:background="#FFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -116,7 +140,53 @@
             app:boxStrokeColor="@color/black">
 
             <EditText
-                android:id="@+id/amount"
+                android:id="@+id/description"
+                style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/black" />
+
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/countWrapper"
+            android:background="#FFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:focusableInTouchMode="true"
+            android:hint="Số lượng"
+            android:textColorHint="@color/com_facebook_button_background_color_disabled"
+            android:theme="@style/TextInputLayoutAppearance"
+            app:boxStrokeColor="@color/black">
+
+            <EditText
+                android:id="@+id/count"
+                style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:inputType="number"
+                android:textColor="@color/black" />
+
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/manufacturerWrapper"
+            android:background="#FFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:focusableInTouchMode="true"
+            android:hint="Hãng"
+            android:textColorHint="@color/com_facebook_button_background_color_disabled"
+            android:theme="@style/TextInputLayoutAppearance"
+            app:boxStrokeColor="@color/black">
+
+            <EditText
+                android:id="@+id/manufacturer"
                 style="@style/Base.Widget.MaterialComponents.TextInputEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,7 +203,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:focusableInTouchMode="true"
-            android:hint="Mô tả"
+            android:hint="Giá vốn"
             android:textColorHint="@color/com_facebook_button_background_color_disabled"
             android:theme="@style/TextInputLayoutAppearance"
             app:boxStrokeColor="@color/black">
@@ -145,30 +215,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/black" />
-
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/producerWrapper"
-            android:background="#FFF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:focusableInTouchMode="true"
-            android:hint="Mô tả"
-            android:textColorHint="@color/com_facebook_button_background_color_disabled"
-            android:theme="@style/TextInputLayoutAppearance"
-            app:boxStrokeColor="@color/black">
-
-            <EditText
-                android:id="@+id/producer"
-                style="@style/Base.Widget.MaterialComponents.TextInputEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:textColor="@color/black" />
 
         </android.support.design.widget.TextInputLayout>
@@ -179,7 +226,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:focusableInTouchMode="true"
-            android:hint="Mô tả"
+            android:hint="Giá bán"
             android:textColorHint="@color/com_facebook_button_background_color_disabled"
             android:theme="@style/TextInputLayoutAppearance"
             app:boxStrokeColor="@color/black">
@@ -191,15 +238,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:textColor="@color/black" />
 
         </android.support.design.widget.TextInputLayout>
-
-
-
-
-
     </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

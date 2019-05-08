@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.asus.login_screen.Activity_of_MoreComponent.AddProduct.AddProduct;
 import com.example.asus.login_screen.R;
 
 public class ListProduct extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class ListProduct extends AppCompatActivity {
         img_Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ListProduct.this,AddProduct.class);
+                Intent intent=new Intent(ListProduct.this, AddProduct.class);
                 startActivity(intent);
             }
         });

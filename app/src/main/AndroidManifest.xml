@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.asus.login_screen">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET">
+    </uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -12,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity_of_MoreComponent.AddProduct"></activity>
+        <activity android:name=".Activity_of_MoreComponent.AddProduct.AddType.AddType"></activity>
+        <activity android:name=".Activity_of_MoreComponent.AddProduct.AddProduct" />
         <activity android:name=".Activity_of_MoreComponent.ListProduct" />
         <activity android:name=".Activity_of_MoreComponent.Account" />
         <activity android:name=".MainActivity">

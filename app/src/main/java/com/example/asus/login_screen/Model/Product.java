@@ -13,8 +13,11 @@ public class Product {
     private String name;
     private List<String> listImage;
     private String description;
+    Product(){
 
-    public Product() {
+    }
+
+    public Product(int i, int i1, int parseInt, double v, String s, double parseDouble, String toString, List<String> tmp) {
         listImage=new ArrayList<String>();
     }
 
