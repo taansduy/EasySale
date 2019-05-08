@@ -146,6 +146,11 @@ public class SignUp_Step2 extends android.support.v4.app.Fragment {
                                 yearSales.putYearSale(Calendar.getInstance().get(Calendar.YEAR)+"_",n_yearSale);
                                 mDatabase.child("saleAnalyst").child(newStore.getShopName()).setValue(yearSales);
                                 mDatabase.child("stores").child(newStore.getShopName()).setValue(newStore);
+                                Local_Cache_Store.setListOfProductType(newStore.getListOfProductType());
+                                Local_Cache_Store.setListOrders(newStore.getListOrders());
+                                Local_Cache_Store.setOwnerDetail(newStore.getOwnerDetail());
+                                Local_Cache_Store.setShopAdress(newStore.getShopAdress());
+                                Local_Cache_Store.setShopName(newStore.getShopName());
                             }
                         }
 

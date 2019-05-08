@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.asus.login_screen.Model.Store;
 import com.example.asus.login_screen.Model.User;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -69,6 +70,7 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import static com.google.android.gms.auth.api.signin.GoogleSignIn.getClient;
 
@@ -367,47 +369,48 @@ public class SignIn_Screen extends AppCompatActivity {
                                     ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                            progressDialog.dismiss();
+
                                             if (dataSnapshot.exists()) {
                                                 final DatabaseReference mDatabase;
                                                 mDatabase = FirebaseDatabase.getInstance().getReference();
                                                 Query query=mDatabase.child("stores").orderByChild("ownerDetail/email").equalTo(acct.getEmail());
-                                                query.addChildEventListener(new ChildEventListener() {
-                                                    @Override
-                                                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                                                        User user=new User(dataSnapshot.child("ownerDetail").child("email").getValue().toString(),
-                                                                dataSnapshot.child("ownerDetail").child("mName").getValue().toString(),
-                                                                dataSnapshot.child("ownerDetail").child("phoneNumber").getValue().toString());
+                                                synchronized (this) {
+                                                    query.addChildEventListener(new ChildEventListener() {
+                                                        @Override
+                                                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                            Store store = dataSnapshot.getValue(Store.class);
+                                                            Local_Cache_Store.setListOfProductType(store.getListOfProductType());
+                                                            Local_Cache_Store.setListOrders(store.getListOrders());
+                                                            Local_Cache_Store.setOwnerDetail(store.getOwnerDetail());
+                                                            Local_Cache_Store.setShopAdress(store.getShopAdress());
+                                                            Local_Cache_Store.setShopName(store.getShopName());
+                                                            Intent intent=new Intent(SignIn_Screen.this,Main_Screen.class);
+                                                            progressDialog.dismiss();
+                                                            startActivity(intent);
+                                                        }
 
-                                                        bundle.putSerializable("user",user);
-                                                        bundle.putString("address",dataSnapshot.child("shopAdress").getValue().toString());
-                                                        bundle.putString("shopName",dataSnapshot.child("shopName").getValue().toString());
-                                                        Intent intent=new Intent(SignIn_Screen.this,Main_Screen.class);
-                                                        intent.putExtra("bundle",bundle);
+                                                        @Override
+                                                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                                                        startActivity(intent);
-                                                    }
+                                                        }
 
-                                                    @Override
-                                                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                        @Override
+                                                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                                                    }
+                                                        }
 
-                                                    @Override
-                                                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                                                        @Override
+                                                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                                                    }
+                                                        }
 
-                                                    @Override
-                                                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                                    }
+                                                        }
+                                                    });
+                                                }
 
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                    }
-                                                });
                                             }
                                             else{
                                                 Intent mIntent = new Intent(SignIn_Screen.this, SignUp_Screen.class);

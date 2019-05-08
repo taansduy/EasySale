@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.asus.login_screen.HotProduct_Adapter;
+import com.example.asus.login_screen.Local_Cache_Store;
 import com.example.asus.login_screen.Model.Bill;
 import com.example.asus.login_screen.Model.Product;
 import com.example.asus.login_screen.Model.Store;
@@ -98,7 +99,7 @@ public class Overview extends Fragment {
         mChart.setDrawGridBackground(false);
         synchronized (this)
         {
-            createWeekAnalyse("def");
+            createWeekAnalyse(Local_Cache_Store.getShopName());
         }
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -121,25 +122,25 @@ public class Overview extends Fragment {
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
+                    ArrayList<Entry> entries = new ArrayList<>();
+                    ArrayList<Double> saleData = new ArrayList<>();
+                    Double totalWeekSale=0d;
+                    final ArrayList<String> Dates = new ArrayList<String>();
+                    Calendar now = Calendar.getInstance();
+                    SimpleDateFormat df = new SimpleDateFormat("dd/MM/YYYY");
+                    String showDate=df.format(now.getTime());
+                    now.add(Calendar.DAY_OF_YEAR,-6);
+                    tv_noChart.setText("Từ "+df.format(now.getTime())+ " đến "+showDate+" chưa có đơn hàng nào." );
+                    tv_totalSale.setText("0");
+                    showDate=df.format(now.getTime())+" - "+showDate;
+                    tv_Dates.setText(showDate);
+                    now.add(Calendar.DAY_OF_YEAR,7);
+                    df = new SimpleDateFormat("dd/MM");
+                    Dates.add(df.format(now.getTime()));
                     if(snapshot.exists())
                     {
-                        ArrayList<Entry> entries = new ArrayList<>();
-                        ArrayList<Double> saleData = new ArrayList<>();
-                        Double totalWeekSale=0d;
-                        final ArrayList<String> Dates = new ArrayList<String>();
                         saleAnalyst sales = snapshot.getValue(saleAnalyst.class);
-                        Calendar now = Calendar.getInstance();
-                        SimpleDateFormat df = new SimpleDateFormat("dd/MM/YYYY");
-                        String showDate=df.format(now.getTime());
-                        now.add(Calendar.DAY_OF_YEAR,-6);
-                        tv_noChart.setText("Từ "+df.format(now.getTime())+ " đến "+showDate+" chưa có đơn hàng nào." );
-                        showDate=df.format(now.getTime())+" - "+showDate;
-                        tv_Dates.setText(showDate);
-                        now.add(Calendar.DAY_OF_YEAR,7);
-                        df = new SimpleDateFormat("dd/MM");
-                        Dates.add(df.format(now.getTime()));
                         int Year, Month, Day;
-
                         //Create data
                         for (int i = 0; i < 7; i++) {
                             Calendar cal = Calendar.getInstance();
@@ -235,6 +236,13 @@ public class Overview extends Fragment {
                             container_noChart.setVisibility(View.VISIBLE);
 
                         }
+
+                    }
+                    else
+                    {
+                        mChart.setVisibility(View.INVISIBLE);
+                        tv_noChart.setVisibility(View.VISIBLE);
+                        container_noChart.setVisibility(View.VISIBLE);
 
                     }
                 }

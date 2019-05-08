@@ -15,6 +15,7 @@ import android.widget.Toolbar;
 
 import com.example.asus.login_screen.Activity_of_MoreComponent.Account;
 import com.example.asus.login_screen.Activity_of_MoreComponent.AddProduct.AddProduct;
+import com.example.asus.login_screen.Local_Cache_Store;
 import com.example.asus.login_screen.Main_Screen;
 import com.example.asus.login_screen.Model.User;
 import com.example.asus.login_screen.R;
@@ -44,9 +45,9 @@ public class More extends android.support.v4.app.Fragment {
         title=view.findViewById(R.id.shopName);
         title.setText(main_screen.shopName);
         tv_Name=view.findViewById(R.id.Name);
-        tv_Name.setText(main_screen.user.getmName());
+        tv_Name.setText(Local_Cache_Store.getOwnerDetail().getmName());
         tv_Email=view.findViewById(R.id.Email);
-        tv_Email.setText(main_screen.user.getEmail());
+        tv_Email.setText(Local_Cache_Store.getOwnerDetail().getEmail());
         button=view.findViewById(R.id.info);
         lnAccount=view.findViewById(R.id.account);
         lnProduct=view.findViewById(R.id.product);
