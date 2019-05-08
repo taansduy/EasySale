@@ -47,7 +47,7 @@ public class AddType extends AppCompatActivity {
                 {
                     final DatabaseReference mDatabase;
                     mDatabase = FirebaseDatabase.getInstance().getReference("stores/Cong duy");
-                    TypeOfProduct typeOfProduct=new TypeOfProduct(1,edt_Name.getText().toString(),null);
+                    TypeOfProduct typeOfProduct=new TypeOfProduct("1",edt_Name.getText().toString(),null);
                     mDatabase.child("listOfProductType").push().setValue(typeOfProduct);
                 }
                 onBackPressed();

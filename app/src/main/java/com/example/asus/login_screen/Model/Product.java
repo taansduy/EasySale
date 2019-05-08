@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Product {
     private String id;
-    private int idType;
+    private String idType;
     private int quantity;
     private double costPrice;
     private String manufacturer;
@@ -13,7 +13,7 @@ public class Product {
     private String name;
     private List<String> listImage;
     private String description;
-    Product(){
+    Product(int i, int idType, Integer value, String substring){
 
     }
 
@@ -21,7 +21,7 @@ public class Product {
         listImage=new ArrayList<String>();
     }
 
-    public Product(String id, int idType, int quantity, double costPrice, String manufacturer, double salePrice, String name, List<String> listImage, String description) {
+    public Product(String id, String idType, int quantity, double costPrice, String manufacturer, double salePrice, String name, List<String> listImage, String description) {
         this.id = id;
         this.idType = idType;
         this.quantity = quantity;
@@ -33,13 +33,15 @@ public class Product {
         this.description = description;
     }
 
-    public Product(String id, int idType, int quantity, String name) {
+    public Product(String id, String idType, int quantity, String name) {
         this.id = id;
         this.idType = idType;
         this.quantity = quantity;
         this.name = name;
     }
 
+    public Product() {
+    }
 
 
     public String getId() {
@@ -106,11 +108,11 @@ public class Product {
         this.description = description;
     }
 
-    public int getIdType() {
+    public String getIdType() {
         return idType;
     }
 
-    public void setIdType(int idType) {
+    public void setIdType(String idType) {
         this.idType = idType;
     }
 }

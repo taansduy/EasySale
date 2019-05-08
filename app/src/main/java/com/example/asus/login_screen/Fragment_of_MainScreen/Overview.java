@@ -177,10 +177,12 @@ public class Overview extends Fragment {
                         IAxisValueFormatter Xformatter = new IAxisValueFormatter() {
                             @Override
                             public String getFormattedValue(float value, AxisBase axis) {
-
-                                return Dates.get(7-(int) value);
+                                if(7-(int) value>7)
+                                    return "";
+                                else return Dates.get(7-(int) value);
                             }
                         };
+                        xAxis.setAxisMinimum(0);
                         xAxis.setGranularity(1f);
                         xAxis.setValueFormatter(Xformatter);
 
@@ -306,7 +308,7 @@ public class Overview extends Fragment {
                             for (Map.Entry<String, Integer> e : AnalyseProduct.entrySet()) {
                                 int idx1=e.getKey().indexOf('_');
                                 int idx2=e.getKey().indexOf('_',idx1+1);
-                                products.add(new Product(Integer.parseInt(e.getKey().substring(idx2+1)),Integer.parseInt(e.getKey().substring(idx1+1,idx2)), e.getValue(),e.getKey().substring(0,idx1)));
+                                products.add(new Product(e.getKey().substring(idx2+1),e.getKey().substring(idx1+1,idx2), e.getValue(),e.getKey().substring(0,idx1)));
                                 count++;
                                 if(count==4) break;
                             }

@@ -152,7 +152,7 @@ public class AddProduct extends AppCompatActivity {
             public void onClick(View v) {
                 //up child san pham
                 // udi.crca
-                product=new Product(1, 1, Integer.parseInt(edt_Count.getText().toString()),
+                product=new Product("1", "1", Integer.parseInt(edt_Count.getText().toString()),
                         Double.parseDouble(edt_CostPrice.getText().toString()),
                         edt_Manufacturer.getText().toString(),
                         Double.parseDouble(edt_SalePrice.getText().toString()),

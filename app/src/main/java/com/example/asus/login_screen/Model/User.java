@@ -7,6 +7,7 @@ public class User implements Serializable {
 
     private String email;
     private String mName;
+    private String phoneNumber;
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -16,7 +17,7 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    private String phoneNumber;
+
 
     public User(String email, String mName,String phoneNumber) {
         this.email = email;
