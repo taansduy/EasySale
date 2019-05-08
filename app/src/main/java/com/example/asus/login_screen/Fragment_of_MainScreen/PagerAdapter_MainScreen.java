@@ -5,34 +5,28 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PagerAdapter_MainScreen extends FragmentStatePagerAdapter {
     public PagerAdapter_MainScreen(FragmentManager fm) {
         super(fm);
     }
     public Context context;
+    private List<Fragment> tabs = new ArrayList<>();
 
     public PagerAdapter_MainScreen(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
+        tabs.add(HostFragment.newInstance(new Overview()));
+        tabs.add(HostFragment.newInstance(new Sale()));
+        tabs.add(HostFragment.newInstance(new Order()));
+        tabs.add(HostFragment.newInstance(new More(context)));
     }
 
     @Override
     public Fragment getItem(int i) {
-        Fragment frag=null;
-        switch (i){
-            case 0:
-                frag = new Overview();
-                break;
-            case 1:
-                frag = new Sale();
-                break;
-            case 2:
-                frag = new Order();
-                break;
-            case 3:
-                frag=new More(context);
-        }
-        return frag;
+        return tabs.get(i);
     }
 
     @Override

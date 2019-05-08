@@ -3,22 +3,22 @@ package com.example.asus.login_screen.Model;
 import java.util.HashMap;
 
 public class TypeOfProduct {
-    private int ID;
+    private String ID;
     private String Type;
     private HashMap<String,Product> productList;
 
 
-    public TypeOfProduct(int ID, String type, HashMap<String, Product> productList) {
+    public TypeOfProduct(String ID, String type, HashMap<String, Product> productList) {
         this.ID = ID;
         Type = type;
         this.productList = productList;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 

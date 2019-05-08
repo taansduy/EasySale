@@ -37,8 +37,8 @@ public class Main_Screen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__screen);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        android.support.v7.app.ActionBar actionBar=getSupportActionBar();
-        actionBar.hide();
+        /*android.support.v7.app.ActionBar actionBar=getSupportActionBar();
+        actionBar.hide();*/
         //***************get data from bundle**************************//
         bundle=getIntent().getBundleExtra("bundle");
 
@@ -55,6 +55,7 @@ public class Main_Screen extends AppCompatActivity {
         FragmentManager manager = getSupportFragmentManager();
         PagerAdapter_MainScreen adapter = new PagerAdapter_MainScreen(manager,Main_Screen.this);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(4);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setTabsFromPagerAdapter(adapter);

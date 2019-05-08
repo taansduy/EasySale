@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Product {
-    private int id;
+    private String id;
     private int idType;
     private int quantity;
     private double costPrice;
@@ -18,7 +18,7 @@ public class Product {
         listImage=new ArrayList<String>();
     }
 
-    public Product(int id, int idType, int quantity, double costPrice, String manufacturer, double salePrice, String name, List<String> listImage, String description) {
+    public Product(String id, int idType, int quantity, double costPrice, String manufacturer, double salePrice, String name, List<String> listImage, String description) {
         this.id = id;
         this.idType = idType;
         this.quantity = quantity;
@@ -30,7 +30,7 @@ public class Product {
         this.description = description;
     }
 
-    public Product(int id, int idType, int quantity, String name) {
+    public Product(String id, int idType, int quantity, String name) {
         this.id = id;
         this.idType = idType;
         this.quantity = quantity;
@@ -39,11 +39,11 @@ public class Product {
 
 
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFF4F4F4"
     tools:context=".Fragment_of_MainScreen.Sale">
+
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_Sale"
+        style="@style/ToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#03A9F4"
-        >
+        android:theme="@style/ToolbarStyle">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Tạo đơn hàng"
-            android:textSize="20dp"
             android:textColor="#FFFFFF"
-            android:gravity="center"/>
+            android:textSize="20dp" />
 
     </android.support.v7.widget.Toolbar>
 
