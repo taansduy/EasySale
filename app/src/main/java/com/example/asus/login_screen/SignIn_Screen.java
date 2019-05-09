@@ -27,7 +27,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.asus.login_screen.Model.Product;
 import com.example.asus.login_screen.Model.Store;
+import com.example.asus.login_screen.Model.TypeOfProduct;
 import com.example.asus.login_screen.Model.User;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -71,6 +73,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.google.android.gms.auth.api.signin.GoogleSignIn.getClient;
 
@@ -476,14 +479,52 @@ public class SignIn_Screen extends AppCompatActivity {
                                             query.addChildEventListener(new ChildEventListener() {
                                                 @Override
                                                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                                                    User user=new User(dataSnapshot.child("ownerDetail").child("email").getValue().toString(),
-                                                            dataSnapshot.child("ownerDetail").child("mName").getValue().toString(),
-                                                            dataSnapshot.child("ownerDetail").child("phoneNumber").getValue().toString());
+//                                                    User user=new User(dataSnapshot.child("ownerDetail").child("email").getValue().toString(),
+//                                                            dataSnapshot.child("ownerDetail").child("mName").getValue().toString(),
+//                                                            dataSnapshot.child("ownerDetail").child("phoneNumber").getValue().toString());
+//
+//                                                    bundle.putSerializable("user",user);
+//                                                    bundle.putString("address",dataSnapshot.child("shopAdress").getValue().toString());
+//                                                    bundle.putString("shopName",dataSnapshot.child("shopName").getValue().toString());
+                                                    Store store = dataSnapshot.getValue(Store.class);
+                                                    Local_Cache_Store.setListOfProductType(store.getListOfProductType());
+                                                    Local_Cache_Store.setListOrders(store.getListOrders());
+                                                    Local_Cache_Store.setOwnerDetail(store.getOwnerDetail());
+                                                    Local_Cache_Store.setShopAdress(store.getShopAdress());
+                                                    Local_Cache_Store.setShopName(store.getShopName());
+                                                    Local_Cache_Store.setShopEmail(store.getOwnerDetail().getEmail());
 
-                                                    bundle.putSerializable("user",user);
-                                                    bundle.putString("address",dataSnapshot.child("shopAdress").getValue().toString());
-                                                    bundle.putString("shopName",dataSnapshot.child("shopName").getValue().toString());
+//                                                    for(Map.Entry<String, TypeOfProduct> entry : Local_Cache_Store.getListOfProductType().entrySet()) {
+//                                                        String key = entry.getKey();
+//                                                        final DatabaseReference mDatabase;
+//                                                        mDatabase = FirebaseDatabase.getInstance().getReference();
+//                                                        Query query=mDatabase.child("stores")
+//                                                                .child(dataSnapshot.getKey())
+//                                                                .child("listOfTypeProduct")
+//                                                                .child(key)
+//                                                                .child("lisOfProduct");
+//                                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+//                                                            @Override
+//                                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                                                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+//                                                                    Local_Cache_Store.listOfProduct.put(dataSnapshot.getKey(),dataSnapshot.getValue(Product.class));
+//                                                                }
+//                                                            }
+//
+//                                                            @Override
+//                                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                                            }
+//                                                        });
+//
+//
+//                                                        // do what you have to do here
+//                                                        // In your case, another loop.
+//                                                    }
+//                                                    Local_Cache_Store.setListOfProduct(store.getListOfProduct
+//                                                            Type().get("-LeNBS94mcqbxqIEwbXn").getProductList());
                                                     Intent intent=new Intent(SignIn_Screen.this,Main_Screen.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                     intent.putExtra("bundle",bundle);
 
                                                     startActivity(intent);
@@ -511,6 +552,48 @@ public class SignIn_Screen extends AppCompatActivity {
                                             });
 
                                         }
+//                                        if (dataSnapshot.exists()) {
+//                                            final DatabaseReference mDatabase;
+//                                            mDatabase = FirebaseDatabase.getInstance().getReference();
+//                                            Query query=mDatabase.child("stores").orderByChild("ownerDetail/email").equalTo(task.getResult().getUser().getEmail());
+//                                            synchronized (this) {
+//                                                query.addChildEventListener(new ChildEventListener() {
+//                                                    @Override
+//                                                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                                                        Store store = dataSnapshot.getValue(Store.class);
+//                                                        Local_Cache_Store.setListOfProductType(store.getListOfProductType());
+//                                                        Local_Cache_Store.setListOrders(store.getListOrders());
+//                                                        Local_Cache_Store.setOwnerDetail(store.getOwnerDetail());
+//                                                        Local_Cache_Store.setShopAdress(store.getShopAdress());
+//                                                        Local_Cache_Store.setShopName(store.getShopName());
+//                                                        Intent intent=new Intent(SignIn_Screen.this,Main_Screen.class);
+//                                                        progressDialog.dismiss();
+//                                                        startActivity(intent);
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                                    }
+//                                                });
+//                                            }
+//
+//                                        }
                                         else{
 
                                             Intent mIntent = new Intent(SignIn_Screen.this, SignUp_Screen.class);

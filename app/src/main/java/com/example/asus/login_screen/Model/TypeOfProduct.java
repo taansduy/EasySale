@@ -7,11 +7,19 @@ public class TypeOfProduct {
     private String Type;
     private HashMap<String,Product> productList;
 
+///////////////////////
+    public TypeOfProduct() {
+        ID="";
+        Type="";
+        productList=new HashMap<String,Product>();
+    }
+    ///////////////////
 
     public TypeOfProduct(String ID, String type, HashMap<String, Product> productList) {
         this.ID = ID;
-        Type = type;
         this.productList = productList;
+        Type = type;
+
     }
 
     public String getID() {
@@ -38,7 +46,5 @@ public class TypeOfProduct {
         this.productList = productList;
     }
 
-    public TypeOfProduct() {
 
-    }
 }

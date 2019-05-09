@@ -60,16 +60,24 @@ public class AdapterSpinner extends ArrayAdapter<String> {
                 else
                 {
                     view=mInflater.inflate(R.layout.spinner_image,parent,false);
-                    ImageView imageView=view.findViewById(R.id.image);
-                    imageView.setOnClickListener(new View.OnClickListener() {
+                    view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent=new Intent(context, AddType.class);
                             intent.putStringArrayListExtra("listtype",arr);
                             context.startActivity(intent);
-
                         }
                     });
+//                    ImageView imageView=view.findViewById(R.id.image);
+//                    imageView.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Intent intent=new Intent(context, AddType.class);
+//                            intent.putStringArrayListExtra("listtype",arr);
+//                            context.startActivity(intent);
+//
+//                        }
+//                    });
 
                 }
 

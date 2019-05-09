@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.asus.login_screen.Local_Cache_Store;
 import com.example.asus.login_screen.MainActivity;
 import com.example.asus.login_screen.Model.Product;
 import com.example.asus.login_screen.Model.TypeOfProduct;
@@ -65,6 +66,8 @@ public class AddProduct extends AppCompatActivity {
     DatabaseReference mDatabase;
     StorageTask mUploadTask;
 
+    String id;
+    String idType;
     Product product;
 
     @Override
@@ -74,9 +77,8 @@ public class AddProduct extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         android.support.v7.app.ActionBar actionBar=getSupportActionBar();
         actionBar.hide();
-        bundle= getIntent().getBundleExtra("bundle");
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("stores/"+bundle.getString("shopName")+"/listOfProductType");
+        mDatabase = FirebaseDatabase.getInstance().getReference("stores/"+ Local_Cache_Store.getShopName() +"/listOfProductType");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -97,7 +99,7 @@ public class AddProduct extends AppCompatActivity {
             }
         });
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("uploads/"+bundle.getString("shopName"));
+        mStorageRef = FirebaseStorage.getInstance().getReference("uploads/"+Local_Cache_Store.getShopName());
 
 
         edt_CostPrice=(EditText)findViewById(R.id.costPrice);
@@ -151,18 +153,19 @@ public class AddProduct extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //up child san pham
-                // udi.crca
-                product=new Product("1", "1", Integer.parseInt(edt_Count.getText().toString()),
-                        Double.parseDouble(edt_CostPrice.getText().toString()),
-                        edt_Manufacturer.getText().toString(),
-                        Double.parseDouble(edt_SalePrice.getText().toString()),
-                        edt_Name.getText().toString(),
-                        null,edt_Description.getText().toString());
-
                 mDatabase.orderByChild("type").equalTo(spi_Type.getSelectedItem().toString()).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        mDatabase.child(dataSnapshot.getKey()).child("listOfProduct").push().setValue(product);
+                        idType=dataSnapshot.getKey();
+                        id=mDatabase.child(dataSnapshot.getKey()).child("productList").push().getKey();
+
+                        Product product=new Product(id, idType, Integer.parseInt(edt_Count.getText().toString()),
+                                Double.parseDouble(edt_CostPrice.getText().toString()),
+                                edt_Manufacturer.getText().toString(),
+                                Double.parseDouble(edt_SalePrice.getText().toString()),
+                                edt_Name.getText().toString(),
+                                null,edt_Description.getText().toString());
+                        mDatabase.child(dataSnapshot.getKey()).child("productList").child(id).setValue(product);
 
                     }
 
@@ -282,64 +285,70 @@ public class AddProduct extends AppCompatActivity {
                                     mProgressBar.setProgress(0);
                                 }
                             }, 500);
-                            Log.d("TAG",taskSnapshot.getUploadSessionUri().toString());
-                            edt_Name.append(taskSnapshot.getUploadSessionUri().toString());
-                            mDatabase = FirebaseDatabase.getInstance().getReference("stores/"+bundle.getString("shopName")+"/listOfProductType");
-                            mDatabase.orderByChild("type").equalTo(spi_Type.getSelectedItem().toString()).addChildEventListener(new ChildEventListener() {
-                                @Override
-                                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                                    Log.d("TAG1",dataSnapshot.getKey());
-                                    mDatabase = FirebaseDatabase.getInstance().getReference("stores/"+bundle.getString("shopName")+"/listOfProductType/"+dataSnapshot.getKey());
-                                    mDatabase.child("listOfProduct").orderByChild("id").equalTo(1).addChildEventListener(new ChildEventListener() {
-                                        @Override
-                                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                                            Log.d("TAG2",dataSnapshot.getKey());
+                            FirebaseDatabase.getInstance()
+                                    .getReference("stores/"+Local_Cache_Store.getShopName()+"/listOfProductType")
+                                    .child(idType)
+                                    .child("productList")
+                                    .child(id)
+                                    .child("listImage")
+                                    .push()
+                                    .setValue(taskSnapshot.getUploadSessionUri().toString());
 
-                                            mDatabase.child("listOfProduct").child(dataSnapshot.getKey()).child("listImage").push().setValue(taskSnapshot.getUploadSessionUri().toString());
-                                        }
-
-                                        @Override
-                                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                                        }
-
-                                        @Override
-                                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                                        }
-
-                                        @Override
-                                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                        }
-                                    });
-                                }
-
-                                @Override
-                                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                                }
-
-                                @Override
-                                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                                }
-
-                                @Override
-                                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
+//                            mDatabase.orderByChild("type").equalTo(spi_Type.getSelectedItem().toString()).addChildEventListener(new ChildEventListener() {
+//                                @Override
+//                                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                                    Log.d("TAG1",dataSnapshot.getKey());
+//                                    mDatabase = FirebaseDatabase.getInstance().getReference("stores/"+bundle.getString("shopName")+"/listOfProductType/"+dataSnapshot.getKey());
+//                                    mDatabase.child("listOfProduct").orderByChild("id").equalTo(1).addChildEventListener(new ChildEventListener() {
+//                                        @Override
+//                                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                                            Log.d("TAG2",dataSnapshot.getKey());
+//
+//                                            mDatabase.child("listOfProduct").child(dataSnapshot.getKey()).child("listImage").push().setValue(taskSnapshot.getUploadSessionUri().toString());
+//                                        }
+//
+//                                        @Override
+//                                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                                        }
+//
+//                                        @Override
+//                                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//                                        }
+//
+//                                        @Override
+//                                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                                        }
+//
+//                                        @Override
+//                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                        }
+//                                    });
+//                                }
+//
+//                                @Override
+//                                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                }
+//                            });
 
                         }
                     })

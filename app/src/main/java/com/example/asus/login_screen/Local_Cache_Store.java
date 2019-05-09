@@ -1,6 +1,7 @@
 package com.example.asus.login_screen;
 
 import com.example.asus.login_screen.Model.Bill;
+import com.example.asus.login_screen.Model.Product;
 import com.example.asus.login_screen.Model.TypeOfProduct;
 import com.example.asus.login_screen.Model.User;
 
@@ -10,8 +11,11 @@ public class Local_Cache_Store {
 
     public static String shopName;
     public static String shopAdress;
+    public  static String shopEmail;
     public static HashMap<String,TypeOfProduct> listOfProductType;
+    public static HashMap<String, Product> listOfProduct;
     public static User ownerDetail;
+    public static String shopPhoneNumber;
     public static HashMap<String,Bill> listOrders;
 
     public Local_Cache_Store() {
@@ -24,6 +28,13 @@ public class Local_Cache_Store {
     public static void setShopName(String shopName) {
         Local_Cache_Store.shopName = shopName;
     }
+
+    public static void setShopEmail(String shopEmail){Local_Cache_Store.shopEmail=shopEmail;}
+
+    public static String getShopEmail(){return shopEmail;}
+
+    public static void setShopPhoneNumber(String shopPhoneNumber){Local_Cache_Store.shopPhoneNumber=shopPhoneNumber;}
+    public static String getShopPhoneNumber(){return shopPhoneNumber;}
 
     public static String getShopAdress() {
         return shopAdress;
@@ -39,6 +50,9 @@ public class Local_Cache_Store {
 
     public static void setListOfProductType(HashMap<String, TypeOfProduct> listOfProductType) {
         Local_Cache_Store.listOfProductType = listOfProductType;
+    }
+    public static void setListOfProduct(HashMap<String, Product> listOfProduct) {
+        Local_Cache_Store.listOfProduct = listOfProduct;
     }
 
     public static User getOwnerDetail() {

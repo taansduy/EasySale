@@ -86,4 +86,9 @@ public class Main_Screen extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+
+    }
 }

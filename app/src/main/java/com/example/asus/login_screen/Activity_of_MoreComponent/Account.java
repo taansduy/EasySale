@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.asus.login_screen.Local_Cache_Store;
 import com.example.asus.login_screen.Main_Screen;
 import com.example.asus.login_screen.Model.Store;
 import com.example.asus.login_screen.Model.User;
@@ -31,7 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Account extends AppCompatActivity {
-    EditText edt_Name,edt_Email, edt_PhoneNumber,edt_Address,edt_Date;
+    EditText edt_Name,edt_Email, edt_PhoneNumber,edt_Address;
     Toolbar toolbar;
     ImageView img_Back,img_Yes;
     TextView tv_title;
@@ -44,20 +45,19 @@ public class Account extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         android.support.v7.app.ActionBar actionBar=getSupportActionBar();
         actionBar.hide();
-        //get bundle
-        bundle=getIntent().getBundleExtra("bundle");
+//        //get bundle
+//        bundle=getIntent().getBundleExtra("bundle");
         //Anh xa
         edt_Name=findViewById(R.id.Name);
-        edt_Name.setText(((User)bundle.getSerializable("user")).getmName());
+        edt_Name.setText((Local_Cache_Store.getOwnerDetail().getmName()));
         edt_Email=findViewById(R.id.Email);
-        edt_Email.setText(((User)bundle.getSerializable("user")).getEmail());
+        edt_Email.setText(Local_Cache_Store.shopEmail);
         edt_PhoneNumber=findViewById(R.id.PhoneNumber);
-        edt_PhoneNumber.setText(((User)bundle.getSerializable("user")).getPhoneNumber());
+        edt_PhoneNumber.setText(Local_Cache_Store.getOwnerDetail().getPhoneNumber());
         edt_Address=findViewById(R.id.Address);
-        edt_Address.setText(bundle.getString("address"));
-        edt_Date=findViewById(R.id.Date);
+        edt_Address.setText(Local_Cache_Store.shopAdress);
         tv_title=findViewById(R.id.title);
-        tv_title.setText(bundle.getString("shopName"));
+        tv_title.setText(Local_Cache_Store.getShopName());
 
         img_Back=findViewById(R.id.Back);
         img_Yes=findViewById(R.id.Yes);
@@ -109,9 +109,16 @@ public class Account extends AppCompatActivity {
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                User tmp= new User(edt_Email.getText().toString(),edt_Name.getText().toString(),edt_PhoneNumber.getText().toString());
                                 // save a changed info in database
                                 final DatabaseReference mDatabase;
                                 mDatabase = FirebaseDatabase.getInstance().getReference();
+                                mDatabase.child("stores").child(Local_Cache_Store.getShopName()).child("ownerDetail").child("email").setValue(edt_Email.getText().toString());
+                                mDatabase.child("stores").child(Local_Cache_Store.getShopName()).child("ownerDetail").child("mName").setValue(edt_Name.getText().toString());
+                                mDatabase.child("stores").child(Local_Cache_Store.getShopName()).child("ownerDetail").child("phoneNumber").setValue(edt_PhoneNumber.getText().toString());
+                                mDatabase.child("stores").child(Local_Cache_Store.getShopName()).child("shopAdress").setValue(edt_PhoneNumber.getText().toString());
+                                //cap nhat local
+                                Local_Cache_Store.setOwnerDetail(new User(edt_Email.getText().toString(),edt_Name.getText().toString(),edt_PhoneNumber.getText().toString()));
                                 bundle.clear();
                                 User user=new User(edt_Email.getText().toString(),edt_Name.getText().toString(),edt_PhoneNumber.getText().toString());
                                 bundle.putSerializable("user",user);
@@ -132,26 +139,6 @@ public class Account extends AppCompatActivity {
             }
         });
         //****************************************************************************//
-
-        edt_Date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar calendar=Calendar.getInstance();
-                final int day=calendar.get(Calendar.DATE);
-                int month=calendar.get(Calendar.MONTH);
-                int year=calendar.get(Calendar.YEAR);
-                DatePickerDialog datePickerDialog=new DatePickerDialog(Account.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        calendar.set(year,month,dayOfMonth);
-                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-                        edt_Date.setText(simpleDateFormat.format(calendar.getTime()));
-                    }
-                },year,month,day);
-                datePickerDialog.show();
-                img_Yes.setVisibility(View.VISIBLE);
-            }
-        });
         edt_Address.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
