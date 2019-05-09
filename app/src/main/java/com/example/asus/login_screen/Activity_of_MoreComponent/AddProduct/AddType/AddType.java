@@ -10,12 +10,19 @@ import android.widget.TextView;
 
 import com.example.asus.login_screen.Model.TypeOfProduct;
 import com.example.asus.login_screen.R;
+import com.google.firebase.FirebaseApiNotAvailableException;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.google.firebase.internal.FirebaseAppHelper.getUid;
 
 public class AddType extends AppCompatActivity {
 
@@ -47,8 +54,16 @@ public class AddType extends AppCompatActivity {
                 {
                     final DatabaseReference mDatabase;
                     mDatabase = FirebaseDatabase.getInstance().getReference("stores/Cong duy");
-                    TypeOfProduct typeOfProduct=new TypeOfProduct("1",edt_Name.getText().toString(),null);
-                    mDatabase.child("listOfProductType").push().setValue(typeOfProduct);
+//                    TypeOfProduct typeOfProduct=new TypeOfProduct("1",edt_Name.getText().toString(),null);
+//                    mDatabase.child("listOfProductType").push().setValue(typeOfProduct);
+
+                    String id= mDatabase.child("listOfProductType").push().getKey();
+
+
+                    mDatabase.child("listOfProductType").child(id).setValue(new TypeOfProduct(id,edt_Name.getText().toString(),null));
+
+
+
                 }
                 onBackPressed();
 

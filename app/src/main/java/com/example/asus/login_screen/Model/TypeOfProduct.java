@@ -8,10 +8,12 @@ public class TypeOfProduct {
     private HashMap<String,Product> productList;
 
 
+
     public TypeOfProduct(String ID, String type, HashMap<String, Product> productList) {
         this.ID = ID;
-        Type = type;
         this.productList = productList;
+        Type = type;
+
     }
 
     public String getID() {
@@ -38,8 +40,10 @@ public class TypeOfProduct {
         this.productList = productList;
     }
 
-    public TypeOfProduct() {
-        productList=new HashMap<String,Product>();
 
+    public TypeOfProduct() {
+        productList = new HashMap<String, Product>();
     }
+
+
 }

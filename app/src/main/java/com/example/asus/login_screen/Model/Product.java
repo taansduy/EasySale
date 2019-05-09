@@ -1,6 +1,8 @@
 package com.example.asus.login_screen.Model;
 
+import java.security.Key;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Product {
@@ -11,15 +13,13 @@ public class Product {
     private String manufacturer;
     private double salePrice;
     private String name;
-    private List<String> listImage;
+    private HashMap<String,String> listImage;
     private String description;
 
 
-    public Product(int i, int i1, int parseInt, double v, String s, double parseDouble, String toString, List<String> tmp) {
-        listImage=new ArrayList<String>();
-    }
 
-    public Product(String id, String idType, int quantity, double costPrice, String manufacturer, double salePrice, String name, List<String> listImage, String description) {
+
+    public Product(String id, String idType, int quantity, double costPrice, String manufacturer, double salePrice, String name, HashMap<String,String> listImage, String description) {
         this.id = id;
         this.idType = idType;
         this.quantity = quantity;
@@ -38,9 +38,7 @@ public class Product {
         this.name = name;
     }
 
-    public Product() {
-        listImage=new ArrayList<>();
-    }
+
 
 
     public String getId() {
@@ -91,11 +89,11 @@ public class Product {
         this.name = name;
     }
 
-    public List<String> getListImage() {
+    public HashMap<String,String> getListImage() {
         return listImage;
     }
 
-    public void setListImage(List<String> listImage) {
+    public void setListImage(HashMap<String,String> listImage) {
         this.listImage = listImage;
     }
 

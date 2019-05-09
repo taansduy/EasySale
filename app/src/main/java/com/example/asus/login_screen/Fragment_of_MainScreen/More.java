@@ -19,6 +19,8 @@ import com.example.asus.login_screen.Local_Cache_Store;
 import com.example.asus.login_screen.Main_Screen;
 import com.example.asus.login_screen.Model.User;
 import com.example.asus.login_screen.R;
+import com.example.asus.login_screen.SignIn_Screen;
+import com.google.firebase.auth.FirebaseAuth;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -43,7 +45,7 @@ public class More extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_more, container, false);
         title=view.findViewById(R.id.shopName);
-        title.setText(main_screen.shopName);
+        title.setText(Local_Cache_Store.shopName);
         tv_Name=view.findViewById(R.id.Name);
         tv_Name.setText(Local_Cache_Store.getOwnerDetail().getmName());
         tv_Email=view.findViewById(R.id.Email);
@@ -71,7 +73,6 @@ public class More extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getContext(), AddProduct.class);
-                intent.putExtra("bundle",main_screen.bundle);
                 startActivity(intent);
             }
         });
@@ -83,7 +84,6 @@ public class More extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getContext(), Account.class);
-                intent.putExtra("bundle",main_screen.bundle);
                 startActivityForResult(intent,123);
 
             }
@@ -93,6 +93,17 @@ public class More extends android.support.v4.app.Fragment {
             public void onClick(View v) {
                 ln_ListProduct.setVisibility(View.VISIBLE);
                 ln_ContentMore.setVisibility(View.INVISIBLE);
+
+            }
+        });
+        lnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth mAuth=FirebaseAuth.getInstance();
+                FirebaseAuth.getInstance().signOut();
+                Intent intent= new Intent(getContext(), SignIn_Screen.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
 
             }
         });
