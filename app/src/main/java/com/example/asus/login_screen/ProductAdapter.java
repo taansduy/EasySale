@@ -12,11 +12,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.asus.login_screen.Model.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private Context mContext;
-    private List<Product> productList;
+    private List<Product> productList=new ArrayList<>();
 
     public ProductAdapter(Context mContext, List<Product> productList) {
         this.mContext = mContext;
@@ -35,9 +36,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductViewHolder productViewHolder, int i) {
         Product product=productList.get(i);
         productViewHolder.tv_name.setText(product.getName());
-        productViewHolder.tv_price.setText((int) product.getSalePrice());
+        productViewHolder.tv_price.setText(String.format("%1$,.0f",product.getSalePrice()));
         productViewHolder.tv_id.setText(product.getId());
-        productViewHolder.tv_quantity.setText(product.getQuantity());
+        productViewHolder.tv_quantity.setText(String.valueOf(product.getQuantity()));
         if(product.getListImage().size()!=0)
         {
             Glide.with(mContext).load(product.getListImage().get(0)).into(productViewHolder.img);

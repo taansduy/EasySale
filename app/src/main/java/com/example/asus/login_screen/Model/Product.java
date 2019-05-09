@@ -13,9 +13,7 @@ public class Product {
     private String name;
     private List<String> listImage;
     private String description;
-    Product(int i, int idType, Integer value, String substring){
 
-    }
 
     public Product(int i, int i1, int parseInt, double v, String s, double parseDouble, String toString, List<String> tmp) {
         listImage=new ArrayList<String>();
@@ -41,6 +39,7 @@ public class Product {
     }
 
     public Product() {
+        listImage=new ArrayList<>();
     }
 
 

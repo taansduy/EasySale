@@ -39,6 +39,7 @@ public class TypeOfProduct {
     }
 
     public TypeOfProduct() {
+        productList=new HashMap<String,Product>();
 
     }
 }
