@@ -88,6 +88,7 @@ public class SignIn_Screen extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     GoogleApiClient mGoogleApiClient;
+    ProgressDialog progressDialog;
     private FacebookCallback<LoginResult> mCallback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
@@ -140,6 +141,8 @@ public class SignIn_Screen extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in__screen);
 
         setupToolBar();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Waiting...");
         email = (EditText) findViewById(R.id.email);
         emailWrapper = (TextInputLayout) findViewById(R.id.emailWrapper);
         password = (EditText) findViewById(R.id.password);
@@ -207,6 +210,7 @@ public class SignIn_Screen extends AppCompatActivity {
         fb_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 LoginManager.getInstance().logInWithReadPermissions(SignIn_Screen.this, Arrays.asList(
                         "public_profile", "email"));
                 LoginManager.getInstance().registerCallback(mCallbackManager, mCallback);
@@ -248,7 +252,6 @@ public class SignIn_Screen extends AppCompatActivity {
                     mAuth.signInWithEmailAndPassword(str_Email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressDialog.dismiss();
                             if (task.isSuccessful()) {
                                 final DatabaseReference mDatabase;
                                 mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -256,16 +259,15 @@ public class SignIn_Screen extends AppCompatActivity {
                                 query.addChildEventListener(new ChildEventListener() {
                                     @Override
                                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                                            User user=new User(dataSnapshot.child("ownerDetail").child("email").getValue().toString(),
-                                                    dataSnapshot.child("ownerDetail").child("mName").getValue().toString(),
-                                                    dataSnapshot.child("ownerDetail").child("phoneNumber").getValue().toString());
-
-                                            bundle.putSerializable("user",user);
-                                            bundle.putString("address",dataSnapshot.child("shopAdress").getValue().toString());
-                                            bundle.putString("shopName",dataSnapshot.child("shopName").getValue().toString());
+                                        Store store = dataSnapshot.getValue(Store.class);
+                                        Local_Cache_Store.setListOfProductType(store.getListOfProductType());
+                                        Local_Cache_Store.setListOrders(store.getListOrders());
+                                        Local_Cache_Store.setOwnerDetail(store.getOwnerDetail());
+                                        Local_Cache_Store.setShopAdress(store.getShopAdress());
+                                        Local_Cache_Store.setShopName(store.getShopName());
                                         Intent intent=new Intent(SignIn_Screen.this,Main_Screen.class);
-                                        intent.putExtra("bundle",bundle);
-
+                                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        progressDialog.dismiss();
                                         startActivity(intent);
                                     }
 
@@ -355,8 +357,7 @@ public class SignIn_Screen extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Waiting...");
+
         progressDialog.show();
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -388,8 +389,12 @@ public class SignIn_Screen extends AppCompatActivity {
                                                             Local_Cache_Store.setShopAdress(store.getShopAdress());
                                                             Local_Cache_Store.setShopName(store.getShopName());
                                                             Intent intent=new Intent(SignIn_Screen.this,Main_Screen.class);
+
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                            /*intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);*/
                                                             progressDialog.dismiss();
                                                             startActivity(intent);
+
                                                         }
 
                                                         @Override
@@ -455,9 +460,6 @@ public class SignIn_Screen extends AppCompatActivity {
     }
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Waiting...");
-        progressDialog.show();
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -471,7 +473,7 @@ public class SignIn_Screen extends AppCompatActivity {
                                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        progressDialog.dismiss();
+
                                         if (dataSnapshot.exists()) {
                                             final DatabaseReference mDatabase;
                                             mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -493,40 +495,11 @@ public class SignIn_Screen extends AppCompatActivity {
                                                     Local_Cache_Store.setShopAdress(store.getShopAdress());
                                                     Local_Cache_Store.setShopName(store.getShopName());
                                                     Local_Cache_Store.setShopEmail(store.getOwnerDetail().getEmail());
-
-//                                                    for(Map.Entry<String, TypeOfProduct> entry : Local_Cache_Store.getListOfProductType().entrySet()) {
-//                                                        String key = entry.getKey();
-//                                                        final DatabaseReference mDatabase;
-//                                                        mDatabase = FirebaseDatabase.getInstance().getReference();
-//                                                        Query query=mDatabase.child("stores")
-//                                                                .child(dataSnapshot.getKey())
-//                                                                .child("listOfTypeProduct")
-//                                                                .child(key)
-//                                                                .child("lisOfProduct");
-//                                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
-//                                                            @Override
-//                                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                                                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-//                                                                    Local_Cache_Store.listOfProduct.put(dataSnapshot.getKey(),dataSnapshot.getValue(Product.class));
-//                                                                }
-//                                                            }
-//
-//                                                            @Override
-//                                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                                            }
-//                                                        });
-//
-//
-//                                                        // do what you have to do here
-//                                                        // In your case, another loop.
-//                                                    }
-//                                                    Local_Cache_Store.setListOfProduct(store.getListOfProduct
-//                                                            Type().get("-LeNBS94mcqbxqIEwbXn").getProductList());
                                                     Intent intent=new Intent(SignIn_Screen.this,Main_Screen.class);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                    //intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                     intent.putExtra("bundle",bundle);
-
+                                                    progressDialog.dismiss();
                                                     startActivity(intent);
                                                 }
 
@@ -552,48 +525,7 @@ public class SignIn_Screen extends AppCompatActivity {
                                             });
 
                                         }
-//                                        if (dataSnapshot.exists()) {
-//                                            final DatabaseReference mDatabase;
-//                                            mDatabase = FirebaseDatabase.getInstance().getReference();
-//                                            Query query=mDatabase.child("stores").orderByChild("ownerDetail/email").equalTo(task.getResult().getUser().getEmail());
-//                                            synchronized (this) {
-//                                                query.addChildEventListener(new ChildEventListener() {
-//                                                    @Override
-//                                                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                                                        Store store = dataSnapshot.getValue(Store.class);
-//                                                        Local_Cache_Store.setListOfProductType(store.getListOfProductType());
-//                                                        Local_Cache_Store.setListOrders(store.getListOrders());
-//                                                        Local_Cache_Store.setOwnerDetail(store.getOwnerDetail());
-//                                                        Local_Cache_Store.setShopAdress(store.getShopAdress());
-//                                                        Local_Cache_Store.setShopName(store.getShopName());
-//                                                        Intent intent=new Intent(SignIn_Screen.this,Main_Screen.class);
-//                                                        progressDialog.dismiss();
-//                                                        startActivity(intent);
-//                                                    }
 //
-//                                                    @Override
-//                                                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                                                    }
-//
-//                                                    @Override
-//                                                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//                                                    }
-//
-//                                                    @Override
-//                                                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                                                    }
-//
-//                                                    @Override
-//                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                                    }
-//                                                });
-//                                            }
-//
-//                                        }
                                         else{
 
                                             Intent mIntent = new Intent(SignIn_Screen.this, SignUp_Screen.class);

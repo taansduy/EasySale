@@ -38,7 +38,9 @@ public class Product {
         this.name = name;
     }
 
-
+    public Product() {
+        listImage=new HashMap<String,String>();
+    }
 
 
     public String getId() {

@@ -8,6 +8,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -25,6 +27,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.example.asus.login_screen.Model.Store;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -45,6 +58,7 @@ public class MainActivity extends AppCompatActivity  {
     private ImageView[] dots;
     Integer[] images;
     String[] contents;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +106,8 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 v.startAnimation(AnimationUtils.loadAnimation(getBaseContext(),R.anim.alpha_anim));
-                startActivity(new Intent(MainActivity.this,SignUp_Screen.class));
+                Intent intent=new Intent(MainActivity.this,SignUp_Screen.class);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_up, R.anim.hold);
             }
         });
@@ -100,7 +115,8 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 v.startAnimation(AnimationUtils.loadAnimation(getBaseContext(),R.anim.alpha_anim));
-                startActivity(new Intent(MainActivity.this,SignIn_Screen.class));
+                Intent intent=new Intent(MainActivity.this,SignIn_Screen.class);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_up, R.anim.hold);
             }
         });
