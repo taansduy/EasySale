@@ -269,6 +269,7 @@ public class SignIn_Screen extends AppCompatActivity {
                                         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         progressDialog.dismiss();
                                         startActivity(intent);
+                                        finish();
                                     }
 
                                     @Override
@@ -394,6 +395,7 @@ public class SignIn_Screen extends AppCompatActivity {
                                                             /*intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);*/
                                                             progressDialog.dismiss();
                                                             startActivity(intent);
+                                                            finish();
 
                                                         }
 
@@ -501,6 +503,7 @@ public class SignIn_Screen extends AppCompatActivity {
                                                     intent.putExtra("bundle",bundle);
                                                     progressDialog.dismiss();
                                                     startActivity(intent);
+                                                    finish();
                                                 }
 
                                                 @Override

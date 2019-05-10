@@ -1,9 +1,11 @@
 package com.example.asus.login_screen.Fragment_of_MainScreen;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +13,23 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.example.asus.login_screen.Activity_of_MoreComponent.Account;
 import com.example.asus.login_screen.Activity_of_MoreComponent.AddProduct.AddProduct;
 import com.example.asus.login_screen.Local_Cache_Store;
+import com.example.asus.login_screen.MainActivity;
 import com.example.asus.login_screen.Main_Screen;
 import com.example.asus.login_screen.Model.User;
 import com.example.asus.login_screen.R;
 import com.example.asus.login_screen.SignIn_Screen;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.List;
+
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.ACTIVITY_SERVICE;
 
 @SuppressLint("ValidFragment")
 public class More extends android.support.v4.app.Fragment {
@@ -101,9 +108,19 @@ public class More extends android.support.v4.app.Fragment {
             public void onClick(View v) {
                 FirebaseAuth mAuth=FirebaseAuth.getInstance();
                 FirebaseAuth.getInstance().signOut();
-                Intent intent= new Intent(getContext(), SignIn_Screen.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                ActivityManager mngr = (ActivityManager) getActivity().getSystemService( ACTIVITY_SERVICE );
+
+                List<ActivityManager.RunningTaskInfo> taskList = mngr.getRunningTasks(10);
+
+                if(taskList.get(0).numActivities == 1 &&
+                        taskList.get(0).topActivity.getClassName().equals(getActivity().getClass().getName())) {
+                    Intent intent= new Intent(getActivity(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                getActivity().finish();
 
             }
         });

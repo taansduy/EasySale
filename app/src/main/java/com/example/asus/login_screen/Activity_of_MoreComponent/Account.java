@@ -51,7 +51,7 @@ public class Account extends AppCompatActivity {
         edt_Name=findViewById(R.id.Name);
         edt_Name.setText((Local_Cache_Store.getOwnerDetail().getmName()));
         edt_Email=findViewById(R.id.Email);
-        edt_Email.setText(Local_Cache_Store.shopEmail);
+        edt_Email.setText(Local_Cache_Store.getOwnerDetail().getEmail());
         edt_PhoneNumber=findViewById(R.id.PhoneNumber);
         edt_PhoneNumber.setText(Local_Cache_Store.getOwnerDetail().getPhoneNumber());
         edt_Address=findViewById(R.id.Address);

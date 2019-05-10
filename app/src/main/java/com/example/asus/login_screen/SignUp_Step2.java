@@ -160,6 +160,7 @@ public class SignUp_Step2 extends android.support.v4.app.Fragment {
                         }
                     });
                     startActivity(new Intent(getActivity().getBaseContext(),Main_Screen.class));
+                    getActivity().finish();
                 }
             }
         });

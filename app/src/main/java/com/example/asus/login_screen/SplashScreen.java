@@ -1,6 +1,7 @@
 package com.example.asus.login_screen;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +44,9 @@ public class SplashScreen extends AppCompatActivity {
                         Local_Cache_Store.setShopName(store.getShopName());
                         Intent intent=new Intent(SplashScreen.this,Main_Screen.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
+                        finish();
                     }
 
                     @Override
@@ -73,7 +76,9 @@ public class SplashScreen extends AppCompatActivity {
         else{
             Intent intent=new Intent(SplashScreen.this,MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
+            finish();
         }
     }
 }
