@@ -41,15 +41,15 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
+            android:drawableEnd="@drawable/com_facebook_tooltip_black_bottomnub"
+            android:drawableRight="@drawable/com_facebook_tooltip_black_bottomnub"
             android:gravity="center_vertical"
-            android:paddingLeft="10dp"
+            android:paddingLeft="15dp"
             android:paddingRight="10dp"
             android:text="Tất cả sản phẩm"
             android:textColor="#FF585151"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:drawableEnd="@drawable/com_facebook_tooltip_black_bottomnub"
-            android:drawableRight="@drawable/com_facebook_tooltip_black_bottomnub" />
+            android:textStyle="bold" />
     </LinearLayout>
 
     <RelativeLayout
@@ -62,7 +62,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:layout_alignParentLeft="true">
 
         </android.support.v7.widget.RecyclerView>
 
