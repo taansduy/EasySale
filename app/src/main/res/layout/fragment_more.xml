@@ -68,7 +68,7 @@
                             android:id="@+id/Email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="dinhcongduy@yahoo.com.vn"
+                            android:text="a@yahoo.com.vn"
                             android:textColor="#DEE1E4"/>
 
 
@@ -300,6 +300,7 @@
                     android:layout_weight="10"
                     android:textSize="20dp"
                     android:text="asdasda"
+                    android:textColor="#FFFFFF"
                     android:gravity="center"/>
                 <ImageView
                     android:id="@+id/Add"

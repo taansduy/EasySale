@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.asus.login_screen.Local_Cache_Store;
 import com.example.asus.login_screen.Model.TypeOfProduct;
 import com.example.asus.login_screen.R;
 import com.google.firebase.FirebaseApiNotAvailableException;
@@ -53,7 +54,7 @@ public class AddType extends AppCompatActivity {
                 if(listtype.contains(edt_Name.getText().toString())==false)
                 {
                     final DatabaseReference mDatabase;
-                    mDatabase = FirebaseDatabase.getInstance().getReference("stores/Cong duy");
+                    mDatabase = FirebaseDatabase.getInstance().getReference("stores/"+ Local_Cache_Store.shopName);
 //                    TypeOfProduct typeOfProduct=new TypeOfProduct("1",edt_Name.getText().toString(),null);
 //                    mDatabase.child("listOfProductType").push().setValue(typeOfProduct);
 

@@ -36,7 +36,7 @@ public class More extends android.support.v4.app.Fragment {
     Main_Screen main_screen;
     LinearLayout ln_ContentMore,ln_ListProduct;
     Button button;
-    TextView title,tv_Name,tv_Email;
+    TextView title,tv_Name,tv_Email,tv_title;
     Toolbar toolbar;
     LinearLayout lnAccount,lnProduct,lnCustomer,lnLogout;
     ImageView img_Back,img_Add,img_Search;
@@ -53,6 +53,8 @@ public class More extends android.support.v4.app.Fragment {
         View view=inflater.inflate(R.layout.fragment_more, container, false);
         title=view.findViewById(R.id.shopName);
         title.setText(Local_Cache_Store.shopName);
+        tv_title=view.findViewById(R.id.title);
+        tv_title.setText(Local_Cache_Store.shopName);
         tv_Name=view.findViewById(R.id.Name);
         tv_Name.setText(Local_Cache_Store.getOwnerDetail().getmName());
         tv_Email=view.findViewById(R.id.Email);
