@@ -5,6 +5,10 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +25,22 @@ import com.example.asus.login_screen.Activity_of_MoreComponent.AddProduct.AddPro
 import com.example.asus.login_screen.Local_Cache_Store;
 import com.example.asus.login_screen.MainActivity;
 import com.example.asus.login_screen.Main_Screen;
+import com.example.asus.login_screen.Model.Product;
+import com.example.asus.login_screen.Model.Store;
+import com.example.asus.login_screen.Model.TypeOfProduct;
 import com.example.asus.login_screen.Model.User;
+import com.example.asus.login_screen.MoreProductAdapter;
+import com.example.asus.login_screen.ProductAdapter;
 import com.example.asus.login_screen.R;
 import com.example.asus.login_screen.SignIn_Screen;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -34,12 +49,16 @@ import static android.content.Context.ACTIVITY_SERVICE;
 @SuppressLint("ValidFragment")
 public class More extends android.support.v4.app.Fragment {
     Main_Screen main_screen;
+    SwipeRefreshLayout swipeRefreshLayout;
     LinearLayout ln_ContentMore,ln_ListProduct;
     Button button;
     TextView title,tv_Name,tv_Email,tv_title;
     Toolbar toolbar;
     LinearLayout lnAccount,lnProduct,lnCustomer,lnLogout;
     ImageView img_Back,img_Add,img_Search;
+    RecyclerView recyclerView;
+    List<Product> productList;
+    MoreProductAdapter myAdapter;
     public More(Context context) {
         // Required empty public constructor
         main_screen=(Main_Screen)context;
@@ -66,9 +85,14 @@ public class More extends android.support.v4.app.Fragment {
         lnLogout=(LinearLayout)view.findViewById(R.id.logout);
         ln_ContentMore=(LinearLayout)view .findViewById(R.id.lnContentMore) ;
         ln_ListProduct=(LinearLayout)view.findViewById(R.id.lnListproduct);
+        swipeRefreshLayout=view.findViewById(R.id.refresh);
         img_Back=view.findViewById(R.id.Back);
         img_Add=view.findViewById(R.id.Add);
         img_Search=view.findViewById(R.id.Search);
+        recyclerView=view.findViewById(R.id.listProduct);
+        productList=new ArrayList<Product>();
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this.getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         //*****************Set onClick*********************//
         img_Back.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +109,17 @@ public class More extends android.support.v4.app.Fragment {
                 startActivity(intent);
             }
         });
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchData();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         //*************************************************//
+
+        myAdapter=new MoreProductAdapter(this.getContext(), (ArrayList<Product>) productList);
+
 
 
         // set onclick for Linear views
@@ -144,6 +178,38 @@ public class More extends android.support.v4.app.Fragment {
         }
 
     }
+    public void fetchData()
+    {
+        final DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("stores").child(Local_Cache_Store.getShopName()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Store store = dataSnapshot.getValue(Store.class);
+                Local_Cache_Store.setListOfProductType(store.getListOfProductType());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+                productList.clear();
+        for (TypeOfProduct type: Local_Cache_Store.getListOfProductType().values()) {
+            for(Product product: type.getProductList().values())
+            {
+                productList.add(product);
+            }
+
+        }
 
 
+        recyclerView.setAdapter(myAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchData();
+    }
 }

@@ -41,7 +41,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         productViewHolder.tv_quantity.setText(String.valueOf(product.getQuantity()));
         if(product.getListImage().size()!=0)
         {
-            Glide.with(mContext).load(product.getListImage().get(0)).into(productViewHolder.img);
+            Glide.with(mContext).load(product.getListImage().values().toArray()[0]).into(productViewHolder.img);
         }
         else
         {
@@ -69,5 +69,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tv_quantity=itemView.findViewById(R.id.tv_quantity);
         }
     }
+    public void updateData( List<Product> tmp)
+    {
+        productList=tmp;
+    }
+
 }
 
