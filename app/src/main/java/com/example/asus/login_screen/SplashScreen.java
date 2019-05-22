@@ -29,39 +29,64 @@ public class SplashScreen extends AppCompatActivity {
         if(currentUser!=null)
         {
             // mAuth.signOut();
-            DatabaseReference mDatabase;
+            final DatabaseReference mDatabase;
             mDatabase = FirebaseDatabase.getInstance().getReference();
             Query ref=mDatabase.child("stores").orderByChild("ownerDetail/email").equalTo(currentUser.getEmail());
             synchronized (this) {
-                ref.addChildEventListener(new ChildEventListener() {
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        Store store = dataSnapshot.getValue(Store.class);
-                        Local_Cache_Store.setListOfProductType(store.getListOfProductType());
-                        Local_Cache_Store.setListOrders(store.getListOrders());
-                        Local_Cache_Store.setOwnerDetail(store.getOwnerDetail());
-                        Local_Cache_Store.setShopAdress(store.getShopAdress());
-                        Local_Cache_Store.setShopName(store.getShopName());
-                        Intent intent=new Intent(SplashScreen.this,Main_Screen.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists())
+                        {
+                            Query ref=mDatabase.child("stores").orderByChild("ownerDetail/email").equalTo(currentUser.getEmail());
+                            ref.addChildEventListener(new ChildEventListener() {
+                                @Override
+                                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                    Store store = dataSnapshot.getValue(Store.class);
+                                    Local_Cache_Store.setListOfProductType(store.getListOfProductType());
+                                    Local_Cache_Store.setListOrders(store.getListOrders());
+                                    Local_Cache_Store.setOwnerDetail(store.getOwnerDetail());
+                                    Local_Cache_Store.setShopAdress(store.getShopAdress());
+                                    Local_Cache_Store.setShopName(store.getShopName());
+                                    Intent intent=new Intent(SplashScreen.this,Main_Screen.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
 
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                @Override
+                                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                    }
+                                }
 
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                                @Override
+                                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                    }
+                                }
 
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                @Override
+                                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        }
+                        else
+                        {
+                            Intent mIntent = new Intent(SplashScreen.this, SignUp_Screen.class);
+                            Bundle mBundle = new Bundle();
+                            mBundle.putString("Screen","Step2");
+                            mBundle.putString("email",currentUser.getEmail().toString());
+                            mIntent.putExtras(mBundle);
+                            startActivity(mIntent,mBundle);
+                            finish();
+                        }
                     }
 
                     @Override

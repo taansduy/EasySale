@@ -7,6 +7,10 @@ public class daySale {
 
     private double totalSale;
 
+    public daySale(double totalSale) {
+        this.totalSale = totalSale;
+    }
+
     public double getTotalSale() {
         return totalSale;
     }

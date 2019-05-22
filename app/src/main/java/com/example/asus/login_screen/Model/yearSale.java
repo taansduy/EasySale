@@ -12,6 +12,11 @@ public class yearSale {
         listOfMSale=new HashMap<String,monthSale>();
     }
 
+    public yearSale(double totalSale, HashMap<String, monthSale> listOfMSale) {
+        this.totalSale = totalSale;
+        this.listOfMSale = listOfMSale;
+    }
+
     public double getTotalSale() {
         return totalSale;
     }

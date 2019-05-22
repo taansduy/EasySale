@@ -487,15 +487,16 @@ public class AddProduct extends AppCompatActivity {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
-    public void uploadFile(int pos) {
+    public void uploadFile(final int pos) {
         if (mImageUri[pos] != null) {
+
+            final String key_tmp;
             final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri[pos]));
             mUploadTask = fileReference.putFile(mImageUri[pos])
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
-
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                                                     @Override
                                                                                     public void onSuccess(Uri uri) {
@@ -509,6 +510,84 @@ public class AddProduct extends AppCompatActivity {
                                                                                                 .setValue(uri.toString());
                                                                                     }
                                                                                 });
+//                            Handler handler = new Handler();
+//                            handler.postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    mProgressBar.setProgress(0);
+//                                }
+//                            }, 500);
+//                            fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                                @Override
+//                                public void onSuccess(Uri uri) {
+//                                    FirebaseDatabase.getInstance()
+//                                            .getReference("stores/"+Local_Cache_Store.getShopName()+"/listOfProductType")
+//                                            .child(idType)
+//                                            .child("productList")
+//                                            .child(id)
+//                                            .child("listImage")
+//                                            .push()
+//                                            .setValue(uri.toString());
+//                                }
+//                            });
+//
+//
+////                            mDatabase.orderByChild("type").equalTo(spi_Type.getSelectedItem().toString()).addChildEventListener(new ChildEventListener() {
+////                                @Override
+////                                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+////                                    Log.d("TAG1",dataSnapshot.getKey());
+////                                    mDatabase = FirebaseDatabase.getInstance().getReference("stores/"+bundle.getString("shopName")+"/listOfProductType/"+dataSnapshot.getKey());
+////                                    mDatabase.child("listOfProduct").orderByChild("id").equalTo(1).addChildEventListener(new ChildEventListener() {
+////                                        @Override
+////                                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+////                                            Log.d("TAG2",dataSnapshot.getKey());
+////
+////                                            mDatabase.child("listOfProduct").child(dataSnapshot.getKey()).child("listImage").push().setValue(taskSnapshot.getUploadSessionUri().toString());
+////                                        }
+////
+////                                        @Override
+////                                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+////
+////                                        }
+////
+////                                        @Override
+////                                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+////
+////                                        }
+////
+////                                        @Override
+////                                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+////
+////                                        }
+////
+////                                        @Override
+////                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+////
+////                                        }
+////                                    });
+////                                }
+////
+////                                @Override
+////                                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+////
+////                                }
+////
+////                                @Override
+////                                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+////
+////                                }
+////
+////                                @Override
+////                                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+////
+////                                }
+////
+////                                @Override
+////                                public void onCancelled(@NonNull DatabaseError databaseError) {
+////
+////                                }
+////                            });
+//>>>>>>> bbe69adb346e8f59c31e167febf06e3a962914a8
 
                         }
                     })
@@ -525,6 +604,7 @@ public class AddProduct extends AppCompatActivity {
                         }
                     });
         } else {
+
         }
 
     }
