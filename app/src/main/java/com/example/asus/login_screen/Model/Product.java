@@ -42,7 +42,18 @@ public class Product {
         listImage=new HashMap<String,String>();
     }
 
-
+    public Product(Product another)
+    {
+        this.id = another.getId();
+        this.idType = another.getIdType();
+        this.quantity = another.getQuantity();
+        this.costPrice = another.getCostPrice();
+        this.manufacturer = another.getId();
+        this.salePrice = another.getSalePrice();
+        this.name = another.getName();
+        this.listImage = another.getListImage();
+        this.description = another.getId();
+    }
     public String getId() {
         return id;
     }

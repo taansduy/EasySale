@@ -155,7 +155,7 @@ public class Overview extends Fragment {
                             Day = cal.get(Calendar.DAY_OF_MONTH);
                             Double DaySale;
                             try {
-                                DaySale = sales.getYearSales().get(Year+"_").getListOfMSale().get(Month +"_").getListOfDSale().get(Day +"_").getTotalSale();
+                                DaySale = sales.getYearSales().get(df3.format(cal.getTime())+"_").getListOfMSale().get(df2.format(cal.getTime()) +"_").getListOfDSale().get(cal.get(Calendar.DAY_OF_MONTH) +"_").getTotalSale();
                             } catch (Exception e) {
                                 DaySale = 0d;
                             }
@@ -320,7 +320,7 @@ public class Overview extends Fragment {
                                 count++;
                                 if(count==4) break;
                             }
-                            HotProduct_Adapter adapter= new HotProduct_Adapter(products,getApplicationContext());
+                            HotProduct_Adapter adapter= new HotProduct_Adapter(products,getActivity());
                             lv_hotProduct.setAdapter(adapter);
                             lv_hotProduct.setVisibility(View.VISIBLE);
                             container_noHotProduct.setVisibility(View.INVISIBLE);

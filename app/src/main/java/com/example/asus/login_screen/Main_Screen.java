@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -13,15 +14,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toolbar;
 
+import com.example.asus.login_screen.Fragment_of_MainScreen.BackStackFragment;
+import com.example.asus.login_screen.Fragment_of_MainScreen.Fragment_of_Sale.checkout;
+import com.example.asus.login_screen.Fragment_of_MainScreen.HostFragment;
 import com.example.asus.login_screen.Fragment_of_MainScreen.PagerAdapter_MainScreen;
+import com.example.asus.login_screen.Model.Product;
 import com.example.asus.login_screen.Model.Store;
 import com.example.asus.login_screen.Model.User;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main_Screen extends AppCompatActivity {
     ViewPager viewPager;
@@ -30,6 +39,9 @@ public class Main_Screen extends AppCompatActivity {
     public User user;
     public String shopName;
     public String address;
+    static public List<Product> orderedProductList=new ArrayList<>();
+    static public String total="0";
+    PagerAdapter_MainScreen adapter;
 
 
     @Override
@@ -41,6 +53,25 @@ public class Main_Screen extends AppCompatActivity {
         actionBar.hide();*/
         //***************get data from bundle**************************//
         bundle=getIntent().getBundleExtra("bundle");
+        /*DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        Query ref=mDatabase.child("stores").orderByChild("ownerDetail/email").equalTo(Local_Cache_Store.getOwnerDetail().getEmail());
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Store store = dataSnapshot.getValue(Store.class);
+                    Local_Cache_Store.setListOfProductType(store.getListOfProductType());
+                    Local_Cache_Store.setListOrders(store.getListOrders());
+                    Local_Cache_Store.setOwnerDetail(store.getOwnerDetail());
+                    Local_Cache_Store.setShopAdress(store.getShopAdress());
+                    Local_Cache_Store.setShopName(store.getShopName());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });*/
 
         if(bundle!=null) {
             user = (User) bundle.getSerializable("user");
@@ -53,7 +84,7 @@ public class Main_Screen extends AppCompatActivity {
         tabLayout=(TabLayout) findViewById(R.id.tb);
 
         FragmentManager manager = getSupportFragmentManager();
-        PagerAdapter_MainScreen adapter = new PagerAdapter_MainScreen(manager,Main_Screen.this);
+        adapter = new PagerAdapter_MainScreen(manager,Main_Screen.this);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(4);
         tabLayout.setupWithViewPager(viewPager);
@@ -87,8 +118,15 @@ public class Main_Screen extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
+        if(!BackStackFragment.handleBackPressed(getSupportFragmentManager())){
+            super.onBackPressed();
+        }
+    }
 
-
+    public void openNewContentFragment(Double total) {
+        HostFragment hostFragment = (HostFragment) adapter.getItem(viewPager.getCurrentItem());
+        hostFragment.replaceFragment(new checkout(total), true);
     }
 }

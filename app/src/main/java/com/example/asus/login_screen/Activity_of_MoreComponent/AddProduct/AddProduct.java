@@ -268,10 +268,10 @@ public class AddProduct extends AppCompatActivity {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
-    public void uploadFile(int pos) {
+    public void uploadFile(final int pos) {
         if (mImageUri[pos] != null) {
             final String key_tmp;
-            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
+            final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri[pos]));
 
             mUploadTask = fileReference.putFile(mImageUri[pos])
@@ -285,14 +285,20 @@ public class AddProduct extends AppCompatActivity {
                                     mProgressBar.setProgress(0);
                                 }
                             }, 500);
-                            FirebaseDatabase.getInstance()
-                                    .getReference("stores/"+Local_Cache_Store.getShopName()+"/listOfProductType")
-                                    .child(idType)
-                                    .child("productList")
-                                    .child(id)
-                                    .child("listImage")
-                                    .push()
-                                    .setValue(taskSnapshot.getUploadSessionUri().toString());
+                            fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    FirebaseDatabase.getInstance()
+                                            .getReference("stores/"+Local_Cache_Store.getShopName()+"/listOfProductType")
+                                            .child(idType)
+                                            .child("productList")
+                                            .child(id)
+                                            .child("listImage")
+                                            .push()
+                                            .setValue(uri.toString());
+                                }
+                            });
+
 
 //                            mDatabase.orderByChild("type").equalTo(spi_Type.getSelectedItem().toString()).addChildEventListener(new ChildEventListener() {
 //                                @Override
@@ -365,8 +371,6 @@ public class AddProduct extends AppCompatActivity {
                             mProgressBar.setProgress((int) progress);
                         }
                     });
-        } else {
-            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
 
     }
