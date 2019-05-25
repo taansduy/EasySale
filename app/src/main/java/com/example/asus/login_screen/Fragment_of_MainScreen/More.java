@@ -2,23 +2,34 @@ package com.example.asus.login_screen.Fragment_of_MainScreen;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.asus.login_screen.Activity_of_MoreComponent.Account;
 import com.example.asus.login_screen.Activity_of_MoreComponent.AddProduct.AddProduct;
@@ -39,6 +50,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +66,15 @@ public class More extends android.support.v4.app.Fragment {
     LinearLayout ln_ContentMore,ln_ListProduct;
     Button button;
     TextView title,tv_Name,tv_Email,tv_title;
+    EditText edt_Search;
     Toolbar toolbar;
     LinearLayout lnAccount,lnProduct,lnCustomer,lnLogout;
-    ImageView img_Back,img_Add,img_Search;
+    ImageView img_Back,img_Add;
     RecyclerView recyclerView;
     List<Product> productList;
     MoreProductAdapter myAdapter;
+    DatabaseReference mDatabase;
+    StorageReference mStorage;
     public More(Context context) {
         // Required empty public constructor
         main_screen=(Main_Screen)context;
@@ -88,8 +104,37 @@ public class More extends android.support.v4.app.Fragment {
         swipeRefreshLayout=view.findViewById(R.id.refresh);
         img_Back=view.findViewById(R.id.Back);
         img_Add=view.findViewById(R.id.Add);
-        img_Search=view.findViewById(R.id.Search);
         recyclerView=view.findViewById(R.id.listProduct);
+        toolbar=view.findViewById(R.id.toolbar2);
+        edt_Search=view.findViewById(R.id.search);
+        edt_Search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                fetchData();
+                String userInput=s.toString().toLowerCase();
+                List<Product> newList=new ArrayList<>();
+                for(Product product : productList)
+                {
+                    if(product.getName().toLowerCase().contains(userInput))
+                    {
+                        newList.add(product);
+                    }
+                }
+                myAdapter.updateList((ArrayList<Product>) newList);
+                recyclerView.setAdapter(myAdapter);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         productList=new ArrayList<Product>();
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -117,8 +162,9 @@ public class More extends android.support.v4.app.Fragment {
             }
         });
         //*************************************************//
-
-        myAdapter=new MoreProductAdapter(this.getContext(), (ArrayList<Product>) productList);
+        mDatabase = FirebaseDatabase.getInstance().getReference("stores/"+ Local_Cache_Store.getShopName() +"/listOfProductType");
+        mStorage =  FirebaseStorage.getInstance().getReference("uploads/"+Local_Cache_Store.getShopName()+"/");
+        myAdapter=new MoreProductAdapter(this.getContext(), (ArrayList<Product>) productList,mDatabase,mStorage);
 
 
 
@@ -163,6 +209,7 @@ public class More extends android.support.v4.app.Fragment {
 
         return view;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -200,10 +247,7 @@ public class More extends android.support.v4.app.Fragment {
             {
                 productList.add(product);
             }
-
         }
-
-
         recyclerView.setAdapter(myAdapter);
     }
 

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.asus.login_screen.Local_Cache_Store;
@@ -36,6 +37,7 @@ public class Account extends AppCompatActivity {
     Toolbar toolbar;
     ImageView img_Back,img_Yes;
     TextView tv_title;
+    LinearLayout ln_Changepass;
 
     Bundle bundle=new Bundle();
     @Override
@@ -61,6 +63,15 @@ public class Account extends AppCompatActivity {
 
         img_Back=findViewById(R.id.Back);
         img_Yes=findViewById(R.id.Yes);
+        ln_Changepass=findViewById(R.id.changepass);
+
+        ln_Changepass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Account.this,PassWord.class);
+                startActivity(intent);
+            }
+        });
 
         toolbar=findViewById(R.id.toolbar);
         //*****************set Onlick Yes/Cancel on toolbar***************************//

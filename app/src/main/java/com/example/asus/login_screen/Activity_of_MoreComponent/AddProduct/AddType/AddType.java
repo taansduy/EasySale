@@ -37,6 +37,7 @@ public class AddType extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         android.support.v7.app.ActionBar actionBar=getSupportActionBar();
         actionBar.hide();
+
         listtype=getIntent().getExtras().getStringArrayList("listtype");
         img_Back=findViewById(R.id.Back);
         img_Ok=findViewById(R.id.Ok);
@@ -51,20 +52,19 @@ public class AddType extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Kiem tra co ton tai r` post
-                if(listtype.contains(edt_Name.getText().toString())==false)
-                {
+                if (listtype==null) {
                     final DatabaseReference mDatabase;
                     mDatabase = FirebaseDatabase.getInstance().getReference("stores/"+ Local_Cache_Store.shopName);
-//                    TypeOfProduct typeOfProduct=new TypeOfProduct("1",edt_Name.getText().toString(),null);
-//                    mDatabase.child("listOfProductType").push().setValue(typeOfProduct);
-
                     String id= mDatabase.child("listOfProductType").push().getKey();
-
-
+                    assert id != null;
                     mDatabase.child("listOfProductType").child(id).setValue(new TypeOfProduct(id,edt_Name.getText().toString(),null));
-
-
-
+                }
+                else if(!listtype.contains(edt_Name.getText().toString())) {
+                    final DatabaseReference mDatabase;
+                    mDatabase = FirebaseDatabase.getInstance().getReference("stores/"+ Local_Cache_Store.shopName);
+                    String id= mDatabase.child("listOfProductType").push().getKey();
+                    assert id != null;
+                    mDatabase.child("listOfProductType").child(id).setValue(new TypeOfProduct(id,edt_Name.getText().toString(),null));
                 }
                 onBackPressed();
 

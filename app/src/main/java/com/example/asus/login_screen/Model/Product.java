@@ -1,11 +1,12 @@
 package com.example.asus.login_screen.Model;
 
+import java.io.Serializable;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Product {
+public class Product implements Serializable {
     private String id;
     private String idType;
     private int quantity;

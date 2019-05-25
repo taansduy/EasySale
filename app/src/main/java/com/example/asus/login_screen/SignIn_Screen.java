@@ -223,7 +223,7 @@ public class SignIn_Screen extends AppCompatActivity {
             public void onClick(View v) {
                 final String str_Email = email.getText().toString();
                 String pass = password.getText().toString();
-                String passPattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
+//                String passPattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
                 String emailPattern = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
                 if (!str_Email.matches(emailPattern)) {
                     emailWrapper.setErrorTextAppearance(R.style.error_appearance);
@@ -233,17 +233,14 @@ public class SignIn_Screen extends AppCompatActivity {
                 } else {
                     emailWrapper.setError(null);
                 }
-                if (!pass.matches(passPattern)) {
-                    passwordWrapper.setErrorTextAppearance(R.style.error_appearance);
-                    if (str_Email.isEmpty()) {
+                    if (pass.isEmpty()) {
+                        passwordWrapper.setErrorTextAppearance(R.style.error_appearance);
                         passwordWrapper.setError("Vui lòng nhập password");
-                    } else
-                        passwordWrapper.setError("Mật khẩu hợp lệ cần có ít nhất 8 kí tự bao gồm cả số, chữ thường, chữ hoa.");
-
-                } else {
+                    }
+                     else {
                     passwordWrapper.setError(null);
                 }
-                if (str_Email.matches(emailPattern) && pass.matches(passPattern)) {
+                if (str_Email.matches(emailPattern) && !pass.isEmpty()) {
                     final ProgressDialog progressDialog = new ProgressDialog(SignIn_Screen.this);
                     progressDialog.setMessage("Waiting...");
                     progressDialog.show();
@@ -483,13 +480,6 @@ public class SignIn_Screen extends AppCompatActivity {
                                             query.addChildEventListener(new ChildEventListener() {
                                                 @Override
                                                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                                                    User user=new User(dataSnapshot.child("ownerDetail").child("email").getValue().toString(),
-//                                                            dataSnapshot.child("ownerDetail").child("mName").getValue().toString(),
-//                                                            dataSnapshot.child("ownerDetail").child("phoneNumber").getValue().toString());
-//
-//                                                    bundle.putSerializable("user",user);
-//                                                    bundle.putString("address",dataSnapshot.child("shopAdress").getValue().toString());
-//                                                    bundle.putString("shopName",dataSnapshot.child("shopName").getValue().toString());
                                                     Store store = dataSnapshot.getValue(Store.class);
                                                     Local_Cache_Store.setListOfProductType(store.getListOfProductType());
                                                     Local_Cache_Store.setListOrders(store.getListOrders());

@@ -92,8 +92,8 @@ public class Sale extends Fragment implements ItemClickListener {
         tv_typeSort=(TextView) v.findViewById(R.id.tv_typeSort);
         tv_Quantity=(TextView) v.findViewById(R.id.tv_quantity);
         mToolbar = (Toolbar) v.findViewById(R.id.toolbar_Sale);
-        cart=(FloatingActionButton) v.findViewById(R.id.fab) ;
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
+        cart=(FloatingActionButton) v.findViewById(R.id.fab) ;
         recyclerView=(RecyclerView) v.findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayout=new LinearLayoutManager(this.getActivity());
 
@@ -308,7 +308,6 @@ public class Sale extends Fragment implements ItemClickListener {
             tv_Quantity.setText(String.valueOf(temp));
         }
     }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);

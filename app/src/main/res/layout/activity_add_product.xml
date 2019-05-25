@@ -156,7 +156,6 @@
                         android:id="@+id/spinner"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-
                         />
                 </LinearLayout>
 
@@ -255,67 +254,58 @@
                         android:textColor="@color/black" />
 
                 </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/costPriceWrapper"
-                    android:background="#FFF"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:focusableInTouchMode="true"
-                    android:hint="Giá vốn"
-                    android:textColorHint="@color/com_facebook_button_background_color_disabled"
-                    android:theme="@style/TextInputLayoutAppearance"
-                    app:boxStrokeColor="@color/black">
-
-                    <EditText
-                        android:id="@+id/costPrice"
-                        style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+                    android:orientation="horizontal">
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/costPriceWrapper"
+                        android:background="#FFF"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:inputType="number"
-                        android:textColor="@color/black" />
+                        android:layout_weight="1"
+                        android:focusableInTouchMode="true"
+                        android:hint="Giá vốn"
+                        android:textColorHint="@color/com_facebook_button_background_color_disabled"
+                        android:theme="@style/TextInputLayoutAppearance"
+                        app:boxStrokeColor="@color/black">
 
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/salePriceWrapper"
-                    android:background="#FFF"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:focusableInTouchMode="true"
-                    android:hint="Giá bán"
-                    android:textColorHint="@color/com_facebook_button_background_color_disabled"
-                    android:theme="@style/TextInputLayoutAppearance"
-                    app:boxStrokeColor="@color/black">
+                        <EditText
+                            android:id="@+id/costPrice"
+                            style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:inputType="number"
+                            android:textColor="@color/black" />
 
-                    <EditText
-                        android:id="@+id/salePrice"
-                        style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/salePriceWrapper"
+                        android:background="#FFF"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:inputType="number"
-                        android:textColor="@color/black" />
+                        android:layout_weight="1"
+                        android:focusableInTouchMode="true"
+                        android:hint="Giá bán"
+                        android:textColorHint="@color/com_facebook_button_background_color_disabled"
+                        android:theme="@style/TextInputLayoutAppearance"
+                        app:boxStrokeColor="@color/black">
+                        <EditText
+                            android:id="@+id/salePrice"
+                            style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:inputType="number"
+                            android:textColor="@color/black" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
 
-                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </ScrollView>
-        <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/progress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:alpha="0.5"
-            android:background="#123">
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"/>
-        </LinearLayout>
     </FrameLayout>
 
 

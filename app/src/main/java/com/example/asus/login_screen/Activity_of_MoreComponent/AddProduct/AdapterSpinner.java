@@ -68,17 +68,6 @@ public class AdapterSpinner extends ArrayAdapter<String> {
                             context.startActivity(intent);
                         }
                     });
-//                    ImageView imageView=view.findViewById(R.id.image);
-//                    imageView.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            Intent intent=new Intent(context, AddType.class);
-//                            intent.putStringArrayListExtra("listtype",arr);
-//                            context.startActivity(intent);
-//
-//                        }
-//                    });
-
                 }
 
 
