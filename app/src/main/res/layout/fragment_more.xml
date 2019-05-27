@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".Fragment_of_MainScreen.More">
+    tools:context=".main.more.More">
 
     <LinearLayout
         android:id="@+id/lnContentMore"

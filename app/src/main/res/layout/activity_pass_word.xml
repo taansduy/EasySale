@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F9FAFC"
     android:orientation="vertical"
-    tools:context=".Activity_of_MoreComponent.PassWord">
+    tools:context=".main.more.PassWord">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"

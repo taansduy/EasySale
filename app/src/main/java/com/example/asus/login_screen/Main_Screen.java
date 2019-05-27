@@ -1,33 +1,17 @@
 package com.example.asus.login_screen;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toolbar;
 
-import com.example.asus.login_screen.Fragment_of_MainScreen.BackStackFragment;
-import com.example.asus.login_screen.Fragment_of_MainScreen.Fragment_of_Sale.checkout;
-import com.example.asus.login_screen.Fragment_of_MainScreen.HostFragment;
-import com.example.asus.login_screen.Fragment_of_MainScreen.PagerAdapter_MainScreen;
-import com.example.asus.login_screen.Model.Product;
-import com.example.asus.login_screen.Model.Store;
-import com.example.asus.login_screen.Model.User;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+import com.example.asus.login_screen.main.sale.checkout;
+import com.example.asus.login_screen.model.Product;
+import com.example.asus.login_screen.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
