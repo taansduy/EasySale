@@ -3,8 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.asus.login_screen">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -13,11 +19,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity_of_MoreComponent.AddProduct.AddType.AddType" />
-        <activity android:name=".Activity_of_MoreComponent.AddProduct.AddProduct" />
-        <activity android:name=".Activity_of_MoreComponent.ListProduct" />
-        <activity android:name=".Activity_of_MoreComponent.Account" />
-        <activity android:name=".SplashScreen"
+        <activity android:name=".main.more.PassWord"></activity>
+        <activity android:name=".main.more.AddProduct.AddType.AddType" />
+        <activity android:name=".main.more.AddProduct.AddProduct" />
+        <activity android:name=".main.more.Account" />
+        <activity
+            android:name=".splash.SplashScreen"
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignUp_Screen"
+            android:name=".authentication.SignUp_Screen"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Main_Screen"
@@ -55,9 +62,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignIn_Screen" />
-        <activity android:name=".Fragment_of_MainScreen.HostFragment" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".authentication.SignIn_Screen" />
+        <activity android:name=".HostFragment" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

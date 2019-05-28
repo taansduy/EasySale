@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFF4F4F4"
     android:orientation="vertical"
-    tools:context=".SignUp_Screen">
+    tools:context=".authentication.SignUp_Screen">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

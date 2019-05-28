@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:background="#FFF4F4F4"
         android:orientation="vertical"
-        tools:context=".Fragment_of_MainScreen.Sale">
+        tools:context=".main.sale.Sale">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_Sale"

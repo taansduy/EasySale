@@ -9,7 +9,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    tools:context=".SignUp_Step1_1">
+    tools:context=".authentication.SignUp_Step1_1">
 
     <!-- TODO: Update blank fragment layout -->
 

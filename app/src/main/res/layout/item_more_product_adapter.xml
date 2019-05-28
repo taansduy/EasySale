@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="#FFFFFF"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    >
+    <ImageView
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/image"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginLeft="10dp"
+        android:text="Tên:"
+        android:textStyle="bold"
+        android:textColor="#123"
+        app:layout_constraintLeft_toRightOf="@id/image"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginLeft="50dp"
+        android:text="Ten san pham"
+        android:textColor="#123"
+        app:layout_constraintLeft_toRightOf="@id/image"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:text="Loại:"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:textColor="#123"
+        app:layout_constraintLeft_toRightOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@id/name" />
+    <TextView
+        android:id="@+id/type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:text="loai"
+        android:layout_marginTop="10dp"
+        android:textColor="#123"
+        app:layout_constraintLeft_toRightOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@id/name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:text="Giá nhập:"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:textColor="#123"
+        app:layout_constraintLeft_toRightOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@id/type" />
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:text="10000"
+        android:layout_marginTop="10dp"
+        android:textColor="#123"
+        app:layout_constraintLeft_toRightOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@id/type" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:text="Số lượng:"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:textColor="#123"
+        app:layout_constraintLeft_toRightOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@id/price" />
+    <TextView
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:text="10"
+        android:layout_marginTop="10dp"
+        android:textColor="#123"
+        app:layout_constraintLeft_toRightOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@id/price" />
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/delete"
+        android:layout_marginLeft="320dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/delete"/>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/edit"
+        app:layout_constraintLeft_toRightOf="@id/delete"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/edit"/>
+</android.support.constraint.ConstraintLayout>

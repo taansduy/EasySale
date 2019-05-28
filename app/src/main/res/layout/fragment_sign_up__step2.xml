@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    tools:context=".SignUp_Step2">
+    tools:context=".authentication.SignUp_Step2">
 
 
     <FrameLayout
