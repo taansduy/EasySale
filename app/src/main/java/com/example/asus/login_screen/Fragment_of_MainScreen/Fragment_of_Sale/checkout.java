@@ -105,15 +105,15 @@ public class checkout extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 String cleanString = s.toString().replaceAll("[$,.]", "");
-                double parsed = Double.parseDouble(cleanString);
-                if(parsed>total)
-                {
-                    tv_change.setText(String.format("%1$,.0f",parsed-total));
-                    change_container.setVisibility(View.VISIBLE);
-                }
-                else
-                {
-                    change_container.setVisibility(View.INVISIBLE);
+                if(!cleanString.isEmpty()) {
+                    double parsed = Double.parseDouble(cleanString);
+
+                    if (parsed > total) {
+                        tv_change.setText(String.format("%1$,.0f", parsed - total));
+                        change_container.setVisibility(View.VISIBLE);
+                    } else {
+                        change_container.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
         });
