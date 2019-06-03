@@ -48,8 +48,8 @@ public class HotProduct_Adapter extends ArrayAdapter<Product> implements View.On
 
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.row_item_hot_product_lv, parent, false);
-            viewHolder.tv_Name = (TextView) convertView.findViewById(R.id.tv_Name);
+            convertView = inflater.inflate(R.layout.row_item_hot_product_lv, parent,false);
+            viewHolder.tv_Name = convertView.findViewById(R.id.tv_Name);
             viewHolder.tv_Rank = (TextView) convertView.findViewById(R.id.tv_Rank);
             viewHolder.tv_Quantity = (TextView) convertView.findViewById(R.id.tv_Quantity);
 

@@ -2,6 +2,7 @@ package com.example.asus.login_screen.main.sale;
 
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -49,7 +50,7 @@ import static com.example.asus.login_screen.model.Local_Cache_Store.*;
 public class checkout extends Fragment {
 
     private Double total;
-    TextView tv_paid,tv_paid2,tv_change;
+    TextView tv_paid,tv_paid2,tv_change,tv_change_label;
     Button btn_checkout;
     EditText edt_cus_charge ;
     LinearLayout change_container;
@@ -67,14 +68,15 @@ public class checkout extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.fragment_checkout, container, false);
-        Toolbar mToolbar = (Toolbar) v.findViewById(R.id.toolbar);
-        TextView title=(TextView) v.findViewById(R.id.title);
-        tv_paid=(TextView) v.findViewById(R.id.tv_totalpaid);
-        tv_paid2=(TextView) v.findViewById(R.id.tv_totalpaid1);
-        tv_change=(TextView) v.findViewById(R.id.tv_change);
-        btn_checkout=(Button) v.findViewById(R.id.btn_Checkout);
-        edt_cus_charge=(EditText) v.findViewById(R.id.edt_cus_charge);
-        change_container=(LinearLayout) v.findViewById(R.id.chang_cotainer);
+        Toolbar mToolbar = v.findViewById(R.id.toolbar);
+        TextView title= v.findViewById(R.id.title);
+        tv_paid= v.findViewById(R.id.tv_totalpaid);
+        tv_paid2= v.findViewById(R.id.tv_totalpaid1);
+        tv_change= v.findViewById(R.id.tv_change);
+        btn_checkout= v.findViewById(R.id.btn_Checkout);
+        edt_cus_charge= v.findViewById(R.id.edt_cus_charge);
+        change_container= v.findViewById(R.id.chang_cotainer);
+        tv_change_label=v.findViewById(R.id.tv_change_label);
         mToolbar.setNavigationIcon(R.drawable.back_arrow_white);
         title.setText("Thanh toán");
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -105,10 +107,24 @@ public class checkout extends Fragment {
                     double parsed = Double.parseDouble(cleanString);
 
                     if (parsed > total) {
+                        tv_change.setTextColor(Color.BLACK);
                         tv_change.setText(String.format("%1$,.0f", parsed - total));
+                        tv_change_label.setVisibility(View.VISIBLE);
                         change_container.setVisibility(View.VISIBLE);
-                    } else {
+
+                        btn_checkout.setEnabled(true);
+                    } else if (parsed==total) {
+                        tv_change_label.setVisibility(View.VISIBLE);
                         change_container.setVisibility(View.INVISIBLE);
+                        btn_checkout.setEnabled(true);
+                    }
+                    else
+                    {
+                        btn_checkout.setEnabled(false);
+                        tv_change.setTextColor(Color.RED);
+                        tv_change.setText("Số tiền vừa nhập thấp hơn tiền khách cần trả");
+                        tv_change_label.setVisibility(View.INVISIBLE);
+                        change_container.setVisibility(View.VISIBLE);
                     }
                 }
             }

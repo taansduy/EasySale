@@ -273,6 +273,7 @@ public class AddProduct extends AppCompatActivity {
         img_Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //set dk add product
                 if (edt_Name.getText().toString().equals("")) {
                     til_Name.setErrorTextAppearance(R.style.error_appearance);
@@ -548,6 +549,9 @@ public class AddProduct extends AppCompatActivity {
             final String key_tmp;
             final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri[pos]));
+            final ProgressDialog progressDialog = new ProgressDialog(AddProduct.this);
+            progressDialog.setMessage("Uploading image "+pos+"/4....");
+            progressDialog.show();
             mUploadTask = fileReference.putFile(mImageUri[pos])
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -565,6 +569,7 @@ public class AddProduct extends AppCompatActivity {
                                                                                                 .setValue(uri.toString());
                                                                                     }
                                                                                 });
+                            progressDialog.dismiss();
 
                         }
                     })
@@ -572,6 +577,7 @@ public class AddProduct extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(AddProduct.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
