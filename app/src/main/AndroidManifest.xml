@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".authentication.SignIn_Screen" />
-        <activity android:name=".HostFragment" />
+        <!--<activity android:name=".HostFragment" />-->
         <activity android:name=".MainActivity" />
     </application>
 
