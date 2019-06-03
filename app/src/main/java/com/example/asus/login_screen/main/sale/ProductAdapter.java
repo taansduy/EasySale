@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.asus.login_screen.model.Product;
 import com.example.asus.login_screen.R;
@@ -129,11 +131,13 @@ public class ProductAdapter extends RecyclerView.Adapter {
                 if (product.getListImage().size() != 0) {
                     RequestOptions options = new RequestOptions()
                             .centerCrop()
+                            .transforms(new CenterCrop(), new RoundedCorners(8))
                             .placeholder(R.drawable.loading)
-                            .error(android.R.drawable.ic_menu_report_image);
+                            .error(R.drawable.image);
+
                     Glide.with(mContext).load(product.getListImage().values().toArray()[0]).apply(options).into(((ProductViewHolder) viewHolder).img);
                 } else {
-                    ((ProductViewHolder) viewHolder).img.setImageResource(R.drawable.camera);
+                    ((ProductViewHolder) viewHolder).img.setImageResource(R.drawable.image);
                 }
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
