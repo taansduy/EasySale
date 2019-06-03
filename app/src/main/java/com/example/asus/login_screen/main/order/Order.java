@@ -52,7 +52,7 @@ public class Order extends Fragment {
             }
         });
         orderAdapter=new OrderAdapter(this.getContext());
-        orderAdapter.setData(new ArrayList<Bill>(Local_Cache_Store.getListOrders().values()));
+        orderAdapter.setData(new ArrayList<Bill>((Collection<? extends Bill>) Local_Cache_Store.getListOrders().values()));
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(orderAdapter);

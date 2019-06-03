@@ -295,6 +295,7 @@ public class AddProduct extends AppCompatActivity {
         img_Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //set dk add product
                 if (edt_Name.getText().toString().equals("")) {
                     til_Name.setErrorTextAppearance(R.style.error_appearance);
@@ -618,7 +619,6 @@ public class AddProduct extends AppCompatActivity {
                                                 .setValue(uri.toString());
                                     }
                                 });
-
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -630,6 +630,45 @@ public class AddProduct extends AppCompatActivity {
                         .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//=======
+//            final String key_tmp;
+//            final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
+//                    + "." + getFileExtension(mImageUri[pos]));
+//            final ProgressDialog progressDialog = new ProgressDialog(AddProduct.this);
+//            progressDialog.setMessage("Uploading image "+pos+"/4....");
+//            progressDialog.show();
+//            mUploadTask = fileReference.putFile(mImageUri[pos])
+//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+//                            fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                                                                                    @Override
+//                                                                                    public void onSuccess(Uri uri) {
+//                                                                                        FirebaseDatabase.getInstance()
+//                                                                                                .getReference("stores/" + Local_Cache_Store.getShopName() + "/listOfProductType")
+//                                                                                                .child(idType)
+//                                                                                                .child("productList")
+//                                                                                                .child(id)
+//                                                                                                .child("listImage")
+//                                                                                                .push()
+//                                                                                                .setValue(uri.toString());
+//                                                                                    }
+//                                                                                });
+//                            progressDialog.dismiss();
+//
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Toast.makeText(AddProduct.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                            progressDialog.dismiss();
+//                        }
+//                    })
+//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//>>>>>>> 75f2258ecb1714e6c14cc7904f7a8889820e2b9d
 //
                             }
                         });

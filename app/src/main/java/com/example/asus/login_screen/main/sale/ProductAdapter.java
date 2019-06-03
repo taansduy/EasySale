@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -120,27 +121,29 @@ public class ProductAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
         if (viewHolder instanceof ProductViewHolder) {
             final Product product=productList.get(i);
-            final ProductViewHolder temp=(ProductViewHolder)viewHolder;
-            ((ProductViewHolder)viewHolder).tv_name.setText(product.getName());
-            ((ProductViewHolder)viewHolder).tv_price.setText(String.format("%1$,.0f",product.getSalePrice()));
-            if(product.getListImage().size()!=0)
-            {
-                RequestOptions options = new RequestOptions()
-                        .centerCrop()
-                        .placeholder(R.drawable.loading)
-                        .error(android.R.drawable.ic_menu_report_image);
-                Glide.with(mContext).load(product.getListImage().values().toArray()[0]).apply(options).into( ((ProductViewHolder)viewHolder).img);
-            }
-            else
-            {
-                ((ProductViewHolder)viewHolder).img.setImageResource(R.drawable.camera);
-            }
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (itemClickListener != null) itemClickListener.onClick(v,i,product.getName());
+            if(product.getQuantity()>0) {
+                final ProductViewHolder temp = (ProductViewHolder) viewHolder;
+
+                ((ProductViewHolder) viewHolder).tv_name.setText(product.getName());
+                ((ProductViewHolder) viewHolder).tv_price.setText(String.format("%1$,.0f", product.getSalePrice()));
+                if (product.getListImage().size() != 0) {
+                    RequestOptions options = new RequestOptions()
+                            .centerCrop()
+                            .placeholder(R.drawable.loading)
+                            .error(android.R.drawable.ic_menu_report_image);
+                    Glide.with(mContext).load(product.getListImage().values().toArray()[0]).apply(options).into(((ProductViewHolder) viewHolder).img);
+                } else {
+                    ((ProductViewHolder) viewHolder).img.setImageResource(R.drawable.camera);
                 }
-            });
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (itemClickListener != null)
+                            itemClickListener.onClick(v, i, product.getName());
+                    }
+                });
+            }
+            else ((ProductViewHolder) viewHolder).container.setVisibility(View.INVISIBLE);
         }else {
             ((ProgressViewHolder) viewHolder).progressBar.setIndeterminate(true);
         }
@@ -160,6 +163,7 @@ public class ProductAdapter extends RecyclerView.Adapter {
     class ProductViewHolder extends RecyclerView.ViewHolder{
         ImageView img;
         TextView tv_name,tv_price,tv_id,tv_quantity;
+        RelativeLayout container;
 
 
         public ProductViewHolder(@NonNull View itemView) {
@@ -167,6 +171,7 @@ public class ProductAdapter extends RecyclerView.Adapter {
             img=itemView.findViewById(R.id.img_product);
             tv_name=itemView.findViewById(R.id.tv_name);
             tv_price=itemView.findViewById(R.id.tv_price);
+            container=itemView.findViewById(R.id.container);
 
 
         }
