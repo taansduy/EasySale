@@ -36,7 +36,7 @@ public class OrderAdapter extends RecyclerView.Adapter {
         ((OrderViewHolder)viewHolder).tv_id.setText(listBill.get(i).getId());
         int pos=listBill.get(i).getTime().indexOf("GMT");
         ((OrderViewHolder)viewHolder).tv_time.setText(listBill.get(i).getTime().substring(0,pos));
-        ((OrderViewHolder)viewHolder).tv_total.setText( String.valueOf(listBill.get(i).getTotal()));
+        ((OrderViewHolder)viewHolder).tv_total.setText( String.format("%1$,.0f", listBill.get(i).getTotal()));
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
