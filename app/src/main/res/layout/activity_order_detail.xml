@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".main.order.OrderDetail"
+    >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="#03A9F4">
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            android:text="Chi tiết đơn hàng"/>
+    </android.support.v7.widget.Toolbar>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:text="ID:"
+        android:id="@+id/text1"
+        android:textColor="#123"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+    <TextView
+        app:layout_constraintTop_toBottomOf="@+id/toolbar1"
+        app:layout_constraintLeft_toRightOf="@+id/text1"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:text="asdasdasd"
+        android:textColor="#123"
+        android:textSize="20sp"
+        android:id="@+id/id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/text1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:text="Total:"
+        android:id="@+id/text2"
+        android:textColor="#123"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+    <TextView
+        app:layout_constraintTop_toBottomOf="@+id/id"
+        app:layout_constraintLeft_toRightOf="@+id/text2"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/total"
+        android:text="asdasdasd"
+        android:textColor="#123"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        app:layout_constraintTop_toBottomOf="@+id/toolbar1"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/date"
+        android:textColor="#123"
+        android:textSize="12sp"
+        android:text="Monadsadsadsa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="#123"
+        android:layout_height="wrap_content"
+        android:text="Name" />
+    <TextView
+        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="90dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="#123"
+        android:layout_height="wrap_content"
+        android:text="Price" />
+    <TextView
+        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="190dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="#123"
+        android:layout_height="wrap_content"
+        android:text="Quantity" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        app:layout_constraintTop_toBottomOf="@id/total"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+
+</android.support.constraint.ConstraintLayout>

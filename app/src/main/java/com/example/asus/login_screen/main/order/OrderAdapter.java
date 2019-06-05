@@ -1,6 +1,8 @@
 package com.example.asus.login_screen.main.order;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +12,9 @@ import android.widget.TextView;
 
 import com.example.asus.login_screen.model.Bill;
 import com.example.asus.login_screen.R;
+import com.example.asus.login_screen.model.Local_Cache_Store;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class OrderAdapter extends RecyclerView.Adapter {
@@ -32,7 +36,7 @@ public class OrderAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
         ((OrderViewHolder)viewHolder).tv_id.setText(listBill.get(i).getId());
         int pos=listBill.get(i).getTime().indexOf("GMT");
         ((OrderViewHolder)viewHolder).tv_time.setText(listBill.get(i).getTime().substring(0,pos));
@@ -40,6 +44,14 @@ public class OrderAdapter extends RecyclerView.Adapter {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent=new Intent(context,OrderDetail.class);
+                Bundle bundle=new Bundle();
+                for(Bill tmp:Local_Cache_Store.getListOrders().values()){
+                    if(tmp.getId().equals(listBill.get(i).getId())){
+                        intent.putExtra("detail", tmp);
+                        context.startActivity(intent);
+                    }
+                }
 
             }
         });
