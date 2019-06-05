@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.asus.login_screen.MainActivity;
 import com.example.asus.login_screen.model.Local_Cache_Store;
 import com.example.asus.login_screen.Main_Screen;
 import com.example.asus.login_screen.model.Store;
@@ -298,7 +299,9 @@ public class SignIn_Screen extends AppCompatActivity {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent intent=new Intent(SignIn_Screen.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

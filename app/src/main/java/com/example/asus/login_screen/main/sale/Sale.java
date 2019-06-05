@@ -388,14 +388,15 @@ public class Sale extends Fragment implements ItemClickListener {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        paid += orderedProduct.getSalePrice();
-        Main_Screen.total = String.format("%1$,.0f", paid);
+
+
         for (Product product : Main_Screen.orderedProductList) {
             if (product.getId() == orderedProduct.getId()) {
                 return;
             }
         }
-
+        paid += orderedProduct.getSalePrice();
+        Main_Screen.total = String.format("%1$,.0f", paid);
         orderedProduct.setQuantity(1);
         int temp = Integer.parseInt(tv_Quantity.getText().toString());
         temp++;

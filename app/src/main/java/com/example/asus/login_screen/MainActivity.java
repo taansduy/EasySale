@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity  {
                 Intent intent=new Intent(MainActivity.this, SignUp_Screen.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_up, R.anim.hold);
+                finish();
             }
         });
         btn_Signin.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity  {
                 Intent intent=new Intent(MainActivity.this, SignIn_Screen.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_up, R.anim.hold);
+                finish();
             }
         });
     }

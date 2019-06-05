@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.example.asus.login_screen.MainActivity;
 import com.example.asus.login_screen.R;
 import com.facebook.FacebookSdk;
 
@@ -44,7 +45,9 @@ public class SignUp_Screen extends AppCompatActivity implements FragmentChangeLi
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent intent=new Intent(SignUp_Screen.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
