@@ -295,7 +295,6 @@ public class AddProduct extends AppCompatActivity {
         img_Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //set dk add product
                 if (edt_Name.getText().toString().equals("")) {
                     til_Name.setErrorTextAppearance(R.style.error_appearance);
@@ -333,16 +332,23 @@ public class AddProduct extends AppCompatActivity {
                 } else {
                     til_Description.setError(null);
                 }
-                if (Double.parseDouble(edt_CostPrice.getText().toString()) > Double.parseDouble(edt_SalePrice.getText().toString())) {
-                    til_SalePrice.setErrorTextAppearance(R.style.error_appearance);
-                    til_CostPrice.setErrorTextAppearance(R.style.error_appearance);
-
+                if(edt_SalePrice.getText().toString().equals("")||edt_CostPrice.getText().toString().equals("")){
                     til_CostPrice.setError("Giá bán không phù hợp");
                     til_SalePrice.setError("Giá bán không phù hợp");
-                } else {
-                    til_SalePrice.setError(null);
-                    til_CostPrice.setError(null);
                 }
+                else{
+                    if (Double.parseDouble(edt_CostPrice.getText().toString()) > Double.parseDouble(edt_SalePrice.getText().toString())) {
+                        til_SalePrice.setErrorTextAppearance(R.style.error_appearance);
+                        til_CostPrice.setErrorTextAppearance(R.style.error_appearance);
+
+                        til_CostPrice.setError("Giá bán không phù hợp");
+                        til_SalePrice.setError("Giá bán không phù hợp");
+                    } else {
+                        til_SalePrice.setError(null);
+                        til_CostPrice.setError(null);
+                    }
+                }
+
                 if (!edt_CostPrice.getText().toString().equals("")
                         && !edt_Name.getText().toString().equals("")
                         && !edt_Description.getText().toString().equals("")
