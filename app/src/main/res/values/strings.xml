@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Login_screen</string>
+    <string name="app_name">Easy Sale</string>
     <string name="facebook_app_id">273698973541554</string>
     <string name="fb_login_protocol_scheme">fb273698973541554</string>
     <string name="default_web_client_id">799889260725-oh6a1gpdur21ae9a7ah5ij91klc94f6h.apps.googleusercontent.com</string>
