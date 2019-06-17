@@ -17,8 +17,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.asus.login_screen.main.more.AddProduct.AddProduct;
+import com.example.asus.login_screen.model.Local_Cache_Store;
 import com.example.asus.login_screen.model.Product;
 import com.example.asus.login_screen.R;
+import com.example.asus.login_screen.model.TypeOfProduct;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
 
@@ -92,7 +94,13 @@ public class MoreProductAdapter extends RecyclerView.Adapter<MoreProductAdapter.
         productViewHolder.tv_Price.setText(String.valueOf(listProduct.get(i).getCostPrice()));
         productViewHolder.tv_Count.setText(String.valueOf(listProduct.get(i).getQuantity()));
         productViewHolder.tv_Name.setText(listProduct.get(i).getName());
-        productViewHolder.tv_Type.setText(listProduct.get(i).getIdType());
+        for(TypeOfProduct tmp : Local_Cache_Store.getListOfProductType().values()){
+            if (tmp.getID().equals(listProduct.get(i).getIdType())){
+                productViewHolder.tv_Type.setText(tmp.getType());
+                break;
+            }
+        }
+
     }
 
 

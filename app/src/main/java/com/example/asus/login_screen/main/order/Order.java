@@ -23,8 +23,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class Order extends Fragment {
@@ -32,6 +35,7 @@ public class Order extends Fragment {
     RecyclerView recyclerView;
     OrderAdapter orderAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
+    ArrayList<Bill> tmp;
     public Order() {
         // Required empty public constructor
     }
@@ -52,7 +56,15 @@ public class Order extends Fragment {
             }
         });
         orderAdapter=new OrderAdapter(this.getContext());
-        orderAdapter.setData(new ArrayList<Bill>((Collection<? extends Bill>) Local_Cache_Store.getListOrders().values()));
+        tmp= new ArrayList<Bill>((Collection<? extends Bill>) Local_Cache_Store.getListOrders().values());
+        Collections.sort(tmp, new Comparator<Bill>() {
+            @Override
+            public int compare(Bill o1, Bill o2) {
+                String f = new String();
+                return (o2.getId()).compareTo((o1.getId()));
+            }
+        });
+        orderAdapter.setData(tmp);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(orderAdapter);
@@ -74,7 +86,14 @@ public class Order extends Fragment {
 
             }
         });
-        Collection<Bill> tmp=Local_Cache_Store.getListOrders().values();
+        tmp= new ArrayList<Bill>((Collection<? extends Bill>) Local_Cache_Store.getListOrders().values());
+        Collections.sort(tmp, new Comparator<Bill>() {
+            @Override
+            public int compare(Bill o1, Bill o2) {
+                String f = new String();
+                return (o2.getId()).compareTo((o1.getId()));
+            }
+        });
 
         orderAdapter.setData(new ArrayList<Bill>(tmp));
     }

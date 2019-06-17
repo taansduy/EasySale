@@ -83,7 +83,6 @@ public class More extends android.support.v4.app.Fragment {
         button=view.findViewById(R.id.info);
         lnAccount=view.findViewById(R.id.account);
         lnProduct=view.findViewById(R.id.product);
-        lnCustomer=view.findViewById(R.id.customer);
         lnLogout= view.findViewById(R.id.logout);
         ln_ContentMore= view .findViewById(R.id.lnContentMore);
         ln_ListProduct= view.findViewById(R.id.lnListproduct);
@@ -104,10 +103,16 @@ public class More extends android.support.v4.app.Fragment {
                 fetchData();
                 String userInput=s.toString().toLowerCase();
                 ArrayList<Product> newList;
+                String tmpType = null;
                 newList = new ArrayList<>();
+                for(TypeOfProduct tmp :Local_Cache_Store.getListOfProductType().values()){
+                    if (tmp.getType().toLowerCase().contains(userInput)){ 
+                        tmpType=tmp.getID();
+                    }
+                }
                 for(Product product : productList)
                 {
-                    if(product.getName().toLowerCase().contains(userInput))
+                    if(product.getName().toLowerCase().contains(userInput)||product.getIdType().equals(tmpType) )
                     {
                         newList.add(product);
                     }
