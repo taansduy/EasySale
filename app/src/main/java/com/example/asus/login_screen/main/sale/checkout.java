@@ -146,7 +146,7 @@ public class checkout extends Fragment {
                 final SimpleDateFormat df3 = new SimpleDateFormat("YYYY");
                 cal.setTime(newDate);
                 String latestId="";
-                String id= df3.format(cal.getTime())+df2.format(cal.getTime())+df1.format(cal.get(Calendar.DAY_OF_MONTH));
+                String id= df3.format(cal.getTime())+df2.format(cal.getTime())+df1.format(cal.getTime());
                 for(Map.Entry<String, Bill> entry : Local_Cache_Store.getListOrders().entrySet()) {
                     if(entry.getKey().contains(id) && entry.getKey().compareTo(latestId)>0) latestId=entry.getKey();
                 }
