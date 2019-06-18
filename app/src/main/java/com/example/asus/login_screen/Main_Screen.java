@@ -37,26 +37,6 @@ public class Main_Screen extends AppCompatActivity {
         actionBar.hide();*/
         //***************get data from bundle**************************//
         bundle=getIntent().getBundleExtra("bundle");
-        /*DatabaseReference mDatabase;
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        Query ref=mDatabase.child("stores").orderByChild("ownerDetail/email").equalTo(Local_Cache_Store.getOwnerDetail().getEmail());
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Store store = dataSnapshot.getValue(Store.class);
-                    Local_Cache_Store.setListOfProductType(store.getListOfProductType());
-                    Local_Cache_Store.setListOrders(store.getListOrders());
-                    Local_Cache_Store.setOwnerDetail(store.getOwnerDetail());
-                    Local_Cache_Store.setShopAdress(store.getShopAdress());
-                    Local_Cache_Store.setShopName(store.getShopName());
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });*/
-
         if(bundle!=null) {
             user = (User) bundle.getSerializable("user");
             shopName = bundle.getString("shopName");
@@ -64,8 +44,8 @@ public class Main_Screen extends AppCompatActivity {
         }
 
         //*************************************************************//
-        viewPager=(ViewPager) findViewById(R.id.vp);
-        tabLayout=(TabLayout) findViewById(R.id.tb);
+        viewPager= findViewById(R.id.vp);
+        tabLayout= findViewById(R.id.tb);
 
         FragmentManager manager = getSupportFragmentManager();
         adapter = new PagerAdapter_MainScreen(manager,Main_Screen.this);
@@ -112,5 +92,9 @@ public class Main_Screen extends AppCompatActivity {
     public void openNewContentFragment(Double total) {
         HostFragment hostFragment = (HostFragment) adapter.getItem(viewPager.getCurrentItem());
         hostFragment.replaceFragment(new checkout(total), true);
+    }
+    public void destroy()
+    {
+        finish();
     }
 }

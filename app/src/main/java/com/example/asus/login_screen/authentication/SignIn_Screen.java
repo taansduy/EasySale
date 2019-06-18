@@ -378,7 +378,6 @@ public class SignIn_Screen extends AppCompatActivity {
                                                             Intent intent=new Intent(SignIn_Screen.this,Main_Screen.class);
 
                                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                            /*intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);*/
                                                             progressDialog.dismiss();
                                                             startActivity(intent);
                                                             finish();

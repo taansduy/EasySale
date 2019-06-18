@@ -192,6 +192,7 @@ public class More extends android.support.v4.app.Fragment {
                     startActivity(intent);
                 }
                 getActivity().finish();
+                ((Main_Screen) getActivity()).destroy();
 
             }
         });

@@ -118,7 +118,7 @@ public class SignUp_Step2 extends android.support.v4.app.Fragment {
                 else if(shopName.getText().toString().isEmpty())
                 {
                     nameWrapper.setErrorTextAppearance(R.style.error_appearance);
-                    nameWrapper.setError("Vui lòng nhập tên chur cửa hàng");
+                    nameWrapper.setError("Vui lòng nhập tên chủ cửa hàng");
                 } else {
                     mDatabase = FirebaseDatabase.getInstance().getReference();
                     mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -135,7 +135,6 @@ public class SignUp_Step2 extends android.support.v4.app.Fragment {
                                 newUser.setPhoneNumber(phoneNum.getText().toString());
                                 newUser.setmName(name.getText().toString());
                                 newStore.setOwnerDetail(newUser);
-
                                 saleAnalyst yearSales=new saleAnalyst();
                                 yearSale n_yearSale=new yearSale();
                                 monthSale n_monthSale=new monthSale();
@@ -154,6 +153,9 @@ public class SignUp_Step2 extends android.support.v4.app.Fragment {
                                 Local_Cache_Store.setOwnerDetail(newStore.getOwnerDetail());
                                 Local_Cache_Store.setShopAdress(newStore.getShopAdress());
                                 Local_Cache_Store.setShopName(newStore.getShopName());
+                                startActivity(new Intent(getActivity().getBaseContext(), Main_Screen.class));
+                                getActivity().finish();
+
                             }
                         }
 
@@ -162,8 +164,7 @@ public class SignUp_Step2 extends android.support.v4.app.Fragment {
 
                         }
                     });
-                    startActivity(new Intent(getActivity().getBaseContext(), Main_Screen.class));
-                    getActivity().finish();
+
                 }
             }
         });
