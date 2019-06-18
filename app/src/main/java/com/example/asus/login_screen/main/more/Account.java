@@ -2,6 +2,8 @@ package com.example.asus.login_screen.main.more;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Account extends AppCompatActivity {
     EditText edt_Name,edt_Email, edt_PhoneNumber,edt_Address;
+    TextInputLayout phoneWrapper;
     Toolbar toolbar;
     ImageView img_Back,img_Yes;
     TextView tv_title;
@@ -39,6 +42,7 @@ public class Account extends AppCompatActivity {
 //        //get bundle
 //        bundle=getIntent().getBundleExtra("bundle");
         //Anh xa
+        phoneWrapper=findViewById(R.id.phoneWrapper);
         edt_Name=findViewById(R.id.Name);
         edt_Name.setText((Local_Cache_Store.getOwnerDetail().getmName()));
         edt_Email=findViewById(R.id.Email);
@@ -109,6 +113,7 @@ public class Account extends AppCompatActivity {
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                if(checkValidPhoneNumber(edt_PhoneNumber.getText().toString())){
                                 User tmp= new User(edt_Email.getText().toString(),edt_Name.getText().toString(),edt_PhoneNumber.getText().toString());
                                 // save a changed info in database
                                 final DatabaseReference mDatabase;
@@ -116,9 +121,10 @@ public class Account extends AppCompatActivity {
                                 mDatabase.child("stores").child(Local_Cache_Store.getShopName()).child("ownerDetail").child("email").setValue(edt_Email.getText().toString());
                                 mDatabase.child("stores").child(Local_Cache_Store.getShopName()).child("ownerDetail").child("mName").setValue(edt_Name.getText().toString());
                                 mDatabase.child("stores").child(Local_Cache_Store.getShopName()).child("ownerDetail").child("phoneNumber").setValue(edt_PhoneNumber.getText().toString());
-                                mDatabase.child("stores").child(Local_Cache_Store.getShopName()).child("shopAdress").setValue(edt_PhoneNumber.getText().toString());
+                                mDatabase.child("stores").child(Local_Cache_Store.getShopName()).child("shopAdress").setValue(edt_Address.getText().toString());
                                 //cap nhat local
                                 Local_Cache_Store.setOwnerDetail(new User(edt_Email.getText().toString(),edt_Name.getText().toString(),edt_PhoneNumber.getText().toString()));
+                                Local_Cache_Store.shopAdress=edt_Address.getText().toString();
                                 bundle.clear();
                                 User user=new User(edt_Email.getText().toString(),edt_Name.getText().toString(),edt_PhoneNumber.getText().toString());
                                 bundle.putSerializable("user",user);
@@ -131,6 +137,12 @@ public class Account extends AppCompatActivity {
 
 
                                 img_Yes.setVisibility(View.INVISIBLE);
+                                } else{
+                                    phoneWrapper.setErrorTextAppearance(R.style.error_appearance);
+                                    phoneWrapper.setError("Vui lòng nhập đúng SĐT");
+
+                                }
+
                             }
                         })
                         .show();
@@ -206,4 +218,8 @@ public class Account extends AppCompatActivity {
 
 
     }
+    boolean checkValidPhoneNumber(String phone){
+        return android.util.Patterns.PHONE.matcher(phone).matches();
+    }
+
 }

@@ -15,6 +15,7 @@ import com.example.asus.login_screen.main.more.AddProduct.AddType.AddType;
 import com.example.asus.login_screen.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterSpinner extends ArrayAdapter<String> {
 
@@ -42,6 +43,12 @@ public class AdapterSpinner extends ArrayAdapter<String> {
     public @NonNull View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         return createItemView(position, convertView, parent);
+
+    }
+    public void setData(List<String> tmp){
+        arr.clear();
+        arr.addAll(tmp);
+        notifyDataSetChanged();
 
     }
 

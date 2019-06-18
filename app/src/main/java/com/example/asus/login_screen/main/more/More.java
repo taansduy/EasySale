@@ -112,13 +112,15 @@ public class More extends android.support.v4.app.Fragment {
                 }
                 for(Product product : productList)
                 {
+
                     if(product.getName().toLowerCase().contains(userInput)||product.getIdType().equals(tmpType) )
                     {
                         newList.add(product);
                     }
+
+
                 }
                 myAdapter.updateList(newList);
-                recyclerView.setAdapter(myAdapter);
 
             }
 
