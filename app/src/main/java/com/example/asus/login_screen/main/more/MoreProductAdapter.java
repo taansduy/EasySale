@@ -91,7 +91,7 @@ public class MoreProductAdapter extends RecyclerView.Adapter<MoreProductAdapter.
                         .show();
             }
         });
-        productViewHolder.tv_Price.setText(String.valueOf(listProduct.get(i).getCostPrice()));
+        productViewHolder.tv_Price.setText(String.valueOf(listProduct.get(i).getCostPrice()).replaceAll(".0",""));
         productViewHolder.tv_Count.setText(String.valueOf(listProduct.get(i).getQuantity()));
         productViewHolder.tv_Name.setText(listProduct.get(i).getName());
         for(TypeOfProduct tmp : Local_Cache_Store.getListOfProductType().values()){

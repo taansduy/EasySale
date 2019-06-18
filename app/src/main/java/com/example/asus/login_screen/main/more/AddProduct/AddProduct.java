@@ -297,11 +297,11 @@ public class AddProduct extends AppCompatActivity {
                     spi_Type.setSelection(spinnerPosition);
                 }
                 edt_Name.setText(tmp.getName());
-                edt_CostPrice.setText(String.valueOf(tmp.getCostPrice()));
+                edt_CostPrice.setText(String.valueOf(tmp.getCostPrice()).replaceAll(".0",""));
                 edt_Count.setText(String.valueOf(tmp.getQuantity()));
                 edt_Description.setText(tmp.getDescription());
                 edt_Manufacturer.setText(tmp.getManufacturer());
-                edt_SalePrice.setText(String.valueOf(tmp.getSalePrice()));
+                edt_SalePrice.setText(String.valueOf(tmp.getSalePrice()).replaceAll(".0",""));
                 arrImageofEditProduct=new ArrayList<String>(tmp.getListImage().values());
                 if (arrImageofEditProduct.get(0)!=null){
                     Glide.with(this).load(arrImageofEditProduct.get(0)).into(img_1);
@@ -352,48 +352,47 @@ public class AddProduct extends AppCompatActivity {
                 }
                 if (edt_Count.getText().toString().equals("")||(isInteger(edt_Count.getText().toString())==false)) {
                     til_Count.setErrorTextAppearance(R.style.error_appearance);
-                    til_Count.setError("Vui lòng nhập Số");
+                    til_Count.setError("Vui lòng nhập đúng Số");
                 } else {
                     til_Count.setError(null);
                 }
-                if (edt_CostPrice.getText().toString().equals("")) {
-                    til_CostPrice.setErrorTextAppearance(R.style.error_appearance);
-                    til_CostPrice.setError("Vui lòng nhập Giá vốn");
-                } else {
-                    til_CostPrice.setError(null);
-                }
+
                 if (edt_Manufacturer.getText().toString().equals("")) {
                     til__Manufacturer.setErrorTextAppearance(R.style.error_appearance);
                     til__Manufacturer.setError("Vui lòng nhập Hãng");
                 } else {
                     til__Manufacturer.setError(null);
                 }
-                if (edt_SalePrice.getText().toString().equals("")) {
-                    til_SalePrice.setErrorTextAppearance(R.style.error_appearance);
-                    til_SalePrice.setError("Vui lòng nhập Giá bán");
-                } else {
-                    til_SalePrice.setError(null);
-                }
+
                 if (edt_Description.getText().toString().equals("")) {
                     til_Description.setErrorTextAppearance(R.style.error_appearance);
                     til_Description.setError("Vui lòng nhập Mô tả");
                 } else {
                     til_Description.setError(null);
                 }
-                if(edt_SalePrice.getText().toString().equals("")||edt_CostPrice.getText().toString().equals("")){
-                    til_CostPrice.setError("Giá bán không phù hợp");
-                    til_SalePrice.setError("Giá bán không phù hợp");
-                }
-                else{
-                    if (Double.parseDouble(edt_CostPrice.getText().toString()) > Double.parseDouble(edt_SalePrice.getText().toString())) {
-                        til_SalePrice.setErrorTextAppearance(R.style.error_appearance);
+                if (edt_SalePrice.getText().toString().equals("")||(isLong(edt_SalePrice.getText().toString())==false)) {
+                    til_SalePrice.setErrorTextAppearance(R.style.error_appearance);
+                    til_SalePrice.setError("Vui lòng nhập đúng Giá bán");
+                }else {
+                    if (edt_CostPrice.getText().toString().equals("") || (isLong(edt_CostPrice.getText().toString()) == false)) {
                         til_CostPrice.setErrorTextAppearance(R.style.error_appearance);
-
-                        til_CostPrice.setError("Giá bán không phù hợp");
-                        til_SalePrice.setError("Giá bán không phù hợp");
+                        til_CostPrice.setError("Vui lòng nhập đúng Giá vốn");
                     } else {
-                        til_SalePrice.setError(null);
-                        til_CostPrice.setError(null);
+                        if (edt_SalePrice.getText().toString().equals("") || edt_CostPrice.getText().toString().equals("")) {
+                            til_CostPrice.setError("Vui lòng nhập đúng Giá vốn");
+                            til_SalePrice.setError("Vui lòng nhập đúng Giá bán");
+                        } else {
+                            if (Double.parseDouble(edt_CostPrice.getText().toString()) > Double.parseDouble(edt_SalePrice.getText().toString())) {
+                                til_SalePrice.setErrorTextAppearance(R.style.error_appearance);
+                                til_CostPrice.setErrorTextAppearance(R.style.error_appearance);
+
+                                til_CostPrice.setError("Vui lòng nhập đúng Giá vốn");
+                                til_SalePrice.setError("Vui lòng nhập đúng Giá bán");
+                            } else {
+                                til_SalePrice.setError(null);
+                                til_CostPrice.setError(null);
+                            }
+                        }
                     }
                 }
 
@@ -403,6 +402,8 @@ public class AddProduct extends AppCompatActivity {
                         && !edt_SalePrice.getText().toString().equals("")
                         && !edt_Name.getText().toString().equals("")
                         && isInteger(edt_Count.getText().toString())
+                        && isLong(edt_SalePrice.getText().toString())
+                        && isLong(edt_CostPrice.getText().toString())
                         && !edt_Manufacturer.getText().toString().equals("")
                         && !(Double.parseDouble(edt_CostPrice.getText().toString()) > Double.parseDouble(edt_SalePrice.getText().toString()))) {
                     if (null != tmp) {
@@ -441,10 +442,10 @@ public class AddProduct extends AppCompatActivity {
 
                     }
                     //up hinh cua san pham & add to listImage on database
-
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(AddProduct.this, AlertDialog.THEME_HOLO_LIGHT);
                     builder1.setMessage("Bạn đã thêm sản phẩm thành công!");
                     builder1.setCancelable(true);
+                    builder1.setCancelable(false);
                     builder1.setPositiveButton(
                             "Ok",
                             new DialogInterface.OnClickListener() {
@@ -480,6 +481,18 @@ public class AddProduct extends AppCompatActivity {
     public  boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
+        } catch(NumberFormatException e) {
+            return false;
+        } catch(NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
+
+    public  boolean isLong(String s) {
+        try {
+            Long.parseLong(s);
         } catch(NumberFormatException e) {
             return false;
         } catch(NullPointerException e) {

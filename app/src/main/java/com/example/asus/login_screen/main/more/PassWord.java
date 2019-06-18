@@ -96,7 +96,7 @@ public class PassWord extends AppCompatActivity {
                                                 if (task.isSuccessful()) {
                                                     AlertDialog.Builder builder1 = new AlertDialog.Builder(PassWord.this,AlertDialog.THEME_HOLO_LIGHT);
                                                     builder1.setMessage("Bạn đã thay đỗi mật khẩu thành công!");
-                                                    builder1.setCancelable(true);
+                                                    builder1.setCancelable(false);
                                                     builder1.setPositiveButton(
                                                             "Ok",
                                                             new DialogInterface.OnClickListener() {

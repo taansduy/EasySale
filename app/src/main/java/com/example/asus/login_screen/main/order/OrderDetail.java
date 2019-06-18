@@ -50,6 +50,5 @@ public class OrderDetail extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(OrderDetail.this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
-        Toast.makeText(this,bill.getId().toString(),Toast.LENGTH_SHORT).show();
     }
 }

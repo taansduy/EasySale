@@ -244,6 +244,7 @@ public class More extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        edt_Search.setText("");
         fetchData();
     }
 }
