@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.asus.login_screen.R;
 import com.example.asus.login_screen.main.more.AddProduct.AddType.AddType;
 import com.example.asus.login_screen.model.Local_Cache_Store;
@@ -68,6 +70,8 @@ public class AddProduct extends AppCompatActivity {
 
     Uri[] mImageUri = new Uri[4];
 
+    String tmpType;
+
     int numberImg;
 
     Bundle bundle = new Bundle();
@@ -94,6 +98,8 @@ public class AddProduct extends AppCompatActivity {
     //xu ly edit thong tin
     Product tmp;
 
+    String compareValue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +113,7 @@ public class AddProduct extends AppCompatActivity {
         cameraImg2 = new File(getExternalStorageDirectory(), "temp2.png");
         cameraImg3 = new File(getExternalStorageDirectory(), "temp3.png");
         cameraImg4 = new File(getExternalStorageDirectory(), "temp4.png");
+        cameraFile = new File(getExternalStorageDirectory(), "temp.png");
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference("stores/" + Local_Cache_Store.getShopName() + "/listOfProductType");
@@ -158,7 +165,7 @@ public class AddProduct extends AppCompatActivity {
             public void onClick(View v) {
                 img_3.setImageResource(R.drawable.camera);
                 btn_X3.setVisibility(View.INVISIBLE);
-                mImageUri[3] = null;
+                mImageUri[2] = null;
             }
         });
         btn_X4.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +173,7 @@ public class AddProduct extends AppCompatActivity {
             public void onClick(View v) {
                 img_4.setImageResource(R.drawable.camera);
                 btn_X4.setVisibility(View.INVISIBLE);
-                mImageUri[4] = null;
+                mImageUri[3] = null;
             }
         });
         //******************************************************//
@@ -174,6 +181,9 @@ public class AddProduct extends AppCompatActivity {
         spi_Type = findViewById(R.id.spinner);
         img_Back = findViewById(R.id.Back);
         img_Ok = findViewById(R.id.Ok);
+
+
+
         img_1 = findViewById(R.id.Image1);
         img_2 = findViewById(R.id.Image2);
         img_3 = findViewById(R.id.Image3);
@@ -206,48 +216,86 @@ public class AddProduct extends AppCompatActivity {
                 openFileChooser();
             }
         });
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                arrSpi_Type.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    TypeOfProduct post = postSnapshot.getValue(TypeOfProduct.class);
-                    assert post != null;
-                    Log.d("Get Data", post.getType());
-                    arrSpi_Type.add(post.getType());
-                }
-                if (arrSpi_Type.size() == 0) {
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(AddProduct.this, AlertDialog.THEME_HOLO_LIGHT);
-                    builder1.setMessage("Bạn cần thêm loại sản phẩm!");
-                    builder1.setCancelable(true);
-                    builder1.setPositiveButton(
-                            "Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                    Intent intent = new Intent(AddProduct.this, AddType.class);
-                                    intent.putStringArrayListExtra("listtype", null);
-                                    startActivity(intent);
-                                }
-                            });
-                    AlertDialog alert11 = builder1.create();
-                    alert11.show();
+        arrSpi_Type.clear();
+        for (TypeOfProduct postSnapshot : Local_Cache_Store.getListOfProductType().values()) {
+            arrSpi_Type.add(postSnapshot.getType());
+        }
+        if (arrSpi_Type.size() == 0) {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(AddProduct.this, AlertDialog.THEME_HOLO_LIGHT);
+            builder1.setMessage("Bạn cần thêm loại sản phẩm!");
+            builder1.setCancelable(true);
+            builder1.setPositiveButton(
+                    "Ok",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            Intent intent = new Intent(AddProduct.this, AddType.class);
+                            intent.putStringArrayListExtra("listtype", null);
+                            startActivity(intent);
+                        }
+                    });
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
 
-                }
-                adapter = new AdapterSpinner(AddProduct.this, R.layout.spinner_item, arrSpi_Type);
-                spi_Type.setAdapter(adapter);
+        }
+        adapter = new AdapterSpinner(AddProduct.this, R.layout.spinner_item, arrSpi_Type);
+        spi_Type.setAdapter(adapter);
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+//        mDatabase.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                arrSpi_Type.clear();
+//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                    TypeOfProduct post = postSnapshot.getValue(TypeOfProduct.class);
+//                    assert post != null;
+//                    Log.d("Get Data", post.getType());
+//                    arrSpi_Type.add(post.getType());
+//                }
+//                if (arrSpi_Type.size() == 0) {
+//                    AlertDialog.Builder builder1 = new AlertDialog.Builder(AddProduct.this, AlertDialog.THEME_HOLO_LIGHT);
+//                    builder1.setMessage("Bạn cần thêm loại sản phẩm!");
+//                    builder1.setCancelable(true);
+//                    builder1.setPositiveButton(
+//                            "Ok",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    dialog.cancel();
+//                                    Intent intent = new Intent(AddProduct.this, AddType.class);
+//                                    intent.putStringArrayListExtra("listtype", null);
+//                                    startActivity(intent);
+//                                }
+//                            });
+//                    AlertDialog alert11 = builder1.create();
+//                    alert11.show();
+//
+//                }
+//                adapter = new AdapterSpinner(AddProduct.this, R.layout.spinner_item, arrSpi_Type);
+//                spi_Type.setAdapter(adapter);
+//
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
         try {
             if (bundle != null) {
                 tmp = (Product) getIntent().getExtras().getSerializable("bundle");
                 assert tmp != null;
+
+                for(TypeOfProduct tmp1 : Local_Cache_Store.getListOfProductType().values()){
+                    if (tmp1.getID().equals(tmp.getIdType())){
+                       compareValue=tmp1.getType();
+                        break;
+                    }
+                }
+                if (compareValue != null) {
+                    int spinnerPosition = adapter.getPosition(compareValue);
+                    spi_Type.setSelection(spinnerPosition);
+                }
                 edt_Name.setText(tmp.getName());
                 edt_CostPrice.setText(String.valueOf(tmp.getCostPrice()));
                 edt_Count.setText(String.valueOf(tmp.getQuantity()));
@@ -302,7 +350,7 @@ public class AddProduct extends AppCompatActivity {
                 } else {
                     til_Name.setError(null);
                 }
-                if (edt_Count.getText().toString().equals("")) {
+                if (edt_Count.getText().toString().equals("")||(isInteger(edt_Count.getText().toString())==false)) {
                     til_Count.setErrorTextAppearance(R.style.error_appearance);
                     til_Count.setError("Vui lòng nhập Số");
                 } else {
@@ -354,6 +402,7 @@ public class AddProduct extends AppCompatActivity {
                         && !edt_Description.getText().toString().equals("")
                         && !edt_SalePrice.getText().toString().equals("")
                         && !edt_Name.getText().toString().equals("")
+                        && isInteger(edt_Count.getText().toString())
                         && !edt_Manufacturer.getText().toString().equals("")
                         && !(Double.parseDouble(edt_CostPrice.getText().toString()) > Double.parseDouble(edt_SalePrice.getText().toString()))) {
                     if (null != tmp) {
@@ -382,44 +431,6 @@ public class AddProduct extends AppCompatActivity {
                             .child(idType)
                             .child("productList")
                             .child(id).setValue(product);
-
-//                    mDatabase.orderByChild("type").equalTo(spi_Type.getSelectedItem().toString()).addChildEventListener(new ChildEventListener() {
-//                        @Override
-//                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                            idType = dataSnapshot.getKey();
-//                            id = mDatabase.child(dataSnapshot.getKey()).child("productList").push().getKey();
-//                            Product product = new Product(id, idType, Integer.parseInt(edt_Count.getText().toString()),
-//                                    Double.parseDouble(edt_CostPrice.getText().toString()),
-//                                    edt_Manufacturer.getText().toString(),
-//                                    Double.parseDouble(edt_SalePrice.getText().toString()),
-//                                    edt_Name.getText().toString(),
-//                                    null, edt_Description.getText().toString());
-//                            Log.d("DDDD", product.getName());
-//                            mDatabase.child(dataSnapshot.getKey()).child("productList").child(id).setValue(product);
-//
-//
-//                        }
-//
-//                        @Override
-//                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                        }
-//                    });
                     int i = 0;
                     while (i < 4) {
                         if (mUploadTask != null && mUploadTask.isInProgress()) {
@@ -466,6 +477,17 @@ public class AddProduct extends AppCompatActivity {
         super.onResume();
         Log.d("DDDD", "Resume");
     }
+    public  boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch(NumberFormatException e) {
+            return false;
+        } catch(NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
 
     private void openFileChooser() {
         Intent intentGallery = new Intent();
@@ -473,7 +495,6 @@ public class AddProduct extends AppCompatActivity {
         intentGallery.setAction(Intent.ACTION_GET_CONTENT);
 
         Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraFile = new File(getExternalStorageDirectory(), "temp.jpg");
         intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile));
         Intent chooser = Intent.createChooser(intentGallery, "Choice");
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{intentCamera});
@@ -521,8 +542,13 @@ public class AddProduct extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        Glide.with(this).load(cameraImg1).into(img_1);
+
+
                         mImageUri[numberImg - 1] = Uri.fromFile(cameraImg1);
+                        Glide.with(this).load( cameraImg1)
+                                .skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .into(img_1);
                         btn_X1.setVisibility(View.VISIBLE);
                         break;
                     case 2:
@@ -533,7 +559,10 @@ public class AddProduct extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        Glide.with(this).load(cameraImg2).into(img_2);
+                        Glide.with(this).load(cameraImg2)
+                                .skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .into(img_2);
                         mImageUri[numberImg - 1] = Uri.fromFile(cameraImg2);
                         btn_X2.setVisibility(View.VISIBLE);
                         break;
@@ -545,7 +574,10 @@ public class AddProduct extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        Glide.with(this).load(cameraImg3).into(img_3);
+                        Glide.with(this).load(cameraImg3)
+                                .skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .into(img_3);
                         mImageUri[numberImg - 1] = Uri.fromFile(cameraImg3);
                         btn_X3.setVisibility(View.VISIBLE);
                         break;
@@ -557,7 +589,10 @@ public class AddProduct extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        Glide.with(this).load(cameraImg4).into(img_4);
+                        Glide.with(this).load(cameraImg4)
+                                .skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .into(img_4);
                         mImageUri[numberImg - 1] = Uri.fromFile(cameraImg4);
                         btn_X4.setVisibility(View.VISIBLE);
                         break;
@@ -597,7 +632,7 @@ public class AddProduct extends AppCompatActivity {
             if(mImageUri[pos].getPath().contains("easysales")) {
                 FirebaseDatabase.getInstance()
                         .getReference("stores/" + Local_Cache_Store.getShopName() + "/listOfProductType")
-                        .child(tmp.getIdType())
+                        .child(idType)
                         .child("productList")
                         .child(id)
                         .child("listImage")
