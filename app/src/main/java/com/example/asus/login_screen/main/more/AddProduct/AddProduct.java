@@ -240,47 +240,6 @@ public class AddProduct extends AppCompatActivity {
         }
         adapter = new AdapterSpinner(AddProduct.this, R.layout.spinner_item, arrSpi_Type);
         spi_Type.setAdapter(adapter);
-
-//        mDatabase.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                arrSpi_Type.clear();
-//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                    TypeOfProduct post = postSnapshot.getValue(TypeOfProduct.class);
-//                    assert post != null;
-//                    Log.d("Get Data", post.getType());
-//                    arrSpi_Type.add(post.getType());
-//                }
-//                if (arrSpi_Type.size() == 0) {
-//                    AlertDialog.Builder builder1 = new AlertDialog.Builder(AddProduct.this, AlertDialog.THEME_HOLO_LIGHT);
-//                    builder1.setMessage("Bạn cần thêm loại sản phẩm!");
-//                    builder1.setCancelable(true);
-//                    builder1.setPositiveButton(
-//                            "Ok",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    dialog.cancel();
-//                                    Intent intent = new Intent(AddProduct.this, AddType.class);
-//                                    intent.putStringArrayListExtra("listtype", null);
-//                                    startActivity(intent);
-//                                }
-//                            });
-//                    AlertDialog alert11 = builder1.create();
-//                    alert11.show();
-//
-//                }
-//                adapter = new AdapterSpinner(AddProduct.this, R.layout.spinner_item, arrSpi_Type);
-//                spi_Type.setAdapter(adapter);
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
         try {
             if (bundle != null) {
                 tmp = (Product) getIntent().getExtras().getSerializable("bundle");
@@ -474,7 +433,6 @@ public class AddProduct extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
         super.onResume();
         Log.d("DDDD", "Resume");
     }

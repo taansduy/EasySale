@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.asus.login_screen.model.Local_Cache_Store;
 import com.example.asus.login_screen.model.TypeOfProduct;
@@ -41,12 +42,16 @@ public class AddType extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Kiem tra co ton tai r` post
-                if (listtype==null) {
+                if(edt_Name.getText().toString().equals("")){
+                    Toast.makeText(AddType.this,"Loại sản phẩm không hợp lệ",Toast.LENGTH_SHORT).show();
+                }
+                else if (listtype==null) {
                     final DatabaseReference mDatabase;
                     mDatabase = FirebaseDatabase.getInstance().getReference("stores/"+ Local_Cache_Store.shopName);
                     String id= mDatabase.child("listOfProductType").push().getKey();
                     assert id != null;
                     mDatabase.child("listOfProductType").child(id).setValue(new TypeOfProduct(id,edt_Name.getText().toString(),null));
+                    onBackPressed();
                 }
                 else if(!listtype.contains(edt_Name.getText().toString())) {
                     final DatabaseReference mDatabase;
@@ -54,8 +59,13 @@ public class AddType extends AppCompatActivity {
                     String id= mDatabase.child("listOfProductType").push().getKey();
                     assert id != null;
                     mDatabase.child("listOfProductType").child(id).setValue(new TypeOfProduct(id,edt_Name.getText().toString(),null));
+                    onBackPressed();
                 }
-                onBackPressed();
+
+                else if (listtype.contains(edt_Name.getText().toString())){
+                    Toast.makeText(AddType.this,"Loại sản phẩm đã tồn tại",Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });

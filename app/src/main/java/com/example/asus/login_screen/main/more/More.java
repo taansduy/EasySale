@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.asus.login_screen.main.more.AddProduct.AddProduct;
+import com.example.asus.login_screen.main.more.AddProduct.AddType.AddType;
 import com.example.asus.login_screen.model.Local_Cache_Store;
 import com.example.asus.login_screen.MainActivity;
 import com.example.asus.login_screen.Main_Screen;
@@ -48,17 +49,19 @@ import static android.content.Context.ACTIVITY_SERVICE;
 @SuppressLint("ValidFragment")
 public class More extends android.support.v4.app.Fragment {
     Main_Screen main_screen;
-    SwipeRefreshLayout swipeRefreshLayout;
-    LinearLayout ln_ContentMore,ln_ListProduct;
+    SwipeRefreshLayout swipeRefreshLayout,swipeRefreshLayout1;
+    LinearLayout ln_ContentMore,ln_ListProduct,ln_ListType;
     Button button;
     TextView title,tv_Name,tv_Email,tv_title;
     EditText edt_Search;
     Toolbar toolbar;
-    LinearLayout lnAccount,lnProduct,lnCustomer,lnLogout;
-    ImageView img_Back,img_Add;
-    RecyclerView recyclerView;
+    LinearLayout lnAccount,lnProduct,lnType,lnLogout;
+    ImageView img_Back,img_Add,img_AddType,img_BackType;
+    RecyclerView recyclerView,recyclerView1;
     List<Product> productList;
+    List<TypeOfProduct> typeList;
     MoreProductAdapter myAdapter;
+    MoreTypeAdapter myAdapter1;
     DatabaseReference mDatabase;
     StorageReference mStorage;
     public More(Context context) {
@@ -84,12 +87,18 @@ public class More extends android.support.v4.app.Fragment {
         lnAccount=view.findViewById(R.id.account);
         lnProduct=view.findViewById(R.id.product);
         lnLogout= view.findViewById(R.id.logout);
+        lnType=view.findViewById(R.id.type);
         ln_ContentMore= view .findViewById(R.id.lnContentMore);
         ln_ListProduct= view.findViewById(R.id.lnListproduct);
+        ln_ListType=view.findViewById(R.id.lnListType);
         swipeRefreshLayout=view.findViewById(R.id.refresh);
+        swipeRefreshLayout1=view.findViewById(R.id.refreshType);
         img_Back=view.findViewById(R.id.Back);
+        img_BackType=view.findViewById(R.id.BackType);
         img_Add=view.findViewById(R.id.Add);
+        img_AddType=view.findViewById(R.id.AddType);
         recyclerView=view.findViewById(R.id.listProduct);
+        recyclerView1=view.findViewById(R.id.listType);
         toolbar=view.findViewById(R.id.toolbar2);
         edt_Search=view.findViewById(R.id.search);
         edt_Search.addTextChangedListener(new TextWatcher() {
@@ -130,14 +139,26 @@ public class More extends android.support.v4.app.Fragment {
             }
         });
         productList= new ArrayList<>();
+        typeList=new ArrayList<>();
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this.getContext());
+        LinearLayoutManager linearLayoutManager1=new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView1.setLayoutManager(linearLayoutManager1);
 
         //*****************Set onClick*********************//
         img_Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ln_ListProduct.setVisibility(View.INVISIBLE);
+                ln_ListType.setVisibility(View.INVISIBLE);
+                ln_ContentMore.setVisibility(View.VISIBLE);
+            }
+        });
+        img_BackType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ln_ListProduct.setVisibility(View.INVISIBLE);
+                ln_ListType.setVisibility(View.INVISIBLE);
                 ln_ContentMore.setVisibility(View.VISIBLE);
             }
         });
@@ -148,6 +169,18 @@ public class More extends android.support.v4.app.Fragment {
                 startActivity(intent);
             }
         });
+        img_AddType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AddType.class);
+                ArrayList<String> tmp=new ArrayList<>();
+                for(int i =0;i<typeList.size();i++){
+                    tmp.add(typeList.get(i).getType());
+                }
+                intent.putStringArrayListExtra("listtype", tmp);
+                startActivity(intent);
+            }
+        });
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -155,12 +188,19 @@ public class More extends android.support.v4.app.Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+        swipeRefreshLayout1.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchData1();
+                swipeRefreshLayout1.setRefreshing(false);
+
+            }
+        });
         //*************************************************//
         mDatabase = FirebaseDatabase.getInstance().getReference("stores/"+ Local_Cache_Store.getShopName() +"/listOfProductType");
         mStorage =  FirebaseStorage.getInstance().getReference("uploads/"+Local_Cache_Store.getShopName()+"/");
         myAdapter=new MoreProductAdapter(this.getContext(), (ArrayList<Product>) productList,mDatabase,mStorage);
-
-
+        myAdapter1=new MoreTypeAdapter(this.getContext(),(ArrayList<TypeOfProduct>)typeList,mDatabase);
 
         // set onclick for Linear views
         lnAccount.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +215,15 @@ public class More extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 ln_ListProduct.setVisibility(View.VISIBLE);
+                ln_ListType.setVisibility(View.INVISIBLE);
+                ln_ContentMore.setVisibility(View.INVISIBLE);
+            }
+        });
+        lnType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ln_ListType.setVisibility(View.VISIBLE);
+                ln_ListProduct.setVisibility(View.INVISIBLE);
                 ln_ContentMore.setVisibility(View.INVISIBLE);
             }
         });
@@ -241,10 +290,34 @@ public class More extends android.support.v4.app.Fragment {
         recyclerView.setAdapter(myAdapter);
     }
 
+    public void fetchData1()
+    {
+        final DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("stores").child(Local_Cache_Store.getShopName()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Store store = dataSnapshot.getValue(Store.class);
+                assert store != null;
+                Local_Cache_Store.setListOfProductType(store.getListOfProductType());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        typeList.clear();
+        for (TypeOfProduct type: Local_Cache_Store.getListOfProductType().values()) {
+            typeList.add(type);
+        }
+        recyclerView1.setAdapter(myAdapter1);
+    }
     @Override
     public void onResume() {
         super.onResume();
         edt_Search.setText("");
         fetchData();
+        fetchData1();
     }
 }
