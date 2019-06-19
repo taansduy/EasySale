@@ -7,9 +7,9 @@ public class Product implements Serializable {
     private String id;
     private String idType;
     private int quantity;
-    private double costPrice;
+    private Long costPrice;
     private String manufacturer;
-    private double salePrice;
+    private Long salePrice;
     private String name;
     private HashMap<String,String> listImage;
     private String description;
@@ -17,7 +17,7 @@ public class Product implements Serializable {
 
 
 
-    public Product(String id, String idType, int quantity, double costPrice, String manufacturer, double salePrice, String name, HashMap<String,String> listImage, String description) {
+    public Product(String id, String idType, int quantity, Long costPrice, String manufacturer, Long salePrice, String name, HashMap<String,String> listImage, String description) {
         this.id = id;
         this.idType = idType;
         this.quantity = quantity;
@@ -68,11 +68,11 @@ public class Product implements Serializable {
         this.quantity = quantity;
     }
 
-    public double getCostPrice() {
+    public Long getCostPrice() {
         return costPrice;
     }
 
-    public void setCostPrice(double costPrice) {
+    public void setCostPrice(Long costPrice) {
         this.costPrice = costPrice;
     }
 
@@ -84,11 +84,11 @@ public class Product implements Serializable {
         this.manufacturer = manufacturer;
     }
 
-    public double getSalePrice() {
+    public Long getSalePrice() {
         return salePrice;
     }
 
-    public void setSalePrice(double salePrice) {
+    public void setSalePrice(Long salePrice) {
         this.salePrice = salePrice;
     }
 

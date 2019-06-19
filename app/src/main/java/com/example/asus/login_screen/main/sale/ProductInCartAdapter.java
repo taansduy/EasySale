@@ -46,7 +46,7 @@ public class ProductInCartAdapter extends RecyclerView.Adapter{
         final Product product=productOrderedList.get(i);
         final ProductInCartAdapter.ProductViewHolder temp1=(ProductInCartAdapter.ProductViewHolder)viewHolder;
         ((ProductInCartAdapter.ProductViewHolder)viewHolder).tv_name.setText(product.getName());
-        ((ProductInCartAdapter.ProductViewHolder)viewHolder).tv_price.setText(String.format("%1$,.0f",product.getSalePrice()));
+        ((ProductInCartAdapter.ProductViewHolder)viewHolder).tv_price.setText(String.format("%,d",product.getSalePrice()));
         ((ProductInCartAdapter.ProductViewHolder)viewHolder).tv_amount.setText(String.valueOf(product.getQuantity()));
         ((ProductInCartAdapter.ProductViewHolder)viewHolder).tv_inc.setOnClickListener(new View.OnClickListener() {
             @Override

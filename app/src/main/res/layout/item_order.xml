@@ -43,9 +43,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/Tongtien"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="240dp"
+        android:layout_marginLeft="180dp"
         android:layout_marginTop="44dp"
         android:text="Tổng tiền:"
         android:textColor="#123"
@@ -57,11 +58,11 @@
         android:id="@+id/total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="328dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="44dp"
         android:text="12312321"
         android:textColor="#123"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/Tongtien"
         app:layout_constraintTop_toTopOf="parent" />
     <View
         app:layout_constraintBottom_toBottomOf="parent"
