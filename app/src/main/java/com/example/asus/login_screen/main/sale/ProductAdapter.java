@@ -127,7 +127,7 @@ public class ProductAdapter extends RecyclerView.Adapter {
                 final ProductViewHolder temp = (ProductViewHolder) viewHolder;
 
                 ((ProductViewHolder) viewHolder).tv_name.setText(product.getName());
-                ((ProductViewHolder) viewHolder).tv_price.setText(String.format("%,d", product.getCostPrice()));
+                ((ProductViewHolder) viewHolder).tv_price.setText(String.format("%,d", product.getSalePrice()));
                 if (product.getListImage().size() != 0) {
                     RequestOptions options = new RequestOptions()
                             .centerCrop()

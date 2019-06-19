@@ -36,7 +36,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         ((DetailViewHolder)viewHolder).tv_name.setText(listItem.get(i).getName());
-        ((DetailViewHolder)viewHolder).tv_price.setText(String.format("%1$,.0f", listItem.get(i).getSalePrice()));
+        ((DetailViewHolder)viewHolder).tv_price.setText(String.format("%,d", listItem.get(i).getSalePrice()));
         ((DetailViewHolder)viewHolder).tv_quantity.setText(String.valueOf(listItem.get(i).getQuantity()));
     }
 
