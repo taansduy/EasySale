@@ -256,29 +256,45 @@ public class AddProduct extends AppCompatActivity {
                     spi_Type.setSelection(spinnerPosition);
                 }
                 edt_Name.setText(tmp.getName());
-                edt_CostPrice.setText(String.valueOf(tmp.getCostPrice()).replaceAll(".0",""));
+                edt_CostPrice.setText(String.valueOf(tmp.getCostPrice()).replace(".0",""));
                 edt_Count.setText(String.valueOf(tmp.getQuantity()));
                 edt_Description.setText(tmp.getDescription());
                 edt_Manufacturer.setText(tmp.getManufacturer());
-                edt_SalePrice.setText(String.valueOf(tmp.getSalePrice()).replaceAll(".0",""));
+                edt_SalePrice.setText(String.valueOf(tmp.getSalePrice()).replace(".0",""));
                 arrImageofEditProduct=new ArrayList<String>(tmp.getListImage().values());
                 if (arrImageofEditProduct.get(0)!=null){
-                    Glide.with(this).load(arrImageofEditProduct.get(0)).into(img_1);
+                    Glide.with(this)
+                            .load(arrImageofEditProduct.get(0))
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(img_1);
                     mImageUri[0]= Uri.parse(arrImageofEditProduct.get(0));
                     btn_X1.setVisibility(View.VISIBLE);
                 }
                 if (arrImageofEditProduct.get(1)!=null){
-                    Glide.with(this).load(arrImageofEditProduct.get(1)).into(img_2);
+                    Glide.with(this)
+                            .load(arrImageofEditProduct.get(1))
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(img_2);
                     mImageUri[1]= Uri.parse(arrImageofEditProduct.get(1));
                     btn_X2.setVisibility(View.VISIBLE);
                 }
                 if (arrImageofEditProduct.get(2)!=null){
-                    Glide.with(this).load(arrImageofEditProduct.get(2)).into(img_3);
+                    Glide.with(this)
+                            .load(arrImageofEditProduct.get(2))
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(img_3);
                     mImageUri[2]= Uri.parse(arrImageofEditProduct.get(2));
                     btn_X3.setVisibility(View.VISIBLE);
                 }
                 if (arrImageofEditProduct.get(3)!=null){
-                    Glide.with(this).load(arrImageofEditProduct.get(3)).into(img_4);
+                    Glide.with(this)
+                            .load(arrImageofEditProduct.get(3))
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(img_4);
                     mImageUri[3]= Uri.parse(arrImageofEditProduct.get(3));
                     btn_X4.setVisibility(View.VISIBLE);
                 }
@@ -341,7 +357,7 @@ public class AddProduct extends AppCompatActivity {
                             til_CostPrice.setError("Vui lòng nhập đúng Giá vốn");
                             til_SalePrice.setError("Vui lòng nhập đúng Giá bán");
                         } else {
-                            if (Double.parseDouble(edt_CostPrice.getText().toString()) > Double.parseDouble(edt_SalePrice.getText().toString())) {
+                            if (Long.parseLong(edt_CostPrice.getText().toString()) > Long.parseLong(edt_SalePrice.getText().toString())) {
                                 til_SalePrice.setErrorTextAppearance(R.style.error_appearance);
                                 til_CostPrice.setErrorTextAppearance(R.style.error_appearance);
 
@@ -364,7 +380,7 @@ public class AddProduct extends AppCompatActivity {
                         && isLong(edt_SalePrice.getText().toString())
                         && isLong(edt_CostPrice.getText().toString())
                         && !edt_Manufacturer.getText().toString().equals("")
-                        && !(Double.parseDouble(edt_CostPrice.getText().toString()) > Double.parseDouble(edt_SalePrice.getText().toString()))) {
+                        && !(Long.parseLong(edt_CostPrice.getText().toString()) > Long.parseLong(edt_SalePrice.getText().toString()))) {
                     if (null != tmp) {
                         mDatabase.child(tmp.getIdType()).child("productList").child(tmp.getId()).removeValue();
                     }
@@ -381,9 +397,9 @@ public class AddProduct extends AppCompatActivity {
                             .child("productList")
                             .push().getKey();
                     Product product = new Product(id, idType, Integer.parseInt(edt_Count.getText().toString()),
-                            Double.parseDouble(edt_CostPrice.getText().toString()),
+                            Long.parseLong(edt_CostPrice.getText().toString()),
                             edt_Manufacturer.getText().toString(),
-                            Double.parseDouble(edt_SalePrice.getText().toString()),
+                            Long.parseLong(edt_SalePrice.getText().toString()),
                             edt_Name.getText().toString(),
                             null, edt_Description.getText().toString());
                     FirebaseDatabase.getInstance()
@@ -481,22 +497,34 @@ public class AddProduct extends AppCompatActivity {
             if (data != null) {
                 switch (numberImg) {
                     case 1:
-                        Glide.with(this).load(data.getData()).into(img_1);
+                        Glide.with(this).load(data.getData())
+                                .skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .into(img_1);
                         mImageUri[numberImg - 1] = data.getData();
                         btn_X1.setVisibility(View.VISIBLE);
                         break;
                     case 2:
-                        Glide.with(this).load(data.getData()).into(img_2);
+                        Glide.with(this).load(data.getData())
+                                .skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .into(img_2);
                         mImageUri[numberImg - 1] = data.getData();
                         btn_X2.setVisibility(View.VISIBLE);
                         break;
                     case 3:
-                        Glide.with(this).load(data.getData()).into(img_3);
+                        Glide.with(this).load(data.getData())
+                                .skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .into(img_3);
                         mImageUri[numberImg - 1] = data.getData();
                         btn_X3.setVisibility(View.VISIBLE);
                         break;
                     case 4:
-                        Glide.with(this).load(data.getData()).into(img_4);
+                        Glide.with(this).load(data.getData())
+                                .skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(img_4);
                         mImageUri[numberImg - 1] = data.getData();
                         btn_X4.setVisibility(View.VISIBLE);
                         break;
