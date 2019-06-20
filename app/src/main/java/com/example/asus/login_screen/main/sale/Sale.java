@@ -89,42 +89,14 @@ public class Sale extends Fragment implements ItemClickListener {
         LinearLayoutManager linearLayout = new LinearLayoutManager(this.getActivity());
 
         getAllProduct();
-        get10FirstProduct();
 
         recyclerView.setLayoutManager(linearLayout);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        myAdapter = new ProductAdapter(this.getContext(), productList, recyclerView);
+        myAdapter = new ProductAdapter(this.getContext(), mainList, recyclerView);
         recyclerView.setAdapter(myAdapter);
         myAdapter.setClickListener(this);
-        myAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                if (productList.size() < mainList.size()) {
-                    productList.add(null);
-                    myAdapter.notifyItemInserted(productList.size() - 1);
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            //   remove progress item
-                            productList.remove(productList.size() - 1);
-                            myAdapter.notifyItemRemoved(productList.size());
-                            //add items one by one
-                            int start = productList.size();
-                            int end = start + 20;
 
-                            for (int i = start + 1; i <= end; i++) {
-                                if (i == mainList.size()) break;
-                                productList.add(mainList.get(i));
-                                myAdapter.notifyItemInserted(productList.size());
-                            }
-                            myAdapter.setLoaded();
-                        }
-                    }, 2000);
-
-                }
-            }
-        });
 
         tv_typeSort.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,38 +108,8 @@ public class Sale extends Fragment implements ItemClickListener {
                         tv_typeSort.setText(text);
                         currentType = text;
                         getTypeProduct(text);
-                        get10FirstProduct();
-                        //myAdapter=new ProductAdapter(getContext(),productList,recyclerView);
-                        myAdapter.updateData(productList);
+                        myAdapter.updateData(mainList);
                         recyclerView.setAdapter(myAdapter);
-                        myAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
-                            @Override
-                            public void onLoadMore() {
-                                if (productList.size() < mainList.size()) {
-                                    productList.add(null);
-                                    myAdapter.notifyItemInserted(productList.size() - 1);
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            //   remove progress item
-                                            productList.remove(productList.size() - 1);
-                                            myAdapter.notifyItemRemoved(productList.size());
-                                            //add items one by one
-                                            int start = productList.size();
-                                            int end = start + 10;
-
-                                            for (int i = start + 1; i <= end; i++) {
-                                                if (i == mainList.size()) break;
-                                                productList.add(mainList.get(i));
-                                                myAdapter.notifyItemInserted(productList.size());
-                                            }
-                                            myAdapter.setLoaded();
-                                        }
-                                    }, 2000);
-
-                                }
-                            }
-                        });
                     }
                 });
                 bottomSheet.show(getFragmentManager(), "");
@@ -192,8 +134,7 @@ public class Sale extends Fragment implements ItemClickListener {
                         Local_Cache_Store.setShopAdress(store.getShopAdress());
                         Local_Cache_Store.setShopName(store.getShopName());
                         getTypeProduct(currentType);
-                        get10FirstProduct();
-                        myAdapter.updateData(productList);
+                        myAdapter.updateData(mainList);
                         recyclerView.setAdapter(myAdapter);
                     }
 
@@ -226,12 +167,12 @@ public class Sale extends Fragment implements ItemClickListener {
                 final Dialog cart_dialog = new Dialog(getContext());
                 cart_dialog.setContentView(R.layout.cart_layout);
                 final TextView total = cart_dialog.findViewById(R.id.tv_total);
-                Button checkout = cart_dialog.findViewById(R.id.btn_checkout);
+                final Button checkout = cart_dialog.findViewById(R.id.btn_checkout);
                 total.setText(Main_Screen.total);
                 LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity().getBaseContext());
                 RecyclerView rv_orderedProduct = (RecyclerView) cart_dialog.findViewById(R.id.rv_orderedProduct);
                 rv_orderedProduct.setLayoutManager(linearLayout);
-                ProductInCartAdapter cartAdapter = new ProductInCartAdapter(getContext(), Main_Screen.orderedProductList);
+                final ProductInCartAdapter cartAdapter = new ProductInCartAdapter(getContext(), Main_Screen.orderedProductList);
                 cartAdapter.setClickListener(new ItemClickListener() {
                     @SuppressLint("DefaultLocale")
                     @Override
@@ -244,6 +185,7 @@ public class Sale extends Fragment implements ItemClickListener {
                         }
                         Double add = Double.parseDouble(data);
                         paid += add;
+                        if(add<0 &&cartAdapter.getItemCount()==0) checkout.setEnabled(false);
                         Main_Screen.total = String.format("%1$,.0f", paid);
                         total.setText(String.format("%1$,.0f", paid));
                         int temp = Main_Screen.orderedProductList.size();
@@ -253,6 +195,7 @@ public class Sale extends Fragment implements ItemClickListener {
                     }
                 });
                 rv_orderedProduct.setAdapter(cartAdapter);
+                if(cartAdapter.getItemCount()>0) checkout.setEnabled(true); else checkout.setEnabled(false);
                 checkout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -340,15 +283,6 @@ public class Sale extends Fragment implements ItemClickListener {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    void get10FirstProduct() {
-        productList.clear();
-        for (int i = 0; i < 10; i++) {
-            if (i == mainList.size()) break;
-            productList.add(mainList.get(i));
-
-        }
-    }
-
     void getAllProduct() {
         mainList.clear();
         for (TypeOfProduct type : Local_Cache_Store.getListOfProductType().values()) {
@@ -381,7 +315,7 @@ public class Sale extends Fragment implements ItemClickListener {
     @SuppressLint("DefaultLocale")
     @Override
     public void onClick(View view, int position, String data) {
-        Product orderedProduct = new Product(productList.get(position));
+        Product orderedProduct = new Product(mainList.get(position));
         Double paid = 0.0;
         try {
             paid = DecimalFormat.getNumberInstance().parse(Main_Screen.total).doubleValue();
