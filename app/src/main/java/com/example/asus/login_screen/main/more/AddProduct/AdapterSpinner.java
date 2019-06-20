@@ -31,7 +31,7 @@ public class AdapterSpinner extends ArrayAdapter<String> {
         mInflater = LayoutInflater.from(context);
         this.layout = layout;
         this.arr = arr;
-        this.arr.add(new String());
+//        this.arr.add(new String());
     }
     @Override
     public View getDropDownView(int position, @Nullable View convertView,
@@ -55,27 +55,10 @@ public class AdapterSpinner extends ArrayAdapter<String> {
 
     private View createItemView(int position, View convertView, ViewGroup parent){
         final View view;
-                if(position!=arr.size()-1)
-                {
                     view= mInflater.inflate(layout, parent, false);
                     TextView tv = (TextView) view.findViewById(R.id.tv);
                     tv.setTextColor(Color.BLACK);
                     tv.setText(arr.get(position));
-                }
-                else
-                {
-                    view=mInflater.inflate(R.layout.spinner_image,parent,false);
-                    view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent=new Intent(context, AddType.class);
-                            intent.putStringArrayListExtra("listtype",arr);
-                            context.startActivity(intent);
-                        }
-                    });
-                }
-
-
         return view;
     }
 }
