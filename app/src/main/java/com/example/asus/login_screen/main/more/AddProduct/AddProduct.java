@@ -58,6 +58,8 @@ import java.util.HashMap;
 import static android.os.Environment.getExternalStorageDirectory;
 
 public class AddProduct extends AppCompatActivity {
+
+    Boolean isUpLoad=true;
     EditText edt_Name, edt_Count, edt_CostPrice, edt_SalePrice, edt_Manufacturer, edt_Description;
 
     Spinner spi_Type;
@@ -381,56 +383,61 @@ public class AddProduct extends AppCompatActivity {
                         && isLong(edt_CostPrice.getText().toString())
                         && !edt_Manufacturer.getText().toString().equals("")
                         && !(Long.parseLong(edt_CostPrice.getText().toString()) > Long.parseLong(edt_SalePrice.getText().toString()))) {
-                    if (null != tmp) {
-                        mDatabase.child(tmp.getIdType()).child("productList").child(tmp.getId()).removeValue();
-                    }
-
-                    for(TypeOfProduct i:Local_Cache_Store.getListOfProductType().values()){
-                        if( spi_Type.getSelectedItem().equals(i.getType())){
-                            idType=i.getID();
-                        }
-                    }
-
-                    id=FirebaseDatabase.getInstance()
-                            .getReference("stores/" + Local_Cache_Store.getShopName() + "/listOfProductType")
-                            .child(idType)
-                            .child("productList")
-                            .push().getKey();
-                    Product product = new Product(id, idType, Integer.parseInt(edt_Count.getText().toString()),
-                            Long.parseLong(edt_CostPrice.getText().toString()),
-                            edt_Manufacturer.getText().toString(),
-                            Long.parseLong(edt_SalePrice.getText().toString()),
-                            edt_Name.getText().toString(),
-                            null, edt_Description.getText().toString());
-                    FirebaseDatabase.getInstance()
-                            .getReference("stores/" + Local_Cache_Store.getShopName() + "/listOfProductType")
-                            .child(idType)
-                            .child("productList")
-                            .child(id).setValue(product);
-                    int i = 0;
-                    while (i < 4) {
-                        if (mUploadTask != null && mUploadTask.isInProgress()) {
-                        } else {
-                            uploadFile(i);
-                            i++;
+                    if(isUpLoad) {
+                        isUpLoad=false;
+                        if (null != tmp) {
+                            mDatabase.child(tmp.getIdType()).child("productList").child(tmp.getId()).removeValue();
                         }
 
+                        for (TypeOfProduct i : Local_Cache_Store.getListOfProductType().values()) {
+                            if (spi_Type.getSelectedItem().equals(i.getType())) {
+                                idType = i.getID();
+                            }
+                        }
+
+                        id = FirebaseDatabase.getInstance()
+                                .getReference("stores/" + Local_Cache_Store.getShopName() + "/listOfProductType")
+                                .child(idType)
+                                .child("productList")
+                                .push().getKey();
+                        Product product = new Product(id, idType, Integer.parseInt(edt_Count.getText().toString()),
+                                Long.parseLong(edt_CostPrice.getText().toString()),
+                                edt_Manufacturer.getText().toString(),
+                                Long.parseLong(edt_SalePrice.getText().toString()),
+                                edt_Name.getText().toString(),
+                                null, edt_Description.getText().toString());
+                        FirebaseDatabase.getInstance()
+                                .getReference("stores/" + Local_Cache_Store.getShopName() + "/listOfProductType")
+                                .child(idType)
+                                .child("productList")
+                                .child(id).setValue(product);
+                        int i = 0;
+                        while (i < 4) {
+                            if (mUploadTask != null && mUploadTask.isInProgress()) {
+                            } else {
+                                uploadFile(i);
+                                i++;
+                            }
+
+                        }
+                        //up hinh cua san pham & add to listImage on database
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(AddProduct.this, AlertDialog.THEME_HOLO_LIGHT);
+                        builder1.setMessage("Bạn đã thêm sản phẩm thành công!");
+                        builder1.setCancelable(true);
+                        builder1.setCancelable(false);
+                        builder1.setPositiveButton(
+                                "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        isUpLoad=true;
+                                        dialog.cancel();
+                                        onBackPressed();
+
+                                    }
+                                });
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
                     }
-                    //up hinh cua san pham & add to listImage on database
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(AddProduct.this, AlertDialog.THEME_HOLO_LIGHT);
-                    builder1.setMessage("Bạn đã thêm sản phẩm thành công!");
-                    builder1.setCancelable(true);
-                    builder1.setCancelable(false);
-                    builder1.setPositiveButton(
-                            "Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                    onBackPressed();
-                                }
-                            });
-                    AlertDialog alert11 = builder1.create();
-                    alert11.show();
                 }
 
 
