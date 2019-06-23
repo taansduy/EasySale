@@ -93,17 +93,6 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tv_ForgotPass"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:gravity="right|center_vertical"
-            android:paddingRight="20dp"
-            android:text="Bạn quên mật khẩu ?"
-            android:textColor="@color/colorControlNormal"
-            android:textSize="16sp" />
-
         <Button
             android:id="@+id/btn_SignIn"
             style="@style/com_facebook_button"
